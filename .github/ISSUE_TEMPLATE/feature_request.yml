@@ -1,0 +1,64 @@
+name: Feature Request
+description: Suggest a new feature
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Please fill out the form below.
+        
+        **IMPORTANT**: By submitting this issue, you agree to the terms in [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: "I want to... because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should this feature work?
+      placeholder: "The feature should..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative approaches?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any other context (links, designs, etc)?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low (nice to have)
+        - Medium (helpful)
+        - High (needed soon)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Acknowledgment
+      options:
+        - label: "I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)"
+          required: true
+        - label: "Any code I provide will become the property of HealthyPixels creator"
+          required: true

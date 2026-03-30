@@ -1,0 +1,107 @@
+name: Bug Report
+description: Report a bug or issue
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out the form below.
+        
+        **IMPORTANT**: By submitting this issue, you agree to the terms in [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clear description of the bug
+      placeholder: "Describe what happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the bug
+      placeholder: |
+        1. Go to...
+        2. Click on...
+        3. See the error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Add screenshots if applicable
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device Type
+      options:
+        - Android Phone
+        - iPhone
+        - Tablet
+        - Desktop
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser / App
+      options:
+        - Chrome
+        - Safari
+        - Firefox
+        - Samsung Internet
+        - Edge
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS version, browser version, etc.
+      placeholder: "OS: Android 13, Browser: Chrome 120"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console Errors
+      description: Any errors from DevTools console
+      render: shell
+
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Acknowledgment
+      options:
+        - label: "I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)"
+          required: true
+        - label: "I agree that my contribution becomes the property of HealthyPixels creator"
+          required: true

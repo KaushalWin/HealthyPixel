@@ -1,0 +1,185 @@
+HEALTHYPIXELS PROPRIETARY LICENSE
+Version 1.0
+
+Copyright (c) 2026 [Creator Name]. All rights reserved.
+
+================================================================================
+OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
+================================================================================
+
+1. OWNERSHIP OF SOFTWARE
+   The HealthyPixels software, including all source code, documentation, 
+   designs, and related materials, is owned exclusively by the Creator 
+   (the copyright holder listed above). All rights are reserved.
+
+2. CONTRIBUTOR OWNERSHIP ASSIGNMENT
+   Contributors who submit code, documentation, bug fixes, or other 
+   modifications (collectively, "Contributions") agree that:
+   
+   a) **CONTRIBUTORS HEREBY ASSIGN** full ownership of and copyright in 
+      their Contributions to the Creator upon acceptance and merger into 
+      the official repository. This is an assignment of ownership, not 
+      merely a license grant.
+   
+   b) Contributors transfer all right, title, and interest in their 
+      Contributions to the Creator, including but not limited to all 
+      copyrights, patents, and intellectual property rights.
+   
+   c) The Creator takes exclusive ownership of all Contributions and may 
+      modify, distribute, sublicense, sell, or relicense Contributions 
+      without further notice, compensation, or attribution.
+   
+   d) Contributors waive all claims of ownership, authorship rights, and 
+      (to the extent permitted by law) moral rights in their Contributions.
+   
+   e) To the extent permitted by applicable law (including in jurisdictions 
+      with inalienable moral rights such as the EU), Contributors waive 
+      all moral rights, including rights of attribution and integrity.
+   
+   f) Contributors retain the right to be credited as a contributor in 
+      an optional contributors list, but this acknowledgment does not 
+      confer any ownership rights or ongoing claims to the work.
+
+3. NO LICENSE GRANT TO USERS
+   Users may NOT:
+   - Modify or create derivative works of this software
+   - Distribute copies of this software
+   - Use this software commercially
+   - Sublicense or transfer any rights
+   - Reverse engineer or decompile the software
+
+4. PERMITTED USE
+   Users may use HealthyPixels software solely for personal, non-commercial 
+   purposes as provided. All use is subject to the Creator's discretion.
+
+================================================================================
+CONTRIBUTION POLICY
+================================================================================
+
+5. CONTRIBUTOR LICENSE AGREEMENT (CLA)
+   To ensure full legal protection of the Creator's rights, contributors 
+   may be required to sign a Contributor License Agreement (CLA). The CLA 
+   reiterates and formalizes the terms of this license.
+   
+   For non-trivial contributions (more than 50 lines of code or significant 
+   features), the Creator may request a formal CLA signature. Failure to 
+   sign a requested CLA will result in the PR being closed without merge.
+
+6. PULL REQUESTS & CONTRIBUTIONS
+   By submitting a pull request, issue, or any contribution to the 
+   HealthyPixels repository, you agree to:
+   
+   a) The ownership assignment terms in Section 2 above.
+   
+   b) That your Contribution is original work created by you and does not 
+      infringe any third-party rights.
+   
+   c) That you have the legal right to assign these rights to the Creator.
+   
+   d) To sign a formal CLA if requested by the Creator.
+   
+   e) That the Creator may accept, modify, reject, or supersede any 
+      Contribution at its sole discretion.
+
+7. EMPLOYEE & CORPORATE CONTRIBUTIONS
+   If you are contributing code created as part of your employment, or 
+   you are employed by a corporation:
+   
+   a) You must secure written permission from your employer before 
+      submitting contributions.
+   
+   b) Your employer may be required to sign a CLA.
+   
+   c) Contributions made without employer permission may be rejected and 
+      result in legal liability.
+
+================================================================================
+CONTRIBUTION PROCESSING
+================================================================================
+
+8. NO PARTNERSHIP OR OBLIGATION
+   Contributing to this project does not create a partnership, employment, 
+   or obligation between you and the Creator. The Creator is under no 
+   obligation to accept, merge, or acknowledge any Contributions.
+
+================================================================================
+LIMITATIONS & RESTRICTIONS
+================================================================================
+
+================================================================================
+LIMITATIONS & RESTRICTIONS
+================================================================================
+
+9. NO WARRANTY
+   This software is provided "as-is" without any warranties, express or 
+   implied, including warranties of merchantability, fitness for a 
+   particular purpose, or non-infringement.
+
+10. LIMITATION OF LIABILITY
+    In no event shall the Creator be liable for any damages, including but 
+    not limited to direct, indirect, incidental, special, or consequential 
+    damages, arising from the use or inability to use this software.
+
+11. MODIFICATION OF LICENSE
+    The Creator reserves the right to modify this license at any time. 
+    Continued use constitutes acceptance of modified terms.
+
+================================================================================
+TERMINATION
+================================================================================
+
+12. TERMINATION OF USE
+    The Creator may revoke this license and deny access to the software at 
+    any time, for any reason, without notice or compensation.
+
+================================================================================
+GOVERNING LAW
+================================================================================
+
+13. This license shall be governed by and construed in accordance with the 
+    laws of [Your Jurisdiction/Country], and you agree to submit to the 
+    exclusive jurisdiction of the courts located therein.
+
+14. If any provision of this license is found to be invalid or 
+    unenforceable, the remaining provisions shall continue in full effect.
+
+================================================================================
+CLARIFICATIONS
+================================================================================
+
+15. FORK POLICY
+    While you may fork this repository for personal use or to report bugs, 
+    any public distribution of a fork must comply with this license and 
+    does not grant you any rights to the HealthyPixels trademark, branding, 
+    or distribution rights.
+
+16. DATA & PRIVACY
+    This software stores user data locally on devices. The Creator makes no 
+    claims about data persistence, recovery, or protection. Users are 
+    responsible for backing up their own data.
+
+17. NO COMMERCIAL USE
+    This software may not be used to create commercial products or services 
+    without explicit written permission from the Creator. This includes but 
+    is not limited to:
+    - Charging users for access or features
+    - Including in paid products or services
+    - Using for commercial data collection or resale
+    - Licensing to third parties
+
+================================================================================
+CONTACT
+================================================================================
+
+For questions about this license or permission requests, please contact the 
+Creator through GitHub Issues or email.
+
+Issues and pull requests are governed by this license.
+
+================================================================================
+
+By using this software or submitting contributions, you acknowledge that 
+you have read and agree to be bound by all terms and conditions of this 
+license.
+
+HealthyPixels - All Rights Reserved
