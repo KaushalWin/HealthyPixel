@@ -1,8 +1,8 @@
-# HealthyPixels - Health Tracker PWA
+# HealthyPixel - Health Tracker PWA
 
 ## Mission
 
-**HealthyPixels** is a quality-first health tracker PWA. Record vital signs with minimal clicks, view instant insights, and maintain complete control over your personal health data—all without any backend or account. Designed for reliability, privacy, and user control.
+**HealthyPixel** is a quality-first health tracker PWA. Record vital signs with minimal clicks, view instant insights, and maintain complete control over your personal health data, without any backend or account. Designed for reliability, privacy, and user control.
 
 ## Overview
 
@@ -26,7 +26,7 @@ A progressive web app (PWA) for tracking health readings. Designed to be install
 | Framework | React 18 + Vite | Fast, lightweight, mobile-friendly |
 | State | Zustand | Minimal boilerplate, easy to learn |
 | Storage | IndexedDB (Dexie.js) | Scalable, handles years of health data |
-| Charts | Recharts | Beautiful, responsive, React-native |
+| Charts | Recharts | Beautiful, responsive, React-friendly |
 | Styling | Tailwind CSS | Rapid development, mobile-first |
 | PWA | Vite PWA Plugin | Automated service workers, offline support |
 | Language | TypeScript | Type safety, better DX |
@@ -36,7 +36,7 @@ A progressive web app (PWA) for tracking health readings. Designed to be install
 ## Project Structure
 
 ```
-health-tracker/
+healthy-pixel/
 ├── README.md
 ├── LICENSE
 ├── PLANNING.md
@@ -45,22 +45,22 @@ health-tracker/
 ├── SEO_MARKETING.md
 ├── PROJECT_CHECKLIST.md
 ├── package.json
-├── vite.config.js
+├── vite.config.ts
 ├── tsconfig.json
 ├── index.html
 ├── src/
-│   ├── main.jsx
-│   ├── App.jsx
+│   ├── main.tsx
+│   ├── App.tsx
 │   ├── components/
-│   │   ├── ReadingInput.jsx
-│   │   ├── Charts.jsx
-│   │   ├── Settings.jsx
-│   │   └── Navigation.jsx
+│   │   ├── ReadingInput.tsx
+│   │   ├── Charts.tsx
+│   │   ├── Settings.tsx
+│   │   └── Navigation.tsx
 │   ├── hooks/
-│   │   └── useReadingStore.js
+│   │   └── useReadingStore.ts
 │   ├── utils/
-│   │   ├── storage.js
-│   │   └── dataExport.js
+│   │   ├── storage.ts
+│   │   └── dataExport.ts
 │   └── styles/
 │       └── globals.css
 ├── public/
@@ -79,8 +79,8 @@ See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for detailed setup instructions
 
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/health-tracker.git
-cd health-tracker
+git clone https://github.com/yourusername/healthy-pixel.git
+cd healthy-pixel
 
 # Install dependencies
 npm install
@@ -112,12 +112,13 @@ Future additions: Oxygen, Temperature, Symptoms, Medications, Heart Rate.
 ✅ **No Backend**: No servers collect or store your data.  
 ✅ **No Account**: Use without login or registration.  
 ✅ **No Tracking**: No analytics, no ads, no data collection.  
+✅ **No Data Usage by Us**: We do not use your health data for any internal or external purpose.  
 ✅ **Data Export**: Download all your data anytime as JSON/CSV.  
-✅ **Auditable**: Open-source code—you can review exactly what happens.
+✅ **Auditable**: Source-available repository; you can review exactly what happens.
 
 ## Monetization Strategy
 
-HealthyPixels is built with quality and user value as the priority. While pricing models may evolve as the project grows, the focus remains on delivering an exceptional health tracking experience.
+HealthyPixel is fully free. Donations are always allowed and optional. The future model is intentionally undecided and may evolve only if it helps sustainability without compromising privacy and user control.
 
 **Support Project Development** (optional):
 - **GitHub Sponsors**: github.com/yourusername (recurring support)
@@ -147,7 +148,7 @@ See [PLANNING.md](PLANNING.md) for full roadmap, phases, and timeline estimates.
 - Multiple health metrics
 - Data sync (optional via Dropbox/Google Drive)
 - Community feedback implementation
-- Premium tier (optional)
+- Re-evaluate sustainability options only if necessary
 
 ## SEO & Traffic Strategy
 
@@ -159,7 +160,7 @@ See [SEO_MARKETING.md](SEO_MARKETING.md) for detailed traffic plan.
 3. Google Search Console setup
 4. Backlinks from dev communities
 
-Expected: 500-2,000/month organic traffic within 3 months.
+Focus: consistent discoverability through privacy-first messaging and clear product documentation.
 
 ## Getting Started / Development Roadmap
 

@@ -1,4 +1,4 @@
-HEALTHYPIXELS PROPRIETARY LICENSE
+HEALTHYPIXEL PROPRIETARY LICENSE
 Version 1.0
 
 Copyright (c) 2026 [Creator Name]. All rights reserved.
@@ -8,7 +8,7 @@ OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
 ================================================================================
 
 1. OWNERSHIP OF SOFTWARE
-   The HealthyPixels software, including all source code, documentation, 
+   The HealthyPixel software, including all source code, documentation, 
    designs, and related materials, is owned exclusively by the Creator 
    (the copyright holder listed above). All rights are reserved.
 
@@ -40,16 +40,18 @@ OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
       an optional contributors list, but this acknowledgment does not 
       confer any ownership rights or ongoing claims to the work.
 
-3. NO LICENSE GRANT TO USERS
+3. LIMITED LICENSE TO USERS
+   The Creator grants users a limited, revocable, non-transferable, non-exclusive
+   license to access and use HealthyPixel for personal, non-commercial use.
+
    Users may NOT:
-   - Modify or create derivative works of this software
-   - Distribute copies of this software
    - Use this software commercially
    - Sublicense or transfer any rights
-   - Reverse engineer or decompile the software
+   - Publicly redistribute modified versions without explicit written permission
+   - Remove license and ownership notices
 
 4. PERMITTED USE
-   Users may use HealthyPixels software solely for personal, non-commercial 
+   Users may use HealthyPixel software solely for personal, non-commercial 
    purposes as provided. All use is subject to the Creator's discretion.
 
 ================================================================================
@@ -67,7 +69,7 @@ CONTRIBUTION POLICY
 
 6. PULL REQUESTS & CONTRIBUTIONS
    By submitting a pull request, issue, or any contribution to the 
-   HealthyPixels repository, you agree to:
+   HealthyPixel repository, you agree to:
    
    a) The ownership assignment terms in Section 2 above.
    
@@ -101,10 +103,6 @@ CONTRIBUTION PROCESSING
    Contributing to this project does not create a partnership, employment, 
    or obligation between you and the Creator. The Creator is under no 
    obligation to accept, merge, or acknowledge any Contributions.
-
-================================================================================
-LIMITATIONS & RESTRICTIONS
-================================================================================
 
 ================================================================================
 LIMITATIONS & RESTRICTIONS
@@ -148,10 +146,10 @@ CLARIFICATIONS
 ================================================================================
 
 15. FORK POLICY
-    While you may fork this repository for personal use or to report bugs, 
-    any public distribution of a fork must comply with this license and 
-    does not grant you any rights to the HealthyPixels trademark, branding, 
-    or distribution rights.
+   You may fork this repository to review code, test changes, and submit pull
+   requests. Public distribution or operation of a fork as an alternative
+   product/service requires explicit written permission from the Creator and
+   grants no rights to the HealthyPixel trademark, branding, or distribution.
 
 16. DATA & PRIVACY
     This software stores user data locally on devices. The Creator makes no 
@@ -182,4 +180,4 @@ By using this software or submitting contributions, you acknowledge that
 you have read and agree to be bound by all terms and conditions of this 
 license.
 
-HealthyPixels - All Rights Reserved
+HealthyPixel - All Rights Reserved

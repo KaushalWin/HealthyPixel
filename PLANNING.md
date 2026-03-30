@@ -1,8 +1,8 @@
-# HealthyPixels - Planning & Roadmap
+# HealthyPixel - Planning & Roadmap
 
 ## Project Vision
 
-**Goal**: Create a free, privacy-first health tracker PWA that respects user autonomy and data privacy.
+**Goal**: Create a currently free, privacy-first health tracker PWA that respects user autonomy and data privacy.
 
 **Core Values**:
 - ⭐ **Quality First**: Reliability, attention to detail, user experience.
@@ -31,9 +31,9 @@
 
 ### Deliverables
 - GitHub repo (public, with LICENSE file).
-- Live site at `yourusername.github.io/health-tracker`.
+- Live site at `yourusername.github.io/healthy-pixel`.
 - Working PWA with offline support.
-- Basic analytics for launch.
+- No mandatory telemetry in-app.
 
 ### Timeline
 - Week 1: Setup & components (input form, readings list).
@@ -68,7 +68,7 @@
 - Google Search Console submission.
 
 ### Legal & Governance
-- Verify LICENSE.md clarity and completeness.
+- Verify LICENSE clarity and completeness.
 - Set up GitHub issue templates (bug, feature request).
 - Set up GitHub pull request template with CLA requirements.
 - Plan CLA bot integration (optional but recommended).
@@ -87,24 +87,23 @@
 ### Goals
 - Build community (GitHub issues, discussions).
 - Gather user feedback.
-- Plan premium tier (if monetization needed).
+- Re-evaluate sustainability options only if needed.
 - Scale to 1,000-5,000/month users.
 
 ### Features
 - **Multiple Metrics**: Glucose, oxygen, temperature, symptoms, medications.
 - **Data Analysis**: Weekly/monthly summaries, insights (e.g., "Average BP trending down").
 - **Optional Cloud Sync** (non-essential): Via Dropbox/Google Drive API (user-controlled).
-- **Community Dashboard**: Anonymized stats (e.g., "Users tracked X readings this week").
 - **API Export**: Structured JSON endpoint for third-party apps (optional).
 
 ### Business (Optional)
-- Premium tier: Advanced analytics, cloud sync, bulk export ($2.99/mo or $24.99/yr).
-- Keep MVP free forever (core features always free).
-- GitHub Sponsors tiers (e.g., $5/mo for priority feature requests).
+- Future options may include donations and/or optional paid features, but no commitment is made now.
+- Current commitment: app remains fully free at this stage.
+- Donations are always allowed via voluntary support channels.
 
 ### Timeline
 - Month 2: User feedback, iteration, metric expansion.
-- Month 3: Premium tier planning, community building.
+- Month 3: Sustainability planning, community building.
 
 ---
 
@@ -126,7 +125,7 @@
 ## Governance & Legal Strategy
 
 ### Contribution Ownership
-HealthyPixels maintains full ownership of all contributions. This ensures the Creator retains control over the project's future direction, licensing, and monetization.
+HealthyPixel maintains full ownership of all contributions. This ensures the Creator retains control over the project's future direction, licensing, and monetization.
 
 **Key Principles**:
 - All code contributions become the exclusive property of the Creator upon merge
@@ -167,8 +166,8 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 | **License** | Proprietary (All Rights Reserved) | Legal clarity, ability to monetize |
 | **Monetization** | Free + donations | Ko-fi, GitHub Sponsors, future Stripe |
 | **Privacy** | 100% local storage | No backend = max privacy |
-| **Name** | HealthyPixels | Witty, memorable, brand-friendly |
-| **Metrics (MVP)** | BP, HR, Weight, Notes | Covers 80% of casual tracking use |
+| **Name** | HealthyPixel | Witty, memorable, brand-friendly |
+| **Metrics (MVP)** | BP, Glucose, Weight, Height, Notes | Matches core launch scope |
 
 ---
 
@@ -186,7 +185,7 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 - ✅ 2,000+ Product Hunt upvotes
 - ✅ 1,000-5,000/month unique visitors
 - ✅ 10+ GitHub issues (community engagement)
-- ✅ $0-100+/month donations
+- ✅ Donations channel available without affecting core free usage
 
 ### Phase 3 Success
 - ✅ 5,000-10,000+/month active users
@@ -204,7 +203,7 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 | **Storage deletion** | Warn users to export regularly, provide import tool |
 | **Browser compatibility** | Test on Chrome, Safari, Firefox, Samsung Internet |
 | **Android installability** | PWA standards + manual testing on real devices |
-| **User trust** | Open-source code, clear privacy policy, easy export |
+| **User trust** | Source-available codebase, clear privacy policy, easy export |
 | **Monetization fails** | Free model is sustainable (no backend costs) |
 
 ---
@@ -233,5 +232,10 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 
 - **MVP Launch Target**: 3 weeks from project start.
 - **Full Launch Target**: 6 weeks (Product Hunt + marketing).
-- **Break-Even**: $0 (no infrastructure costs; donations are bonus).
+- **Cost Model**: No backend infrastructure required for core app operation.
 - **Long-term Goal**: 10,000+ monthly active users within 6 months.
+
+## Data Handling Rule
+
+- HealthyPixel does not use user health data for analytics, ads, profiling, or resale.
+- User health data remains stored locally on the user's device.

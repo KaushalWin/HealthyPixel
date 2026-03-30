@@ -14,7 +14,7 @@ By contributing to HealthyPixels (through pull requests, issues, comments, or an
 
 2. **The creator retains full ownership and rights** to all code, documentation, and ideas submitted, including the right to modify, redistribute, or relicense them.
 
-3. **You grant a perpetual, worldwide, royalty-free license** to use, modify, and distribute your contributions without further attribution or compensation.
+3. **You assign ownership of accepted contributions** to the creator as defined in the LICENSE (assignment, not only a license grant).
 
 4. **You can be credited as a contributor** (in a contributors list, if you wish), but this does not confer ownership.
 

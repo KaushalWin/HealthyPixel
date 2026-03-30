@@ -60,5 +60,5 @@ body:
       options:
         - label: "I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)"
           required: true
-        - label: "Any code I provide will become the property of HealthyPixels creator"
+        - label: "Any code I provide will become the property of HealthyPixel creator"
           required: true

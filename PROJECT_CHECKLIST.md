@@ -1,16 +1,16 @@
-# HealthyPixels - Project Checklist & Action Items
+# HealthyPixel - Project Checklist & Action Items
 
 ## Pre-Launch Checklist (Weeks 1-3)
 
 ### GitHub & Repository Setup
 - [ ] Create GitHub account (if not already done)
-- [ ] Create public repository named `health-tracker`
+- [ ] Create public repository named `healthy-pixel`
 - [ ] Add LICENSE file (proprietary: "All rights reserved")
 - [ ] Clone repo locally
 - [ ] Set up .gitignore (Node.js template)
 
 ### Project Initialization
-- [ ] Initialize Node.js project: `npm create vite@latest health-tracker -- --template react`
+- [ ] Initialize Node.js project: `npm create vite@latest healthy-pixel -- --template react`
 - [ ] Install dependencies: `npm install`
 - [ ] Install additional packages (Vite PWA, Zustand, Dexie, Recharts, Tailwind)
 - [ ] Configure vite.config.js with PWA plugin
@@ -95,13 +95,13 @@
 - [ ] Create .github/workflows/deploy.yml
 - [ ] Test GitHub Actions (push to main, verify build)
 - [ ] Enable GitHub Pages in repo settings
-- [ ] Verify site live at: `yourusername.github.io/health-tracker/`
+- [ ] Verify site live at: `yourusername.github.io/healthy-pixel/`
 - [ ] Test PWA installation from live site
 - [ ] Verify service worker registered (DevTools → Application → Service Workers)
 
 ### Initial Commit
 - [ ] Add all files to git
-- [ ] Initial commit: `git commit -m "Initial commit: HealthyPixels MVP"`
+- [ ] Initial commit: `git commit -m "Initial commit: HealthyPixel MVP"`
 - [ ] Push to GitHub: `git push -u origin main`
 - [ ] Verify GitHub Actions builds successfully
 
@@ -123,11 +123,11 @@
 - [ ] Create social media graphics (Twitter banner, og:image)
 - [ ] Create demo video (optional but recommended)
 - [ ] Write Product Hunt product description
-- [ ] Prepare Reddit posts (r/privacy, r/androidapps, r/health, r/opensourcesoftware)
+- [ ] Prepare Reddit posts (r/privacy, r/androidapps, r/health, and other relevant communities)
 - [ ] Create Twitter/Mastodon bio + first tweets
 
 ### Monetization Setup
-- [ ] Set up GitHub Sponsors (Tier 1: $1, Tier 2: $5, Tier 3: $25)
+- [ ] Set up GitHub Sponsors (optional support enabled)
 - [ ] Create Ko-fi account (but don't add links yet)
 - [ ] Add GitHub Sponsors link to README
 - [ ] Create /support page (links to GitHub Sponsors + Ko-fi)
@@ -152,14 +152,14 @@
 - [ ] Submit to Product Hunt (Tuesday launch)
 - [ ] Post to r/privacy (highlight: zero data collection)
 - [ ] Post to r/androidapps (highlight: PWA install)
-- [ ] Post to r/opensourcesoftware (highlight: open source)
+- [ ] Post to relevant communities with accurate positioning (source-available + privacy-first)
 - [ ] Share on Twitter/Mastodon (3-4 tweets per day during launch)
 - [ ] Ask friends to share/upvote
 
 ### Analytics Setup (Optional but Recommended)
-- [ ] Sign up for Plausible Analytics (privacy-first, free tier)
-- [ ] Add Plausible code to index.html
-- [ ] Track: page views, signups, donations
+- [ ] Keep in-app analytics disabled by default
+- [ ] If traffic measurement is needed, use non-invasive external metrics only (GitHub traffic, Search Console)
+- [ ] Document any measurement approach transparently in privacy documentation
 
 ### Quality Assurance
 - [ ] Final round of testing (all browsers, devices)
@@ -170,7 +170,7 @@
 - [ ] Check no console errors
 
 ### Release
-- [ ] Final commit: `git commit -m "Release: HealthyPixels v1.0 - MVP launch"`
+- [ ] Final commit: `git commit -m "Release: HealthyPixel v1.0 - MVP launch"`
 - [ ] Create GitHub release/tag (v1.0)
 - [ ] Push all changes
 - [ ] Verify GitHub Pages site live and working
@@ -198,7 +198,7 @@
 - [ ] Ask for testimonials/screenshots
 
 ### Content Marketing
-- [ ] Write blog post: "Why I Built HealthyPixels"
+- [ ] Write blog post: "Why I Built HealthyPixel"
 - [ ] Write blog post: "Privacy in Health Tracking"
 - [ ] Create FAQ page
 - [ ] Create user guide (how to use all features)
@@ -213,7 +213,7 @@
 - [ ] Check Core Web Vitals (target green)
 
 ### Optional: Premium Features Planning
-- [ ] Design premium tier (if needed)
+- [ ] Design optional paid features (if needed)
 - [ ] Plan cloud sync feature (Dropbox/Google Drive)
 - [ ] Plan advanced analytics
 - [ ] Plan bulk PDF export
@@ -296,8 +296,8 @@
 ### Business Metrics (If Monetizing)
 - [ ] GitHub Sponsors subscribers
 - [ ] Ko-fi donations
-- [ ] Revenue per month
-- [ ] Cost of hosting ($0 baseline)
+- [ ] Donation channel health (active/inactive)
+- [ ] User trust impact (no disruption to free core)
 
 ### User Feedback
 - [ ] GitHub issue count
@@ -323,7 +323,7 @@
 
 ### Phase 2 Success (Month 3)
 ✅ 5,000-10,000 monthly active users  
-✅ $100-500/month donations (optional)  
+✅ Optional donations available without affecting free usage  
 ✅ Positive user feedback  
 ✅ Feature requests from community  
 
@@ -331,7 +331,7 @@
 ✅ 10,000+ monthly active users  
 ✅ Trusted by privacy community  
 ✅ Sustainable without forced monetization  
-✅ Strong open-source reputation  
+✅ Strong privacy-first reputation  
 
 ---
 
@@ -339,8 +339,8 @@
 
 ```bash
 # Setup
-npm create vite@latest health-tracker -- --template react
-cd health-tracker
+npm create vite@latest healthy-pixel -- --template react
+cd healthy-pixel
 npm install
 npm install -D vite-plugin-pwa
 npm install zustand dexie recharts
@@ -356,7 +356,7 @@ npm run preview
 
 # Deploy
 git add .
-git commit -m "Deploy: HealthyPixels"
+git commit -m "Deploy: HealthyPixel"
 git push origin main
 ```
 
@@ -382,4 +382,4 @@ git push origin main
 - **Keep it simple.** Don't add bloat. Minimal, focused, useful.
 - **Remember the mission.** Privacy first. Users first. Money second (or never).
 
-🚀 **Ready to launch HealthyPixels!**
+🚀 **Ready to launch HealthyPixel!**

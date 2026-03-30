@@ -23,7 +23,7 @@
 
 ### Legal & Licensing
 - [ ] I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)
-- [ ] I understand that ALL my contributions become the exclusive property of the HealthyPixels creator upon merge
+- [ ] I understand that ALL my contributions become the exclusive property of the HealthyPixel creator upon merge
 - [ ] I understand I will waive all ownership and moral rights to my contributions
 - [ ] I confirm I have the legal right to assign these rights (no employer or third-party claims)
 - [ ] For corporate contributions: My employer has approved this contribution
@@ -58,7 +58,7 @@
 
 By submitting this pull request, I agree to the following:
 
-1. I assign full ownership and copyright of my contributions to the HealthyPixels creator
+1. I assign full ownership and copyright of my contributions to the HealthyPixel creator
 2. I waive all claims of ownership and (where applicable) moral rights
 3. My contributions may be modified, distributed, or relicensed without my permission
 4. I will not hold the creator liable for any use of my contributions

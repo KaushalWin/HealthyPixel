@@ -2,11 +2,11 @@
 
 ## Our Commitment
 
-HealthyPixels is committed to providing a welcoming and inclusive community for all contributors and users, regardless of background, identity, or experience level.
+HealthyPixel is committed to providing a welcoming and inclusive community for all contributors and users, regardless of background, identity, or experience level.
 
 ## Expected Behavior
 
-We expect all members of the HealthyPixels community to:
+We expect all members of the HealthyPixel community to:
 
 - **Be Respectful**: Treat all others with kindness and respect
 - **Be Constructive**: Provide helpful feedback, not criticism or attacks
@@ -48,12 +48,12 @@ All reports will be handled confidentially and promptly.
 This code of conduct applies to:
 
 - GitHub repository (issues, PRs, discussions)
-- All community spaces affiliated with HealthyPixels
+- All community spaces affiliated with HealthyPixel
 - Official project events or gatherings
 
 ## License
 
-This Code of Conduct is inspired by the Contributor Covenant and is adapted for HealthyPixels.
+This Code of Conduct is inspired by the Contributor Covenant and is adapted for HealthyPixel.
 
 ---
 

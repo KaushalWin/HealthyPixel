@@ -1,4 +1,4 @@
-# HealthyPixels - Technical Context & Setup
+# HealthyPixel - Technical Context & Setup
 
 ## Tech Stack Deep Dive
 
@@ -16,6 +16,13 @@
 - Lightning-fast HMR (hot module reload).
 - Smaller bundle size (critical for mobile).
 - GitHub Pages-friendly output.
+
+### Stack Selection Principles (Ownership + Future Monetization)
+
+- Prefer permissive-license dependencies (MIT/ISC/Apache-2.0).
+- Avoid copyleft dependencies that can complicate proprietary distribution.
+- Keep architecture frontend-first now (GitHub Pages), with optional API boundaries documented for future expansion.
+- Avoid vendor lock-in for core features (storage, charts, auth, billing).
 
 ### State Management: Zustand
 
@@ -81,10 +88,10 @@ Alternative: Chart.js (simpler, but less React-native).
 
 ```bash
 # Create project
-npm create vite@latest health-tracker -- --template react
+npm create vite@latest healthy-pixel -- --template react-ts
 
 # Navigate into project
-cd health-tracker
+cd healthy-pixel
 
 # Install dependencies
 npm install
@@ -122,35 +129,35 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/health-tracker/', // Change to your repo name
+  base: '/healthy-pixel/', // Change to your repo name
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'HealthyPixels',
-        short_name: 'HealthyPixels',
+        name: 'HealthyPixel',
+        short_name: 'HealthyPixel',
         description: 'Track health readings with minimal clicks. Private. Free. Offline.',
         theme_color: '#10b981',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/health-tracker/',
-        start_url: '/health-tracker/',
+        scope: '/healthy-pixel/',
+        start_url: '/healthy-pixel/',
         icons: [
           {
-            src: '/health-tracker/icon-192.png',
+            src: '/healthy-pixel/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/health-tracker/icon-512.png',
+            src: '/healthy-pixel/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/health-tracker/icon-maskable-192.png',
+            src: '/healthy-pixel/icon-maskable-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable',
@@ -161,15 +168,15 @@ export default defineConfig({
             name: 'Quick Reading',
             short_name: 'Reading',
             description: 'Record a new health reading',
-            url: '/?shortcut=reading',
-            icons: [{ src: '/health-tracker/icon-reading.png', sizes: '192x192' }],
+            url: '/healthy-pixel/?shortcut=reading',
+            icons: [{ src: '/healthy-pixel/icon-reading.png', sizes: '192x192' }],
           },
           {
             name: 'View Charts',
             short_name: 'Charts',
             description: 'View your health graphs',
-            url: '/?shortcut=charts',
-            icons: [{ src: '/health-tracker/icon-charts.png', sizes: '192x192' }],
+            url: '/healthy-pixel/?shortcut=charts',
+            icons: [{ src: '/healthy-pixel/icon-charts.png', sizes: '192x192' }],
           },
         ],
       },
@@ -251,12 +258,12 @@ html, body {
 
 ### Step 5: Create IndexedDB Storage Layer
 
-**File: `src/utils/storage.js`**
+**File: `src/utils/storage.ts`**
 
 ```javascript
 import Dexie from 'dexie';
 
-export const db = new Dexie('HealthyPixelsDB');
+export const db = new Dexie('HealthyPixelDB');
 
 db.version(1).stores({
   readings: '++id, timestamp, type, date',
@@ -292,10 +299,10 @@ export const clearAllData = async () => {
 
 ### Step 6: Create Zustand Store
 
-**File: `src/hooks/useReadingStore.js`**
+**File: `src/hooks/useReadingStore.ts`**
 
 ```javascript
-import create from 'zustand';
+import { create } from 'zustand';
 import { addReading, getReadings } from '../utils/storage';
 
 export const useReadingStore = create((set) => ({
@@ -370,23 +377,23 @@ export const useReadingStore = create((set) => ({
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Title & Description -->
-    <title>HealthyPixels - Free Health Tracker PWA | Track Vitals Offline</title>
-    <meta name="description" content="HealthyPixels: Free, open-source health tracker PWA. Record blood pressure, weight, heart rate with minimal clicks. Works offline on Android/iOS. No backend, no data collection. Install on your home screen.">
+    <title>HealthyPixel - Free Health Tracker PWA | Track Vitals Offline</title>
+    <meta name="description" content="HealthyPixel: Currently free health tracker PWA. Record blood pressure, weight, heart rate with minimal clicks. Works offline on Android/iOS. No backend, no data collection. Install on your home screen.">
     <meta name="keywords" content="health tracker, vital signs, blood pressure tracker, heart rate monitor, weight tracker, health app, offline app, PWA, progressive web app, free health app">
     
     <!-- Open Graph (Social Media) -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/health-tracker/">
-    <meta property="og:title" content="HealthyPixels - Free Health Tracker">
+    <meta property="og:url" content="https://yourusername.github.io/healthy-pixel/">
+    <meta property="og:title" content="HealthyPixel - Free Health Tracker">
     <meta property="og:description" content="Track health readings with minimal clicks. Free, offline, installable on Android.">
-    <meta property="og:image" content="https://yourusername.github.io/health-tracker/og-image.png">
+    <meta property="og:image" content="https://yourusername.github.io/healthy-pixel/og-image.png">
     
     <!-- Canonical -->
-    <link rel="canonical" href="https://yourusername.github.io/health-tracker/">
+    <link rel="canonical" href="https://yourusername.github.io/healthy-pixel/">
     
     <!-- Favicon & PWA -->
-    <link rel="icon" type="image/svg+xml" href="/health-tracker/favicon.svg">
-    <link rel="manifest" href="/health-tracker/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/healthy-pixel/favicon.svg">
+    <link rel="manifest" href="/healthy-pixel/manifest.json">
     <meta name="theme-color" content="#10b981">
     
     <!-- Preconnect -->
@@ -394,7 +401,7 @@ export const useReadingStore = create((set) => ({
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
 ```
@@ -436,7 +443,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          cname: healthypixels.example.com # Optional: custom domain
+          cname: healthypixel.example.com # Optional: custom domain
 ```
 
 ### Step 10: Package.json Scripts
@@ -571,8 +578,8 @@ db.on('populate', (tx) => {
 ```bash
 # 1. Create GitHub repo (public)
 # 2. Clone locally
-git clone https://github.com/yourusername/health-tracker.git
-cd health-tracker
+git clone https://github.com/yourusername/healthy-pixel.git
+cd healthy-pixel
 
 # 3. Install dependencies
 npm install
@@ -582,14 +589,14 @@ npm run build
 
 # 5. Push to GitHub
 git add .
-git commit -m "Initial commit: HealthyPixels PWA setup"
+git commit -m "Initial commit: HealthyPixel PWA setup"
 git push -u origin main
 
 # 6. GitHub Actions builds & deploys automatically (~2 minutes)
 ```
 
 ### Verify Deployment
-- Site live at: `https://yourusername.github.io/health-tracker/`
+- Site live at: `https://yourusername.github.io/healthy-pixel/`
 - Check Actions tab to see build status.
 
 ---

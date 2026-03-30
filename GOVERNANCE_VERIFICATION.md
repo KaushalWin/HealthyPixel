@@ -1,11 +1,11 @@
-# HealthyPixels - Project Verification & Governance Summary
+# HealthyPixel - Project Verification & Governance Summary
 
 ## ✅ Verification: What's Correct
 
 ### 1. Ownership Model
 **Status**: ✅ **VERIFIED & STRENGTHENED**
 
-- **LICENSE.md**: Proprietary license with explicit ownership assignment (not just licensing)
+- **LICENSE**: Proprietary license with explicit ownership assignment (not just licensing)
 - **Clarity**: Uses "ASSIGN" language (Section 2.a) - legally stronger than "grant"
 - **Moral Rights**: Includes EU-compliant waiver (Section 2.e)
 - **Corporate Protection**: Requires employer approval for corporate contributors (Section 7)
@@ -17,7 +17,7 @@
 - ✅ Contributors waive ownership and moral rights
 - ✅ You can monetize, relicense, or commercialize any contribution
 - ✅ Contributors cannot later claim ownership or sue for modifications
-- ✅ Legally defensible in US, UK, Canada (with caveats in EU)
+- ✅ Structured for strong ownership control; jurisdiction-specific enforceability should be validated by legal counsel
 
 ---
 
@@ -186,7 +186,7 @@
 
 ## 🎯 Summary
 
-**Your HealthyPixels project is now:**
+**Your HealthyPixel project is now:**
 
 ✅ **Legally Protected**: Clear ownership with no ambiguity  
 ✅ **Community-Ready**: Welcoming but legally clear  
@@ -195,7 +195,7 @@
 ✅ **Professional**: Industry-standard practices adopted  
 ✅ **Future-Proof**: CLA path ready for growth  
 
-**Recommended Action**: Copy all files to new GitHub repo and launch with confidence. Enforce templates rigorously from day 1.
+**Recommended Action**: Keep templates enforced from day 1 and run a legal review before public launch.
 
 ---
 
@@ -217,4 +217,4 @@ CODE_OF_CONDUCT.md (new)
 .github/pull_request_template.md (new)
 ```
 
-**Total**: 13 governance/documentation files, all ready to copy.
+**Total**: 13 governance/documentation files verified in this repository.

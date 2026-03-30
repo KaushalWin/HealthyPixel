@@ -1,6 +1,6 @@
 # Contributors
 
-Thank you to everyone who has contributed to HealthyPixels!
+Thank you to everyone who has contributed to HealthyPixel!
 
 ## Core Creator
 - [Your Name](https://github.com/yourusername) - Creator & Maintainer
@@ -12,7 +12,7 @@ Thank you to everyone who has contributed to HealthyPixels!
 
 Interested in contributing? See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-**Important**: By contributing, you agree that all contributions become the property of the HealthyPixels creator. See [LICENSE](LICENSE) for full details.
+**Important**: By contributing, you agree that all contributions become the property of the HealthyPixel creator. See [LICENSE](LICENSE) for full details.
 
 ---
 
