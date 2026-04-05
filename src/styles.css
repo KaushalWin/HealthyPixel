@@ -1,0 +1,307 @@
+:root {
+  color-scheme: light;
+  --ink-strong: #10211e;
+  --ink-soft: #3e5450;
+  --bg-a: #e5efe9;
+  --bg-b: #f8faf9;
+  --line: #c4d5ce;
+  --brand: #0c5a4d;
+  --brand-soft: #2f7a6e;
+  --card: #ffffff;
+  --focus: #f09a3e;
+  --surface-1: color-mix(in srgb, var(--card) 85%, #eef4f1 15%);
+  --surface-2: color-mix(in srgb, var(--card) 90%, #ecf6f2 10%);
+  --surface-3: color-mix(in srgb, var(--card) 88%, #ecf4f0 12%);
+  --chip-bg: #f3faf7;
+  --chip-bg-hover: #eaf6f1;
+  --chip-border: #9dbeb5;
+  --chip-border-hover: #88afa4;
+  --nav-text: #14302b;
+  --nav-hover: #f4f8f6;
+  --nav-active: #113d36;
+  --nav-active-text: #f5faf8;
+  --shadow-soft: 0 10px 25px rgb(16 33 30 / 0.08);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ink-strong: #e7f1ef;
+  --ink-soft: #a8bfba;
+  --bg-a: #101816;
+  --bg-b: #0c1110;
+  --line: #2f4540;
+  --brand: #1a7f6c;
+  --brand-soft: #2fa088;
+  --card: #141f1d;
+  --focus: #f2b25a;
+  --surface-1: color-mix(in srgb, var(--card) 90%, #1c2825 10%);
+  --surface-2: color-mix(in srgb, var(--card) 92%, #1a2623 8%);
+  --surface-3: color-mix(in srgb, var(--card) 88%, #1f2f2b 12%);
+  --chip-bg: #1a2c28;
+  --chip-bg-hover: #203732;
+  --chip-border: #35564f;
+  --chip-border-hover: #467067;
+  --nav-text: #d2e6e2;
+  --nav-hover: #1d2d2a;
+  --nav-active: #2a5a50;
+  --nav-active-text: #ecf8f5;
+  --shadow-soft: 0 12px 28px rgb(0 0 0 / 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink-strong);
+  background:
+    radial-gradient(95rem 50rem at -10% -10%, color-mix(in srgb, var(--brand) 24%, transparent) 0%, transparent 48%),
+    radial-gradient(60rem 40rem at 120% -10%, color-mix(in srgb, #e1d9bd 45%, var(--bg-b) 55%) 0%, transparent 40%),
+    linear-gradient(140deg, var(--bg-a), var(--bg-b));
+  font-family: 'Segoe UI Variable', 'Aptos', 'Trebuchet MS', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+a {
+  color: inherit;
+}
+
+.page-bg {
+  width: min(1100px, 92vw);
+  margin: 1.25rem auto 2.5rem;
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--line);
+  background: var(--surface-1);
+  border-radius: 1rem;
+  backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-soft);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-mark {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.7rem;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: linear-gradient(155deg, var(--brand), var(--brand-soft));
+  color: #f6f8f8;
+}
+
+.brand-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.brand-tag {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.87rem;
+}
+
+.top-nav {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.theme-toggle {
+  border: 1px solid var(--chip-border);
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--chip-bg);
+  color: var(--ink-strong);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--chip-bg-hover);
+  border-color: var(--chip-border-hover);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.nav-link {
+  text-decoration: none;
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid transparent;
+  color: var(--nav-text);
+  font-weight: 600;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.nav-link:hover {
+  border-color: var(--line);
+  background: var(--nav-hover);
+}
+
+.nav-link.active {
+  background: var(--nav-active);
+  color: var(--nav-active-text);
+}
+
+.nav-link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.quick-actions {
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--surface-2);
+}
+
+.quick-actions-title {
+  margin: 0 0 0.45rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  font-size: 0.92rem;
+}
+
+.quick-actions-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quick-action-link {
+  text-decoration: none;
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  background: var(--chip-bg);
+  color: var(--ink-strong);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.quick-action-link:hover {
+  background: var(--chip-bg-hover);
+  border-color: var(--chip-border-hover);
+}
+
+.quick-action-link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.content {
+  margin-top: 1rem;
+}
+
+.hero {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--surface-3);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.1vw, 2rem);
+}
+
+.hero p {
+  margin: 0.45rem 0 0;
+  color: var(--ink-soft);
+}
+
+.doc-grid,
+.about-layout {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.doc-grid {
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+}
+
+.doc-card {
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  padding: 1rem;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+
+.doc-card h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1.02rem;
+}
+
+.doc-card h3 {
+  margin: 0.75rem 0 0.35rem;
+  font-size: 0.94rem;
+}
+
+.doc-card p,
+.doc-card li {
+  color: var(--ink-soft);
+}
+
+.doc-card ul,
+.doc-card ol {
+  margin: 0.35rem 0 0;
+  padding-left: 1.15rem;
+}
+
+@media (max-width: 640px) {
+  .page-bg {
+    width: 94vw;
+    margin-top: 0.8rem;
+  }
+
+  .top-bar {
+    padding: 0.9rem;
+  }
+
+  .top-nav {
+    width: 100%;
+  }
+
+  .quick-actions-links {
+    flex-direction: column;
+  }
+
+  .quick-action-link {
+    text-align: center;
+  }
+
+  .nav-link {
+    flex: 1;
+    text-align: center;
+  }
+}

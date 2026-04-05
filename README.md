@@ -6,18 +6,20 @@
 
 ## Overview
 
-A progressive web app (PWA) for tracking health readings. Designed to be installable on Android/iOS phones for quick access. Built with React + Vite for speed and performance.
+HealthyPixel is currently in **Foundation Stage**. The first implementation includes exactly two pages:
 
-## Key Features
+- In-App Documentation page
+- About Us page
 
-- 🚀 **Minimal Clicks**: Record readings in <5 seconds.
-- 📱 **Installable PWA**: Add to home screen on Android/iOS (no app store needed).
-- 🔌 **Works Offline**: Full functionality without internet connection.
-- 📊 **Instant Graphs**: Beautiful charts show trends immediately.
-- 🔒 **100% Private**: All data stored locally. No backend, no database, no tracking.
-- 💾 **Exportable Data**: Download your data as JSON/CSV for backup.
-- 🎨 **Mobile-First UI**: Optimized for quick data entry on phones.
-- ✨ **Quality-Focused**: Built with attention to detail, reliability, and user experience.
+This stage is focused on professional setup, deploy pipeline, and baseline UX quality before adding health-tracking features.
+
+## Current Features (Stage 1)
+
+- 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
+- ℹ️ **About Us**: Mission, principles, and scope explanation.
+- ⚡ **Fast Static App**: Lightweight React + TypeScript + Vite foundation.
+- 📱 **GitHub Pages Ready**: Base path and deployment workflow configured.
+- ♿ **Accessibility-First Shell**: Keyboard-aware navigation and readable layout.
 
 ## Tech Stack
 
@@ -41,41 +43,35 @@ healthy-pixel/
 ├── LICENSE
 ├── PLANNING.md
 ├── TECHNICAL_CONTEXT.md
+├── TECHNICAL_PRINCIPLES.md
 ├── MONETIZATION_STRATEGY.md
 ├── SEO_MARKETING.md
 ├── PROJECT_CHECKLIST.md
 ├── package.json
 ├── vite.config.ts
 ├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
 ├── index.html
+├── public/
+│   └── favicon.svg
 ├── src/
 │   ├── main.tsx
-│   ├── App.tsx
+│   ├── styles.css
 │   ├── components/
-│   │   ├── ReadingInput.tsx
-│   │   ├── Charts.tsx
-│   │   ├── Settings.tsx
-│   │   └── Navigation.tsx
-│   ├── hooks/
-│   │   └── useReadingStore.ts
-│   ├── utils/
-│   │   ├── storage.ts
-│   │   └── dataExport.ts
-│   └── styles/
-│       └── globals.css
-├── public/
-│   ├── manifest.json
-│   ├── favicon.svg
-│   └── icons/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml
-└── .gitignore
+│   │   └── SiteShell.tsx
+│   └── pages/
+│       ├── DocumentationPage.tsx
+│       └── AboutPage.tsx
+└── .github/
+    └── workflows/
+        └── deploy.yml
 ```
 
 ## Quick Start
 
 See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for detailed setup instructions.
+See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for engineering principles and technical decision standards.
 
 ```bash
 # Clone repo
@@ -95,16 +91,24 @@ npm run build
 git push origin main
 ```
 
-## Supported Health Metrics
+## Hosting and Test Plan (Current Stage)
 
-Launch MVP tracks:
-- Blood Pressure (systolic/diastolic)
-- Blood Sugar/Glucose (mg/dL or mmol/L)
-- Weight
-- Height
-- Custom Notes
+1. Push to `main` so [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) publishes to GitHub Pages.
+2. Open `https://yourusername.github.io/healthy-pixel/`.
+3. Verify two pages load:
+   - `/#/` Documentation page
+   - `/#/about` About Us page
+4. Check mobile layout and keyboard navigation.
+5. Continue feature development only after this baseline passes.
 
-Future additions: Oxygen, Temperature, Symptoms, Medications, Heart Rate.
+## Stage Scope
+
+Current implementation scope is intentionally limited to two pages for initial hosting and testing:
+
+- Documentation page (default route)
+- About Us page
+
+Health metric tracking features are planned for next stages after hosting validation.
 
 ## Data Privacy
 

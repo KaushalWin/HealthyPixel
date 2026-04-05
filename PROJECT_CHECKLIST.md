@@ -48,6 +48,8 @@
 - [ ] Test on real Android device
 - [ ] Verify home screen installable prompt
 - [ ] Test app shortcuts (Quick Reading, View Charts)
+- [ ] Verify long-press icon quick actions on supported launchers
+- [ ] Add in-app quick-action fallback for unsupported devices
 
 ### SEO & Meta Tags
 - [ ] Update index.html title
@@ -62,6 +64,7 @@
 - [ ] Write comprehensive README.md ✅ (done)
 - [ ] Create PLANNING.md ✅ (done)
 - [ ] Create TECHNICAL_CONTEXT.md ✅ (done)
+- [ ] Create TECHNICAL_PRINCIPLES.md ✅ (done)
 - [ ] Create MONETIZATION_STRATEGY.md ✅ (done)
 - [ ] Create SEO_MARKETING.md ✅ (done)
 - [ ] Create CONTRIBUTING.md ✅ (done)
@@ -69,6 +72,7 @@
 - [ ] Create CONTRIBUTORS.md ✅ (done)
 - [ ] Create /about page on site
 - [ ] Create /privacy page on site
+- [ ] Create in-app Help/Documentation page (install, quick actions, privacy, export/import, what's new)
 
 ### Legal & Governance
 - [ ] Review LICENSE for completeness ✅
@@ -118,6 +122,10 @@
 - [ ] Add loading states
 - [ ] Add error handling/messages
 - [ ] Accessibility: Add alt text, ARIA labels
+- [ ] Ensure minimal-tap flow for core actions (record, review, export)
+- [ ] Add keyboard navigation checks for core screens
+- [ ] Verify reduced-motion support
+- [ ] Validate touch target size on mobile
 
 ### Marketing Setup
 - [ ] Create social media graphics (Twitter banner, og:image)
@@ -168,6 +176,9 @@
 - [ ] Verify PWA works on real devices
 - [ ] Test offline mode thoroughly
 - [ ] Check no console errors
+- [ ] Performance budget check (bundle and load targets)
+- [ ] Accessibility check on critical flows
+- [ ] Verify in-app documentation matches latest features
 
 ### Release
 - [ ] Final commit: `git commit -m "Release: HealthyPixel v1.0 - MVP launch"`

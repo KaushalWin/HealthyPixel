@@ -11,6 +11,8 @@
 - 🌐 **Community-Driven**: Community-friendly, trust-based, open to contributions.
 - 📱 **Mobile-First**: Native install on Android/iOS, works offline.
 
+See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for software engineering principles and technical decision gates.
+
 ---
 
 ## Phase 1: MVP (Minimum Viable Product) - Weeks 1-3
@@ -28,6 +30,7 @@
 - **Export**: Download data as JSON/CSV.
 - **PWA Setup**: Manifest, service worker, offline caching.
 - **Responsive UI**: Mobile-optimized, Tailwind CSS.
+- **In-App Help**: Install guide, quick actions guide, privacy summary, and feature documentation.
 
 ### Deliverables
 - GitHub repo (public, with LICENSE file).
@@ -58,6 +61,8 @@
 - **Share Local Graph**: Generate PNG/SVG for sharing (no data leaves device).
 - **PWA Shortcuts**: Multiple home screen icons (Quick Reading, View Charts, Settings).
 - **Notifications**: Browser reminders to log readings (optional).
+- **Quick Interaction UX**: Minimize clicks/taps for critical actions.
+- **Accessibility Baseline**: Labels, keyboard navigation, contrast, touch targets, reduced motion support.
 
 ### Marketing/Launch
 - GitHub Sponsors setup.
@@ -239,3 +244,7 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 
 - HealthyPixel does not use user health data for analytics, ads, profiling, or resale.
 - User health data remains stored locally on the user's device.
+
+## Technical Decision Rule
+
+- Every new feature should pass technical-principle checks for cost, maintenance, performance, accessibility, reusability, static-host compatibility, and privacy.

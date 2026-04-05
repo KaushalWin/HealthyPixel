@@ -1,5 +1,16 @@
 # HealthyPixel - Technical Context & Setup
 
+See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for mandatory software engineering principles used by this project.
+
+## Current Implementation Status
+
+Current repository implementation contains two hosted pages only:
+
+- In-App Documentation page (`/#/`)
+- About Us page (`/#/about`)
+
+This baseline is intentionally limited for hosting and quality validation before adding health tracking modules.
+
 ## Tech Stack Deep Dive
 
 ### Frontend Framework: React 18 + Vite
@@ -118,6 +129,37 @@ npm install @radix-ui/react-dialog @radix-ui/react-tabs
 # Utilities
 npm install clsx
 ```
+
+---
+
+## Implementation Requirements (From Technical Principles)
+
+### Performance and Interaction Speed
+
+- Keep critical flows extremely fast, especially adding a reading and viewing recent history.
+- Minimize taps/clicks for high-frequency actions.
+- Add performance budgets (bundle size and first-load targets) and validate before release.
+
+### Accessibility Baseline
+
+- Use semantic markup and labeled inputs for all health entry forms.
+- Ensure keyboard navigation works for major app flows.
+- Keep contrast and touch target sizing mobile-friendly.
+- Respect reduced-motion preferences.
+
+### Quick Actions and Long-Press Behavior
+
+- Provide multiple PWA app shortcuts through manifest shortcuts.
+- Support long-press icon quick actions on platforms that expose launcher shortcuts.
+- Provide in-app quick action fallback where launcher shortcuts are not supported.
+
+### In-App User Documentation
+
+- Add an in-app Help section accessible from Settings.
+- Document how to install the PWA (Android/iOS).
+- Document how to use icon long-press quick actions.
+- Document each major feature and keep a "What's New" section updated every release.
+- Include a privacy summary and data export/import instructions.
 
 ### Step 3: Configure Vite + PWA
 
