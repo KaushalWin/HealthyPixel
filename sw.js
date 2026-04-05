@@ -1,11 +1,13 @@
-const CACHE_NAME = 'healthy-pixel-shell-v1';
+const CACHE_NAME = 'healthy-pixel-shell-v2';
+const SCOPE_URL = new URL(self.registration.scope);
+const INDEX_URL = new URL('index.html', SCOPE_URL).toString();
 const APP_SHELL = [
-  '/healthy-pixel/',
-  '/healthy-pixel/index.html',
-  '/healthy-pixel/manifest.webmanifest',
-  '/healthy-pixel/favicon.svg',
-  '/healthy-pixel/icon-192.png',
-  '/healthy-pixel/icon-512.png'
+  new URL('./', SCOPE_URL).toString(),
+  INDEX_URL,
+  new URL('manifest.webmanifest', SCOPE_URL).toString(),
+  new URL('favicon.svg', SCOPE_URL).toString(),
+  new URL('icon-192.png', SCOPE_URL).toString(),
+  new URL('icon-512.png', SCOPE_URL).toString()
 ];
 
 self.addEventListener('install', (event) => {
@@ -45,7 +47,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
           return response;
         })
-        .catch(() => caches.match('/healthy-pixel/index.html'));
+        .catch(() => caches.match(INDEX_URL));
     })
   );
 });
