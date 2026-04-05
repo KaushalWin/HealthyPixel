@@ -1,0 +1,67 @@
+{
+  "name": "HealthyPixel",
+  "short_name": "HealthyPixel",
+  "id": "/healthy-pixel/",
+  "description": "Privacy-first, local-only, lightweight health tracking foundation.",
+  "start_url": "/healthy-pixel/#/",
+  "scope": "/healthy-pixel/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e5efe9",
+  "theme_color": "#0c5a4d",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Help / Documentation",
+      "short_name": "Help",
+      "description": "Open in-app help and documentation",
+      "url": "/healthy-pixel/#/help",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Documentation Home",
+      "short_name": "Docs",
+      "description": "Open documentation landing page",
+      "url": "/healthy-pixel/#/",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "About HealthyPixel",
+      "short_name": "About",
+      "description": "Open About page",
+      "url": "/healthy-pixel/#/about",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
