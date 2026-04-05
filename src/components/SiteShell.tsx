@@ -71,6 +71,7 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
           <NavLink to="/" activeOn={['/', '/help']}>
             Documentation
           </NavLink>
+          <NavLink to="/tests">Tests</NavLink>
           <NavLink to="/about">About Us</NavLink>
         </nav>
         <button
@@ -90,6 +91,9 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
         <div className="quick-actions-links">
           <Link to="/help" className="quick-action-link">
             Open Help / Documentation
+          </Link>
+          <Link to="/tests" className="quick-action-link">
+            Open Tests
           </Link>
           <Link to="/about" className="quick-action-link">
             Open About

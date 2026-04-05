@@ -32,9 +32,10 @@ export function AboutPage() {
 
         <article className="doc-card">
           <h2>Current Scope</h2>
-          <p>This initial build intentionally includes only two pages for stable validation:</p>
+          <p>This initial build intentionally includes focused routes for stable validation:</p>
           <ol>
             <li>In-App Documentation page</li>
+            <li>Tests page for shared component validation</li>
             <li>About Us page</li>
           </ol>
           <p>

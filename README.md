@@ -6,9 +6,10 @@
 
 ## Overview
 
-HealthyPixel is currently in **Foundation Stage**. The first implementation includes exactly two pages:
+HealthyPixel is currently in **Foundation Stage**. The first implementation includes three active routes:
 
 - In-App Documentation page
+- Tests page for reusable component and feature validation
 - About Us page
 
 This stage is focused on professional setup, deploy pipeline, and baseline UX quality before adding health-tracking features.
@@ -16,6 +17,7 @@ This stage is focused on professional setup, deploy pipeline, and baseline UX qu
 ## Current Features (Stage 1)
 
 - 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
+- 🧪 **Tests Page**: Safe place to trial shared components and new UI features before production use.
 - ℹ️ **About Us**: Mission, principles, and scope explanation.
 - ⚡ **Fast Static App**: Lightweight React + TypeScript + Vite foundation.
 - 📱 **GitHub Pages Ready**: Base path and deployment workflow configured.
@@ -73,16 +75,21 @@ healthy-pixel/
 See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for detailed setup instructions.
 See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for engineering principles and technical decision standards.
 
+The build base path is configurable through `HEALTHYPIXEL_BASE_PATH`. For GitHub Pages, the workflow derives it automatically from the repository name. For root hosting or another subpath, set that variable before running `npm run build`.
+
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/healthy-pixel.git
-cd healthy-pixel
+git clone https://github.com/KaushalWin/HealthyPixel.git
+cd HealthyPixel
 
 # Install dependencies
 npm install
 
-# Development
+# Development (local only)
 npm run dev
+
+# Development on your LAN
+npm start
 
 # Build
 npm run build
@@ -94,18 +101,52 @@ git push origin main
 ## Hosting and Test Plan (Current Stage)
 
 1. Push to `main` so [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) publishes to GitHub Pages.
-2. Open `https://yourusername.github.io/healthy-pixel/`.
-3. Verify two pages load:
+2. Open `https://kaushalwin.github.io/HealthyPixel/`.
+3. Verify the key routes load:
    - `/#/` Documentation page
+    - `/#/tests` Tests page
    - `/#/about` About Us page
 4. Check mobile layout and keyboard navigation.
 5. Continue feature development only after this baseline passes.
 
+## Tests Page Workflow
+
+The Tests page is the staging area for new reusable UI work.
+
+1. Build the shared component first.
+2. Add its demo entry to the top of the `testEntries` array in `src/pages/TestsPage.tsx` so the newest test stays first.
+3. Use the Tests page to validate interactions before moving the component into a production screen.
+4. Keep the demo in place as a lightweight regression check when the component is reused elsewhere.
+
+The first shared component on that page is a native date-time picker that defaults to the current date and time and uses a 24-hour time input.
+
+## Hosting Path Configuration
+
+HealthyPixel does not require a hardcoded repository path in source anymore. The production asset base is controlled by `HEALTHYPIXEL_BASE_PATH` at build time.
+
+- GitHub Pages project site: the workflow sets `HEALTHYPIXEL_BASE_PATH` to `/<repo-name>/` automatically.
+- Root hosting (custom domain or user site): set `HEALTHYPIXEL_BASE_PATH=/`.
+- Custom subpath hosting: set `HEALTHYPIXEL_BASE_PATH=/your-subpath/`.
+
+Examples:
+
+```powershell
+$env:HEALTHYPIXEL_BASE_PATH = '/HealthyPixel/'
+npm run build
+```
+
+```bash
+HEALTHYPIXEL_BASE_PATH=/my-app/ npm run build
+```
+
+If the hosting path changes, update the build environment value instead of editing application source files.
+
 ## Stage Scope
 
-Current implementation scope is intentionally limited to two pages for initial hosting and testing:
+Current implementation scope is intentionally limited to three focused routes for initial hosting and testing:
 
 - Documentation page (default route)
+- Tests page
 - About Us page
 
 Health metric tracking features are planned for next stages after hosting validation.

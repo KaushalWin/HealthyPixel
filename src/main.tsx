@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AboutPage } from './pages/AboutPage';
 import { DocumentationPage } from './pages/DocumentationPage';
+import { TestsPage } from './pages/TestsPage';
 import './styles.css';
 
 if ('serviceWorker' in navigator) {
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DocumentationPage />} />
         <Route path="/help" element={<DocumentationPage />} />
+        <Route path="/tests" element={<TestsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

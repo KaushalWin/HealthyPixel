@@ -80,6 +80,27 @@ export function DocumentationPage() {
           </ul>
         </DocBlock>
 
+        <DocBlock title="Tests Page Workflow">
+          <p>
+            HealthyPixel includes a dedicated <strong>Tests</strong> page for trying shared
+            components and small features before they are placed in production screens.
+          </p>
+          <ol>
+            <li>Open <strong>Tests</strong> from the top navigation or quick actions.</li>
+            <li>Add new demos to the top of the test registry on the page so the newest work stays first.</li>
+            <li>Keep each demo focused and reusable, then migrate stable pieces into live flows.</li>
+          </ol>
+        </DocBlock>
+
+        <DocBlock title="Date-Time Picker Standard">
+          <ul>
+            <li>Use the shared date-time picker for new date/time entry flows.</li>
+            <li>Default to the current date and time.</li>
+            <li>Use native browser date and time selectors instead of custom drag controls.</li>
+            <li>Keep time input in 24-hour format to avoid AM/PM follow-up taps.</li>
+          </ul>
+        </DocBlock>
+
         <DocBlock title="Feature Updates and What Is New">
           <p>
             Every release should include a short What is New summary inside the app so users can

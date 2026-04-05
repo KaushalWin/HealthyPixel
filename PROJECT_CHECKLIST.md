@@ -97,9 +97,10 @@
 
 ### GitHub Pages & Deployment
 - [ ] Create .github/workflows/deploy.yml
+- [ ] Ensure `HEALTHYPIXEL_BASE_PATH` is set correctly for the deployment target
 - [ ] Test GitHub Actions (push to main, verify build)
 - [ ] Enable GitHub Pages in repo settings
-- [ ] Verify site live at: `yourusername.github.io/healthy-pixel/`
+- [ ] Verify site live at the configured deployed URL for the current host/path
 - [ ] Test PWA installation from live site
 - [ ] Verify service worker registered (DevTools → Application → Service Workers)
 

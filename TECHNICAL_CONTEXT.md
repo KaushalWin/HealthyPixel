@@ -4,12 +4,15 @@ See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for mandatory software en
 
 ## Current Implementation Status
 
-Current repository implementation contains two hosted pages only:
+Current repository implementation contains three hosted routes:
 
 - In-App Documentation page (`/#/`)
+- Tests page (`/#/tests`)
 - About Us page (`/#/about`)
 
 This baseline is intentionally limited for hosting and quality validation before adding health tracking modules.
+
+The Tests page is the shared proving ground for reusable components. New demos should be added to the top of the `testEntries` array in `src/pages/TestsPage.tsx`, then kept there as a lightweight regression harness after the component ships elsewhere.
 
 ## Tech Stack Deep Dive
 
@@ -166,13 +169,27 @@ npm install clsx
 **File: `vite.config.js`**
 
 ```javascript
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
-  base: '/healthy-pixel/', // Change to your repo name
-  plugins: [
+function normalizeBasePath(value) {
+  if (!value) return '/'
+  const withLeadingSlash = value.startsWith('/') ? value : `/${value}`
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`
+}
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const repositoryName = env.GITHUB_REPOSITORY?.split('/')[1]
+  const base = normalizeBasePath(
+    env.HEALTHYPIXEL_BASE_PATH ??
+      (env.GITHUB_ACTIONS === 'true' && repositoryName ? `/${repositoryName}/` : undefined)
+  )
+
+  return {
+    base,
+    plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -183,23 +200,23 @@ export default defineConfig({
         theme_color: '#10b981',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/healthy-pixel/',
-        start_url: '/healthy-pixel/',
+        scope: './',
+        start_url: './',
         icons: [
           {
-            src: '/healthy-pixel/icon-192.png',
+            src: 'icon-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/healthy-pixel/icon-512.png',
+            src: 'icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/healthy-pixel/icon-maskable-192.png',
+            src: 'icon-maskable-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable',
@@ -210,15 +227,15 @@ export default defineConfig({
             name: 'Quick Reading',
             short_name: 'Reading',
             description: 'Record a new health reading',
-            url: '/healthy-pixel/?shortcut=reading',
-            icons: [{ src: '/healthy-pixel/icon-reading.png', sizes: '192x192' }],
+            url: './?shortcut=reading',
+            icons: [{ src: 'icon-reading.png', sizes: '192x192' }],
           },
           {
             name: 'View Charts',
             short_name: 'Charts',
             description: 'View your health graphs',
-            url: '/healthy-pixel/?shortcut=charts',
-            icons: [{ src: '/healthy-pixel/icon-charts.png', sizes: '192x192' }],
+            url: './?shortcut=charts',
+            icons: [{ src: 'icon-charts.png', sizes: '192x192' }],
           },
         ],
       },
@@ -250,8 +267,21 @@ export default defineConfig({
       },
     },
   },
+  }
 })
 ```
+
+### Base Path Rule
+
+- `HEALTHYPIXEL_BASE_PATH` is the single source of truth for the deployed asset base.
+- On GitHub Pages project sites, set it to `/<repo-name>/`.
+- On root hosting, set it to `/`.
+- Always include both leading and trailing `/` when setting it manually.
+- Keep PWA URLs relative where possible so manifest and service worker stay portable across hosts.
+
+### GitHub Actions Deployment Note
+
+The GitHub Pages workflow should export `HEALTHYPIXEL_BASE_PATH` from the repository name so repo renames do not require source edits.
 
 ### Step 4: Setup Tailwind CSS
 
@@ -425,17 +455,17 @@ export const useReadingStore = create((set) => ({
     
     <!-- Open Graph (Social Media) -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/healthy-pixel/">
+    <meta property="og:url" content="{{DEPLOYED_BASE_URL}}/">
     <meta property="og:title" content="HealthyPixel - Free Health Tracker">
     <meta property="og:description" content="Track health readings with minimal clicks. Free, offline, installable on Android.">
-    <meta property="og:image" content="https://yourusername.github.io/healthy-pixel/og-image.png">
+    <meta property="og:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
     
     <!-- Canonical -->
-    <link rel="canonical" href="https://yourusername.github.io/healthy-pixel/">
+    <link rel="canonical" href="{{DEPLOYED_BASE_URL}}/">
     
     <!-- Favicon & PWA -->
-    <link rel="icon" type="image/svg+xml" href="/healthy-pixel/favicon.svg">
-    <link rel="manifest" href="/healthy-pixel/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#10b981">
     
     <!-- Preconnect -->
@@ -447,6 +477,8 @@ export const useReadingStore = create((set) => ({
   </body>
 </html>
 ```
+
+Replace `{{DEPLOYED_BASE_URL}}` with the real public site URL for the current host.
 
 ### Step 9: GitHub Actions Workflow
 
@@ -638,7 +670,7 @@ git push -u origin main
 ```
 
 ### Verify Deployment
-- Site live at: `https://yourusername.github.io/healthy-pixel/`
+- Site live at the configured deployed URL for the current host and base path.
 - Check Actions tab to see build status.
 
 ---

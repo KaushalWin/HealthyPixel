@@ -16,7 +16,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 1. Go to [google.com/webmasters/tools](https://google.com/webmasters/tools)
 2. Sign in with Google account
 3. Click "Add Property" → URL prefix
-4. Enter: `https://yourusername.github.io/healthy-pixel/`
+4. Enter your deployed site URL, for example `https://yourusername.github.io/HealthyPixel/` or your custom-domain root URL.
 5. Verify via HTML file (download file, add to `/public` folder, push to GitHub)
 6. Check off verification in Search Console
 
@@ -32,7 +32,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 1. Build your site: `npm run build`
 2. Verify `/dist/sitemap.xml` exists after build
 3. In Search Console → Sitemaps → New Sitemap
-4. Enter: `https://yourusername.github.io/healthy-pixel/sitemap.xml`
+4. Enter your deployed sitemap URL, for example `https://yourusername.github.io/HealthyPixel/sitemap.xml`.
 5. Submit
 
 **Expected result**: Google crawls all your pages within 1 week.
@@ -57,22 +57,24 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 <meta property="og:type" content="website">
 <meta property="og:title" content="HealthyPixel - Health Tracker">
 <meta property="og:description" content="Track vitals offline with minimal clicks. No backend, no tracking, 100% private.">
-<meta property="og:image" content="https://yourusername.github.io/healthy-pixel/og-image.png">
-<meta property="og:url" content="https://yourusername.github.io/healthy-pixel/">
+<meta property="og:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
+<meta property="og:url" content="{{DEPLOYED_BASE_URL}}/">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:title" content="HealthyPixel - Health Tracker">
 <meta property="twitter:description" content="Track vitals offline. No backend, no tracking, quality first.">
-<meta property="twitter:image" content="https://yourusername.github.io/healthy-pixel/og-image.png">
+<meta property="twitter:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
 
 <!-- Canonical (prevent duplicates) -->
-<link rel="canonical" href="https://yourusername.github.io/healthy-pixel/">
+<link rel="canonical" href="{{DEPLOYED_BASE_URL}}/">
 
 <!-- PWA & Theme -->
-<link rel="manifest" href="/healthy-pixel/manifest.json">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#10b981">
 ```
+
+Use `{{DEPLOYED_BASE_URL}}` as a placeholder for the actual public URL. Example: `https://kaushalwin.github.io/HealthyPixel`.
 
 **Expected result**: Better click-through rate from Google search results (~2-3x improvement).
 
@@ -90,13 +92,13 @@ Add to body of `index.html` or in React component:
   "name": "HealthyPixel",
   "applicationCategory": "UtilitiesApplication",
   "description": "Quality-first offline health tracker PWA. Record vital signs with minimal clicks.",
-  "url": "https://yourusername.github.io/healthy-pixel/",
-  "image": "https://yourusername.github.io/healthy-pixel/og-image.png",
+  "url": "{{DEPLOYED_BASE_URL}}/",
+  "image": "{{DEPLOYED_BASE_URL}}/og-image.png",
   "author": {
     "@type": "Person",
     "name": "Your Name"
   },
-  "license": "https://yourusername.github.io/healthy-pixel/LICENSE",
+  "license": "{{DEPLOYED_BASE_URL}}/LICENSE",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -242,8 +244,8 @@ WHY NO BACKEND?
 I'm open to feedback! Questions about privacy, architecture, 
 or health tracking? Ask away.
 
-Try it: https://yourusername.github.io/healthy-pixel/
-GitHub: https://github.com/yourusername/healthy-pixel
+Try it: {{DEPLOYED_BASE_URL}}/
+GitHub: https://github.com/yourusername/your-repo
 ```
 
 **Best time to post**: Tuesday-Thursday 10am-2pm EST (peak engagement).
@@ -264,8 +266,8 @@ you can install on Android.
 ✅ Minimal clicks (record readings fast)
 ✅ Beautiful graphs (see trends)
 
-Try it: https://yourusername.github.io/healthy-pixel/
-Repository: https://github.com/yourusername/healthy-pixel
+Try it: {{DEPLOYED_BASE_URL}}/
+Repository: https://github.com/yourusername/your-repo
 ```
 
 **Expected result**: 300-1,000 visitors, 5-20 upvotes.
@@ -284,8 +286,8 @@ Tech:
 - Deployed on GitHub Pages (free)
 
 License: Proprietary (all rights reserved)
-GitHub: https://github.com/yourusername/healthy-pixel
-Live: https://yourusername.github.io/healthy-pixel/
+GitHub: https://github.com/yourusername/your-repo
+Live: {{DEPLOYED_BASE_URL}}/
 ```
 
 **Expected result**: 100-500 visitors, 1-10 upvotes.
@@ -300,7 +302,7 @@ I built a free health tracker app that works offline on your phone.
 No account, no internet required, no data collection.
 Download vitals as JSON/CSV anytime.
 
-https://yourusername.github.io/healthy-pixel/
+{{DEPLOYED_BASE_URL}}/
 
 (Caveat: This is a personal health tracker, not a medical device)
 ```
@@ -391,7 +393,7 @@ https://yourusername.github.io/healthy-pixel/
 ```
 "Just launched HealthyPixel—a health tracker that doesn't spy on you. 
 No backend, no data collection, works offline. Currently fully free. 
-https://yourusername.github.io/healthy-pixel/ [link]"
+{{DEPLOYED_BASE_URL}}/ [link]"
 
 "Fun fact: HealthyPixel has near-zero infrastructure costs because:
 - No database

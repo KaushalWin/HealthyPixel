@@ -1,10 +1,10 @@
 {
   "name": "HealthyPixel",
   "short_name": "HealthyPixel",
-  "id": "/healthy-pixel/",
+  "id": "./",
   "description": "Privacy-first, local-only, lightweight health tracking foundation.",
-  "start_url": "/healthy-pixel/#/",
-  "scope": "/healthy-pixel/",
+  "start_url": "./#/",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#e5efe9",
@@ -28,7 +28,7 @@
       "name": "Help / Documentation",
       "short_name": "Help",
       "description": "Open in-app help and documentation",
-      "url": "/healthy-pixel/#/help",
+      "url": "./#/help",
       "icons": [
         {
           "src": "icon-192.png",
@@ -41,7 +41,7 @@
       "name": "Documentation Home",
       "short_name": "Docs",
       "description": "Open documentation landing page",
-      "url": "/healthy-pixel/#/",
+      "url": "./#/",
       "icons": [
         {
           "src": "icon-192.png",
@@ -54,7 +54,7 @@
       "name": "About HealthyPixel",
       "short_name": "About",
       "description": "Open About page",
-      "url": "/healthy-pixel/#/about",
+      "url": "./#/about",
       "icons": [
         {
           "src": "icon-192.png",

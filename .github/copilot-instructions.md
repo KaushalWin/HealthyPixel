@@ -15,7 +15,7 @@ Use this file as the default repository guidance for all Copilot-assisted edits.
 
 - Keep naming consistent: "HealthyPixel" for product name, "healthy-pixel" for repo/path.
 - Preserve privacy-first policy: no tracking, no analytics, no health data usage.
-- Keep static-host compatibility for GitHub Pages (`/healthy-pixel/` base path).
+- Keep static-host compatibility for GitHub Pages and treat `HEALTHYPIXEL_BASE_PATH` as the single deployment-path source of truth.
 - Keep core UX fast and minimal-tap; avoid unnecessary complexity.
 - Prioritize reusable components and low-maintenance implementation.
 
