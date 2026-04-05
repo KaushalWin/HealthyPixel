@@ -47,7 +47,7 @@
 - [ ] Test offline mode (DevTools → Network → Offline)
 - [ ] Test on real Android device
 - [ ] Verify home screen installable prompt
-- [ ] Test app shortcuts (Quick Reading, View Charts)
+- [ ] Test app shortcut (Add Sugar)
 - [ ] Verify long-press icon quick actions on supported launchers
 - [ ] Add in-app quick-action fallback for unsupported devices
 

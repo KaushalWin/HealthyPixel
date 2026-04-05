@@ -6,6 +6,8 @@ type DateTimePickerProps = {
   value?: Date;
   defaultValue?: Date;
   onChange?: (value: Date) => void;
+  compact?: boolean;
+  showSummary?: boolean;
 };
 
 const summaryFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -72,7 +74,9 @@ export function DateTimePicker({
   description,
   value,
   defaultValue,
-  onChange
+  onChange,
+  compact = false,
+  showSummary = true
 }: DateTimePickerProps) {
   const [internalValue, setInternalValue] = useState(() => normalizeInitialValue(value, defaultValue));
   const pickerId = useId();
@@ -92,19 +96,21 @@ export function DateTimePicker({
 
   return (
     <section className="date-time-picker" aria-labelledby={`${pickerId}-label`}>
-      <div className="date-time-picker__topline">
+      <div className={compact ? 'date-time-picker__topline compact' : 'date-time-picker__topline'}>
         <div>
-          <p className="date-time-picker__eyebrow">Reusable date-time picker</p>
+          {compact ? null : <p className="date-time-picker__eyebrow">Reusable date-time picker</p>}
           <h3 id={`${pickerId}-label`} className="date-time-picker__label">
             {label}
           </h3>
         </div>
         <button
           type="button"
-          className="picker-action"
+          className="picker-action icon"
           onClick={() => commitValue(new Date())}
+          aria-label="Reset date and time to now"
+          title="Reset to now"
         >
-          Now
+          Reset
         </button>
       </div>
 
@@ -114,7 +120,7 @@ export function DateTimePicker({
         </p>
       ) : null}
 
-      <p className="date-time-picker__summary">{summaryFormatter.format(resolvedValue)}</p>
+      {showSummary ? <p className="date-time-picker__summary">{summaryFormatter.format(resolvedValue)}</p> : null}
 
       <div className="date-time-picker__field-group">
         <label className="date-time-picker__field">

@@ -4,13 +4,23 @@ See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for mandatory software en
 
 ## Current Implementation Status
 
-Current repository implementation contains three hosted routes:
+Current repository implementation contains the first full sugar-reading workflow and supporting routes:
 
 - In-App Documentation page (`/#/`)
+- Add Sugar page (`/#/sugar/add`)
+- Sugar List page (`/#/sugar/list`)
+- Sugar Chart page (`/#/sugar/chart`)
+- Settings page (`/#/settings`)
 - Tests page (`/#/tests`)
 - About Us page (`/#/about`)
 
-This baseline is intentionally limited for hosting and quality validation before adding health tracking modules.
+All data stays local to the browser. The app currently supports reusable sugar entry, editing, filtering, charting, tag management, and chart settings without any backend.
+
+UI behavior for current stage:
+
+- One collapsible main menu in the header (with grouped sub-sections).
+- A compact quick-action popup (plus button) for primary action access.
+- Mobile-first compact spacing so most primary tasks fit with minimal scrolling.
 
 The Tests page is the shared proving ground for reusable components. New demos should be added to the top of the `testEntries` array in `src/pages/TestsPage.tsx`, then kept there as a lightweight regression harness after the component ships elsewhere.
 
@@ -38,29 +48,25 @@ The Tests page is the shared proving ground for reusable components. New demos s
 - Keep architecture frontend-first now (GitHub Pages), with optional API boundaries documented for future expansion.
 - Avoid vendor lock-in for core features (storage, charts, auth, billing).
 
-### State Management: Zustand
+### State Management: React Context + Hooks
 
-**Why Zustand?**
-- Minimal boilerplate (~30 lines for a full store).
-- No provider wrapper hell.
-- Built-in persistence (easy to sync with IndexedDB).
-- Perfect for single-user, simple apps.
+**Why React Context + hooks?**
+- Keeps dependencies minimal.
+- Fits the current app size and local-only feature scope.
+- Keeps storage, settings, and routing logic centralized without introducing a separate state library.
+- Makes immediate settings propagation straightforward across pages.
 
-Alternative: Context API (if you want zero dependencies).
-Avoid: Redux (overkill for PWA).
+Avoid: Redux or heavier state tooling for the current feature scope.
 
-### Local Storage: IndexedDB + Dexie.js
+### Local Storage: Browser localStorage
 
-**Why IndexedDB?**
-- Stores 50MB+ per origin (vs localStorage's ~5MB).
-- Handles 10+ years of daily readings easily.
-- Supports complex queries (e.g., "get all readings from Jan").
-- Sync with Zustand for reactive updates.
+**Why localStorage right now?**
+- Zero-backend and zero-service complexity.
+- Enough for the current sugar-reading scope.
+- Easy bootstrap/reset behavior for tags and settings.
+- Simple to inspect and migrate while the schema is still evolving.
 
-**Why Dexie.js?**
-- Simple, clean API wrapper around IndexedDB.
-- Handles migrations automatically.
-- Free, MIT-licensed, well-maintained.
+Future migration to IndexedDB can still happen later if data volume or query complexity outgrows the current approach.
 
 ### Charts: Recharts
 
@@ -72,21 +78,21 @@ Avoid: Redux (overkill for PWA).
 
 Alternative: Chart.js (simpler, but less React-native).
 
-### Styling: Tailwind CSS
+### Styling: Token-Based CSS
 
-**Why Tailwind?**
-- Utility-first, rapid mobile UI development.
-- Mobile-first by default.
-- Minimal CSS overhead.
-- Great component libraries (Headless UI, Radix UI).
+**Why custom token-based CSS?**
+- Lightweight for a static-hosted app.
+- Keeps the visual language app-specific.
+- Supports theming without an extra styling dependency.
+- Reduces build and dependency complexity.
 
-### PWA Setup: Vite PWA Plugin
+### PWA Setup: Manifest + Service Worker
 
-**What it automates:**
-- Generates service worker (caching strategy).
-- Creates manifest.json.
-- Handles icons and splash screens.
-- Offline support out-of-the-box.
+**What is currently implemented:**
+- `manifest.webmanifest` with install metadata and Add Sugar shortcut.
+- Service worker for basic shell caching on production hosts (GitHub Pages).
+- Localhost and LAN hosts skip service-worker registration and unregister existing ones to avoid stale-cache issues during testing.
+- Hash-route compatibility for GitHub Pages hosting.
 
 ---
 

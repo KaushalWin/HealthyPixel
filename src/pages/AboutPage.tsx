@@ -32,15 +32,19 @@ export function AboutPage() {
 
         <article className="doc-card">
           <h2>Current Scope</h2>
-          <p>This initial build intentionally includes focused routes for stable validation:</p>
+          <p>This build now includes the first practical sugar-tracking workflow with local settings and testing infrastructure:</p>
           <ol>
             <li>In-App Documentation page</li>
+            <li>Add Sugar page</li>
+            <li>Sugar List page</li>
+            <li>Sugar Chart page</li>
+            <li>Settings pages</li>
             <li>Tests page for shared component validation</li>
             <li>About Us page</li>
           </ol>
           <p>
-            After hosting and testing these pages, feature work can continue in controlled,
-            test-first increments.
+            New functionality is still built through reusable components, local storage, and the
+            Tests page before it is spread across production screens.
           </p>
         </article>
       </section>

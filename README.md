@@ -6,17 +6,25 @@
 
 ## Overview
 
-HealthyPixel is currently in **Foundation Stage**. The first implementation includes three active routes:
+HealthyPixel is currently in **Foundation Stage**. The app now includes the first complete sugar-tracking workflow and supporting pages:
 
 - In-App Documentation page
+- Add Sugar page
+- Sugar List page
+- Sugar Chart page
+- Settings pages
 - Tests page for reusable component and feature validation
 - About Us page
 
-This stage is focused on professional setup, deploy pipeline, and baseline UX quality before adding health-tracking features.
+This stage is focused on reusable local-first architecture, fast daily entry flows, and disciplined feature growth through shared components.
 
 ## Current Features (Stage 1)
 
 - 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
+- 🩸 **Sugar Entry**: Numeric readings, default-now date-time, multiple tags, and note support.
+- 📋 **Sugar List**: Descending reading history with date/tag filtering and editing.
+- 📈 **Sugar Chart**: Straight-line chart with points, area fill, tag-aware range coloring, and metrics.
+- ⚙️ **Settings**: Tag management, chart defaults, color settings, and local reset.
 - 🧪 **Tests Page**: Safe place to trial shared components and new UI features before production use.
 - ℹ️ **About Us**: Mission, principles, and scope explanation.
 - ⚡ **Fast Static App**: Lightweight React + TypeScript + Vite foundation.
@@ -27,12 +35,13 @@ This stage is focused on professional setup, deploy pipeline, and baseline UX qu
 
 | Layer | Technology | Why |
 |-------|-----------|-----|
-| Framework | React 18 + Vite | Fast, lightweight, mobile-friendly |
-| State | Zustand | Minimal boilerplate, easy to learn |
-| Storage | IndexedDB (Dexie.js) | Scalable, handles years of health data |
+| Framework | React 19 + Vite | Fast, lightweight, mobile-friendly |
+| Routing | React Router 7 | Hash-route compatibility for GitHub Pages |
+| State | React Context + hooks | Minimal dependencies and app-specific local-first logic |
+| Storage | localStorage | Zero-backend persistence for current feature scope |
 | Charts | Recharts | Beautiful, responsive, React-friendly |
-| Styling | Tailwind CSS | Rapid development, mobile-first |
-| PWA | Vite PWA Plugin | Automated service workers, offline support |
+| Styling | Token-based CSS | Lightweight custom UI without a design-system dependency |
+| PWA | Manifest + service worker | Static-host compatible installability and offline shell |
 | Language | TypeScript | Type safety, better DX |
 | Hosting | GitHub Pages | Free, zero maintenance |
 | Deployment | GitHub Actions | Auto-deploy on push |
@@ -56,15 +65,26 @@ healthy-pixel/
 ├── tsconfig.node.json
 ├── index.html
 ├── public/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   ├── manifest.webmanifest
+│   └── sw.js
 ├── src/
+│   ├── context/
+│   ├── lib/
 │   ├── main.tsx
 │   ├── styles.css
 │   ├── components/
-│   │   └── SiteShell.tsx
+│   │   ├── SiteShell.tsx
+│   │   └── sugar/
 │   └── pages/
+│       ├── AddSugarReadingPage.tsx
+│       ├── EditSugarReadingPage.tsx
+│       ├── SugarChartPage.tsx
+│       ├── SugarReadingsPage.tsx
 │       ├── DocumentationPage.tsx
-│       └── AboutPage.tsx
+│       ├── AboutPage.tsx
+│       ├── TestsPage.tsx
+│       └── settings/
 └── .github/
     └── workflows/
         └── deploy.yml
@@ -104,6 +124,10 @@ git push origin main
 2. Open `https://kaushalwin.github.io/HealthyPixel/`.
 3. Verify the key routes load:
    - `/#/` Documentation page
+    - `/#/sugar/add` Add Sugar page
+    - `/#/sugar/list` Sugar List page
+    - `/#/sugar/chart` Sugar Chart page
+    - `/#/settings` Settings page
     - `/#/tests` Tests page
    - `/#/about` About Us page
 4. Check mobile layout and keyboard navigation.
@@ -118,7 +142,7 @@ The Tests page is the staging area for new reusable UI work.
 3. Use the Tests page to validate interactions before moving the component into a production screen.
 4. Keep the demo in place as a lightweight regression check when the component is reused elsewhere.
 
-The first shared component on that page is a native date-time picker that defaults to the current date and time and uses a 24-hour time input.
+Current demos include the shared date-time picker, date-range picker, tag selector, sugar form, and sugar list.
 
 ## Hosting Path Configuration
 
@@ -143,13 +167,7 @@ If the hosting path changes, update the build environment value instead of editi
 
 ## Stage Scope
 
-Current implementation scope is intentionally limited to three focused routes for initial hosting and testing:
-
-- Documentation page (default route)
-- Tests page
-- About Us page
-
-Health metric tracking features are planned for next stages after hosting validation.
+Current implementation scope includes the first sugar-reading workflow with local settings, charting, reusable tests, and in-app guidance. Broader health-metric expansion remains a next-stage concern.
 
 ## Data Privacy
 

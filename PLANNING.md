@@ -59,7 +59,7 @@ See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for software engineering 
 - **Settings**: Customize units (kg/lbs, Celsius/Fahrenheit), dark mode.
 - **Import**: Upload previous data for migration.
 - **Share Local Graph**: Generate PNG/SVG for sharing (no data leaves device).
-- **PWA Shortcuts**: Multiple home screen icons (Quick Reading, View Charts, Settings).
+- **PWA Shortcuts**: Start with Add Sugar, then expand only if repeated actions justify more launcher entries.
 - **Notifications**: Browser reminders to log readings (optional).
 - **Quick Interaction UX**: Minimize clicks/taps for critical actions.
 - **Accessibility Baseline**: Labels, keyboard navigation, contrast, touch targets, reduced motion support.

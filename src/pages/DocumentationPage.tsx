@@ -22,6 +22,7 @@ export function DocumentationPage() {
             <li>HealthyPixel is a privacy-first health tracker.</li>
             <li>Core data stays on your device and is not used for profiling or ads.</li>
             <li>The app is designed for low friction and fast daily usage.</li>
+            <li>Sugar readings, tags, settings, and chart preferences are stored locally only.</li>
           </ul>
         </DocBlock>
 
@@ -56,19 +57,65 @@ export function DocumentationPage() {
             example:
           </p>
           <ul>
-            <li>Help / Documentation</li>
-            <li>Quick Reading</li>
-            <li>Open Charts</li>
-            <li>Open Settings / Help</li>
+            <li>Add Sugar</li>
           </ul>
           <p>
-            This build includes a direct <strong>Help / Documentation</strong> shortcut that opens
-            <strong> /#/help</strong> after install.
+            This build includes a direct <strong>Add Sugar</strong> shortcut that opens the sugar
+            reading entry page after install.
           </p>
           <p>
             If launcher quick actions are not available on your device, use in-app shortcuts from
-            the home screen and settings menu.
+            the compact menu and the + quick-action button inside the app.
           </p>
+        </DocBlock>
+
+        <DocBlock title="Compact Navigation Model">
+          <ul>
+            <li>The app now uses one main menu button in the header.</li>
+            <li>Sub-categories are grouped under that single collapsible menu.</li>
+            <li>A small + button opens a quick-action popup for Add Sugar.</li>
+            <li>This keeps the first screen compact on mobile and reduces scrolling.</li>
+          </ul>
+        </DocBlock>
+
+        <DocBlock title="Sugar Reading Flow">
+          <ol>
+            <li>Open <strong>Add Sugar</strong>.</li>
+            <li>Enter the reading value (required).</li>
+            <li>Save directly for the fastest flow.</li>
+            <li>Open More options only when you need time, tags, or note changes.</li>
+            <li>Save to open the filtered Sugar List with the new row highlighted.</li>
+          </ol>
+        </DocBlock>
+
+        <DocBlock title="Sugar List and Editing">
+          <ul>
+            <li>The Sugar List page is a direct route in the navigation.</li>
+            <li>Readings are shown in descending date-time order.</li>
+            <li>Use date filters and tag filters to narrow the list.</li>
+            <li>Use the Add New Entry action at the top for repeated logging.</li>
+            <li>Edit opens the reading in-place without leaving the local-first workflow.</li>
+          </ul>
+        </DocBlock>
+
+        <DocBlock title="Chart and Insights">
+          <ul>
+            <li>The chart uses straight line segments with points and an area fill below the line.</li>
+            <li>Default date range comes from Settings.</li>
+            <li>Chart filters are placed below the chart to keep the main chart view first.</li>
+            <li>Filters and list remain aligned with chart results.</li>
+            <li>Inside-range, outside-range, and neutral readings use different colors.</li>
+            <li>Tag ranges come from Settings, and untagged readings stay neutral.</li>
+          </ul>
+        </DocBlock>
+
+        <DocBlock title="Settings Overview">
+          <ul>
+            <li>Settings includes tag management, chart defaults, and chart colors.</li>
+            <li>Tags can be added, edited, renamed, ranged, sorted, and removed locally.</li>
+            <li>Chart defaults include preset date range and inside/outside/neutral colors.</li>
+            <li>Delete all local data restores the app to default local bootstrap state.</li>
+          </ul>
         </DocBlock>
 
         <DocBlock title="Accessibility and Speed Standards">
@@ -96,6 +143,7 @@ export function DocumentationPage() {
           <ul>
             <li>Use the shared date-time picker for new date/time entry flows.</li>
             <li>Default to the current date and time.</li>
+            <li>Use the compact reset control to jump back to now when needed.</li>
             <li>Use native browser date and time selectors instead of custom drag controls.</li>
             <li>Keep time input in 24-hour format to avoid AM/PM follow-up taps.</li>
           </ul>
@@ -107,10 +155,10 @@ export function DocumentationPage() {
             understand new behavior quickly.
           </p>
           <ul>
-            <li>New features</li>
-            <li>Behavior changes</li>
-            <li>Bug fixes</li>
-            <li>Any migration steps if needed</li>
+            <li>Sugar reading entry, editing, and filtered list</li>
+            <li>Tag management and local chart settings</li>
+            <li>Chart insights with range-aware coloring</li>
+            <li>Expanded Tests page demos for shared components</li>
           </ul>
         </DocBlock>
       </div>
