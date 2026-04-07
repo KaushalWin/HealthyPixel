@@ -1,4 +1,4 @@
-HEALTHYPIXEL PROPRIETARY LICENSE
+PIXIETRACK PROPRIETARY LICENSE
 Version 1.0
 
 Copyright (c) 2026 [Creator Name]. All rights reserved.
@@ -8,7 +8,7 @@ OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
 ================================================================================
 
 1. OWNERSHIP OF SOFTWARE
-   The HealthyPixel software, including all source code, documentation, 
+   The PixieTrack software, including all source code, documentation, 
    designs, and related materials, is owned exclusively by the Creator 
    (the copyright holder listed above). All rights are reserved.
 
@@ -42,7 +42,7 @@ OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
 
 3. LIMITED LICENSE TO USERS
    The Creator grants users a limited, revocable, non-transferable, non-exclusive
-   license to access and use HealthyPixel for personal, non-commercial use.
+   license to access and use PixieTrack for personal, non-commercial use.
 
    Users may NOT:
    - Use this software commercially
@@ -51,7 +51,7 @@ OWNERSHIP & INTELLECTUAL PROPERTY RIGHTS
    - Remove license and ownership notices
 
 4. PERMITTED USE
-   Users may use HealthyPixel software solely for personal, non-commercial 
+   Users may use PixieTrack software solely for personal, non-commercial 
    purposes as provided. All use is subject to the Creator's discretion.
 
 ================================================================================
@@ -69,7 +69,7 @@ CONTRIBUTION POLICY
 
 6. PULL REQUESTS & CONTRIBUTIONS
    By submitting a pull request, issue, or any contribution to the 
-   HealthyPixel repository, you agree to:
+   PixieTrack repository, you agree to:
    
    a) The ownership assignment terms in Section 2 above.
    
@@ -149,7 +149,7 @@ CLARIFICATIONS
    You may fork this repository to review code, test changes, and submit pull
    requests. Public distribution or operation of a fork as an alternative
    product/service requires explicit written permission from the Creator and
-   grants no rights to the HealthyPixel trademark, branding, or distribution.
+   grants no rights to the PixieTrack trademark, branding, or distribution.
 
 16. DATA & PRIVACY
     This software stores user data locally on devices. The Creator makes no 
@@ -180,4 +180,4 @@ By using this software or submitting contributions, you acknowledge that
 you have read and agree to be bound by all terms and conditions of this 
 license.
 
-HealthyPixel - All Rights Reserved
+PixieTrack - All Rights Reserved

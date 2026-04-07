@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { APP_NAME, BRANDING_KEYS, BRANDING_UI } from '../lib/branding';
 import { safeLocalStorageGet, safeLocalStorageSet } from '../lib/platform';
 
 type Theme = 'light' | 'dark';
 
 function resolveInitialTheme(): Theme {
-  const saved = safeLocalStorageGet('healthy-pixel-theme');
+  const saved = safeLocalStorageGet(BRANDING_KEYS.theme);
   if (saved === 'light' || saved === 'dark') {
     return saved;
   }
@@ -82,11 +83,11 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    safeLocalStorageSet('healthy-pixel-theme', theme);
+    safeLocalStorageSet(BRANDING_KEYS.theme, theme);
   }, [theme]);
 
   useEffect(() => {
-    document.title = `${title} | HealthyPixel`;
+    document.title = `${title} | ${APP_NAME}`;
   }, [title]);
 
   useEffect(() => {
@@ -103,10 +104,10 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
       <header className="top-bar" role="banner">
         <div className="brand-wrap">
           <div className="brand-mark" aria-hidden="true">
-            HP
+            {BRANDING_UI.mark}
           </div>
           <div>
-            <p className="brand-name">HealthyPixel</p>
+            <p className="brand-name">{APP_NAME}</p>
             <p className="brand-tag">Privacy-first and mobile compact.</p>
           </div>
         </div>

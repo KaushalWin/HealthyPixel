@@ -4,8 +4,9 @@ import {
   safeSessionStorageRemove,
   safeSessionStorageSet
 } from './platform';
+import { BRANDING_KEYS } from './branding';
 
-const LAZY_RETRY_KEY = 'healthy-pixel:lazy-retry';
+const LAZY_RETRY_KEY = BRANDING_KEYS.lazyRetry;
 
 export function lazyWithReload<TModule extends { default: React.ComponentType<any> }>(
   importer: () => Promise<TModule>

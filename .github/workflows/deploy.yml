@@ -1,4 +1,4 @@
-name: Deploy HealthyPixel
+name: Deploy PixieTrack
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_REPOSITORY: ${{ github.repository }}
-      HEALTHYPIXEL_BASE_PATH: ${{ format('/{0}/', github.event.repository.name) }}
+      PIXIETRACK_BASE_PATH: ${{ format('/{0}/', github.event.repository.name) }}
 
     steps:
       - name: Checkout

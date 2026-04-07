@@ -1,6 +1,6 @@
 {
-  "name": "HealthyPixel",
-  "short_name": "HealthyPixel",
+  "name": "PixieTrack",
+  "short_name": "PixieTrack",
   "id": "./",
   "description": "Privacy-first, local-only, lightweight health tracking foundation.",
   "start_url": "./#/",

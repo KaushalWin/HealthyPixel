@@ -1,4 +1,4 @@
-# HealthyPixel Copilot Instructions
+# PixieTrack Copilot Instructions
 
 Use this file as the default repository guidance for all Copilot-assisted edits.
 
@@ -13,9 +13,9 @@ Use this file as the default repository guidance for all Copilot-assisted edits.
 
 ## Non-Negotiable Rules
 
-- Keep naming consistent: "HealthyPixel" for product name, "healthy-pixel" for repo/path.
+- Keep naming consistent: "PixieTrack" for product name, "pixie-track" for repo/path.
 - Preserve privacy-first policy: no tracking, no analytics, no health data usage.
-- Keep static-host compatibility for GitHub Pages and treat `HEALTHYPIXEL_BASE_PATH` as the single deployment-path source of truth.
+- Keep static-host compatibility for GitHub Pages and treat `PIXIETRACK_BASE_PATH` as the single deployment-path source of truth.
 - Keep core UX fast and minimal-tap; avoid unnecessary complexity.
 - Prioritize reusable components and low-maintenance implementation.
 

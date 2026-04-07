@@ -1,12 +1,12 @@
-# HealthyPixel - Health Tracker PWA
+# PixieTrack - Health Tracker PWA
 
 ## Mission
 
-**HealthyPixel** is a quality-first health tracker PWA. Record vital signs with minimal clicks, view instant insights, and maintain complete control over your personal health data, without any backend or account. Designed for reliability, privacy, and user control.
+**PixieTrack** is a quality-first health tracker PWA. Record vital signs with minimal clicks, view instant insights, and maintain complete control over your personal health data, without any backend or account. Designed for reliability, privacy, and user control.
 
 ## Overview
 
-HealthyPixel is currently in **Foundation Stage**. The app now includes the first complete sugar-tracking workflow and supporting pages:
+PixieTrack is currently in **Foundation Stage**. The app now includes the first complete sugar-tracking workflow and supporting pages:
 
 - In-App Documentation page
 - Add Sugar page
@@ -49,7 +49,7 @@ This stage is focused on reusable local-first architecture, fast daily entry flo
 ## Project Structure
 
 ```
-healthy-pixel/
+pixie-track/
 ├── README.md
 ├── LICENSE
 ├── PLANNING.md
@@ -95,12 +95,12 @@ healthy-pixel/
 See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for detailed setup instructions.
 See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for engineering principles and technical decision standards.
 
-The build base path is configurable through `HEALTHYPIXEL_BASE_PATH`. For GitHub Pages, the workflow derives it automatically from the repository name. For root hosting or another subpath, set that variable before running `npm run build`.
+The build base path is configurable through `PIXIETRACK_BASE_PATH`. For GitHub Pages, the workflow derives it automatically from the repository name. For root hosting or another subpath, set that variable before running `npm run build`.
 
 ```bash
 # Clone repo
-git clone https://github.com/KaushalWin/HealthyPixel.git
-cd HealthyPixel
+git clone https://github.com/KaushalWin/pixie-track.git
+cd pixie-track
 
 # Install dependencies
 npm install
@@ -121,7 +121,7 @@ git push origin main
 ## Hosting and Test Plan (Current Stage)
 
 1. Push to `main` so [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) publishes to GitHub Pages.
-2. Open `https://kaushalwin.github.io/HealthyPixel/`.
+2. Open `https://kaushalwin.github.io/pixie-track/`.
 3. Verify the key routes load:
    - `/#/` Documentation page
     - `/#/sugar/add` Add Sugar page
@@ -146,21 +146,21 @@ Current demos include the shared date-time picker, date-range picker, tag select
 
 ## Hosting Path Configuration
 
-HealthyPixel does not require a hardcoded repository path in source anymore. The production asset base is controlled by `HEALTHYPIXEL_BASE_PATH` at build time.
+PixieTrack does not require a hardcoded repository path in source anymore. The production asset base is controlled by `PIXIETRACK_BASE_PATH` at build time.
 
-- GitHub Pages project site: the workflow sets `HEALTHYPIXEL_BASE_PATH` to `/<repo-name>/` automatically.
-- Root hosting (custom domain or user site): set `HEALTHYPIXEL_BASE_PATH=/`.
-- Custom subpath hosting: set `HEALTHYPIXEL_BASE_PATH=/your-subpath/`.
+- GitHub Pages project site: the workflow sets `PIXIETRACK_BASE_PATH` to `/<repo-name>/` automatically.
+- Root hosting (custom domain or user site): set `PIXIETRACK_BASE_PATH=/`.
+- Custom subpath hosting: set `PIXIETRACK_BASE_PATH=/your-subpath/`.
 
 Examples:
 
 ```powershell
-$env:HEALTHYPIXEL_BASE_PATH = '/HealthyPixel/'
+$env:PIXIETRACK_BASE_PATH = '/pixie-track/'
 npm run build
 ```
 
 ```bash
-HEALTHYPIXEL_BASE_PATH=/my-app/ npm run build
+PIXIETRACK_BASE_PATH=/my-app/ npm run build
 ```
 
 If the hosting path changes, update the build environment value instead of editing application source files.
@@ -181,7 +181,7 @@ Current implementation scope includes the first sugar-reading workflow with loca
 
 ## Monetization Strategy
 
-HealthyPixel is fully free. Donations are always allowed and optional. The future model is intentionally undecided and may evolve only if it helps sustainability without compromising privacy and user control.
+PixieTrack is fully free. Donations are always allowed and optional. The future model is intentionally undecided and may evolve only if it helps sustainability without compromising privacy and user control.
 
 **Support Project Development** (optional):
 - **GitHub Sponsors**: github.com/yourusername (recurring support)

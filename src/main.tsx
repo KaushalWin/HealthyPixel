@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppDataProvider } from './context/AppDataContext';
+import { APP_NAME } from './lib/branding';
 import { isLocalOrPrivateHost } from './lib/platform';
 import './styles.css';
 
@@ -61,7 +62,7 @@ function App() {
           fallback={
             <div className="route-loading-shell">
               <div className="route-loading-card">
-                <p>Loading HealthyPixel…</p>
+                <p>{`Loading ${APP_NAME}...`}</p>
               </div>
             </div>
           }

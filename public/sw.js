@@ -1,4 +1,4 @@
-const CACHE_NAME = 'healthy-pixel-shell-v4';
+const CACHE_NAME = 'pixie-track-shell-v4';
 const SCOPE_URL = new URL(self.registration.scope);
 const INDEX_URL = new URL('index.html', SCOPE_URL).toString();
 const APP_SHELL = [

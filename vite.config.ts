@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const repositoryName = env.GITHUB_REPOSITORY?.split('/')[1];
   const base = normalizeBasePath(
-    env.HEALTHYPIXEL_BASE_PATH
+    env.PIXIETRACK_BASE_PATH
       ?? (env.GITHUB_ACTIONS === 'true' && repositoryName ? `/${repositoryName}/` : undefined)
   );
 

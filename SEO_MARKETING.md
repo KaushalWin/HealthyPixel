@@ -1,4 +1,4 @@
-# HealthyPixel - SEO & Marketing Strategy
+# PixieTrack - SEO & Marketing Strategy
 
 ## Overview
 
@@ -16,7 +16,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 1. Go to [google.com/webmasters/tools](https://google.com/webmasters/tools)
 2. Sign in with Google account
 3. Click "Add Property" → URL prefix
-4. Enter your deployed site URL, for example `https://yourusername.github.io/HealthyPixel/` or your custom-domain root URL.
+4. Enter your deployed site URL, for example `https://yourusername.github.io/pixie-track/` or your custom-domain root URL.
 5. Verify via HTML file (download file, add to `/public` folder, push to GitHub)
 6. Check off verification in Search Console
 
@@ -32,7 +32,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 1. Build your site: `npm run build`
 2. Verify `/dist/sitemap.xml` exists after build
 3. In Search Console → Sitemaps → New Sitemap
-4. Enter your deployed sitemap URL, for example `https://yourusername.github.io/HealthyPixel/sitemap.xml`.
+4. Enter your deployed sitemap URL, for example `https://yourusername.github.io/pixie-track/sitemap.xml`.
 5. Submit
 
 **Expected result**: Google crawls all your pages within 1 week.
@@ -45,24 +45,24 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 
 ```html
 <!-- Title (60 chars ideal) -->
-<title>HealthyPixel - Health Tracker PWA | Works Offline</title>
+<title>PixieTrack - Health Tracker PWA | Works Offline</title>
 
 <!-- Description (160 chars ideal) -->
-<meta name="description" content="HealthyPixel health tracker PWA. Record blood pressure, glucose, weight with minimal clicks. Works offline on Android/iOS. No backend, no data collection, 100% private.">
+<meta name="description" content="PixieTrack health tracker PWA. Record blood pressure, glucose, weight with minimal clicks. Works offline on Android/iOS. No backend, no data collection, 100% private.">
 
 <!-- Keywords -->
 <meta name="keywords" content="health tracker, vital signs, blood pressure tracker, glucose monitor, weight tracker, health app, offline app, PWA, progressive web app, private health app">
 
 <!-- Open Graph (Social sharing) -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="HealthyPixel - Health Tracker">
+<meta property="og:title" content="PixieTrack - Health Tracker">
 <meta property="og:description" content="Track vitals offline with minimal clicks. No backend, no tracking, 100% private.">
 <meta property="og:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
 <meta property="og:url" content="{{DEPLOYED_BASE_URL}}/">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:title" content="HealthyPixel - Health Tracker">
+<meta property="twitter:title" content="PixieTrack - Health Tracker">
 <meta property="twitter:description" content="Track vitals offline. No backend, no tracking, quality first.">
 <meta property="twitter:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
 
@@ -74,7 +74,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 <meta name="theme-color" content="#10b981">
 ```
 
-Use `{{DEPLOYED_BASE_URL}}` as a placeholder for the actual public URL. Example: `https://kaushalwin.github.io/HealthyPixel`.
+Use `{{DEPLOYED_BASE_URL}}` as a placeholder for the actual public URL. Example: `https://kaushalwin.github.io/pixie-track`.
 
 **Expected result**: Better click-through rate from Google search results (~2-3x improvement).
 
@@ -89,7 +89,7 @@ Add to body of `index.html` or in React component:
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "HealthyPixel",
+  "name": "PixieTrack",
   "applicationCategory": "UtilitiesApplication",
   "description": "Quality-first offline health tracker PWA. Record vital signs with minimal clicks.",
   "url": "{{DEPLOYED_BASE_URL}}/",
@@ -121,7 +121,7 @@ Add to body of `index.html` or in React component:
 
 **Hero**:
 ```
-HealthyPixel
+PixieTrack
 Track health readings with minimal clicks.
 No backend. No data collection. Just you and your health.
 [Install Now] [Learn More]
@@ -140,7 +140,7 @@ No backend. No data collection. Just you and your health.
 **Privacy Statement** (critical—builds trust):
 ```
 Your data is yours.
-HealthyPixel stores everything locally on your device.
+PixieTrack stores everything locally on your device.
 No account. No backend. No data collection.
 We literally can't see your health data—it's all on your phone.
 ```
@@ -217,14 +217,14 @@ Email: your-email@example.com
 
 Title:
 ```
-I built HealthyPixel: A completely free, offline health tracker. 
+I built PixieTrack: A completely free, offline health tracker. 
 Zero data collection. No account. No backend.
 ```
 
 Body:
 ```
 I got frustrated with health apps tracking my every move, so I built 
-HealthyPixel - a currently free, source-available health tracker that works entirely 
+PixieTrack - a currently free, source-available health tracker that works entirely 
 offline. Your data never leaves your phone.
 
 KEY FEATURES:
@@ -255,9 +255,9 @@ GitHub: https://github.com/yourusername/your-repo
 **Post 2 - r/androidapps** (Goal: 300-500 upvotes)
 
 ```
-[DEV] HealthyPixel - Free offline health tracker PWA
+[DEV] PixieTrack - Free offline health tracker PWA
 
-Just launched HealthyPixel, a lightweight health tracker 
+Just launched PixieTrack, a lightweight health tracker 
 you can install on Android.
 
 ✅ Installable from home screen (no Play Store)
@@ -275,9 +275,9 @@ Repository: https://github.com/yourusername/your-repo
 **Post 3 - Developer/Privacy Community**
 
 ```
-[Release] HealthyPixel: Source-available offline health tracker
+[Release] PixieTrack: Source-available offline health tracker
 
-Just released HealthyPixel, a currently free, source-available health tracker.
+Just released PixieTrack, a currently free, source-available health tracker.
 
 Tech:
 - React + Vite (fast frontend)
@@ -320,7 +320,7 @@ Download vitals as JSON/CSV anytime.
 **Prep**:
 1. Create Product Hunt account.
 2. Prepare product profile:
-   - Name: HealthyPixel
+   - Name: PixieTrack
    - Tagline: "Privacy-first health tracker PWA. Works offline."
    - Description: (copy from landing page)
    - Screenshot: Home screen + chart view
@@ -329,11 +329,11 @@ Download vitals as JSON/CSV anytime.
    ```
    Hi Product Hunt! 👋
    
-  I'm launching HealthyPixel - a currently free, source-available health tracker 
+  I'm launching PixieTrack - a currently free, source-available health tracker 
    that respects your privacy.
    
    Your health data is too important to hand over to big tech. 
-   HealthyPixel stores everything locally on your device.
+   PixieTrack stores everything locally on your device.
    
    FEATURES:
    ✅ Works offline
@@ -380,7 +380,7 @@ Download vitals as JSON/CSV anytime.
 **Do**:
 - GitHub Awesome Lists (add to relevant lists)
 - Dev blogs/newsletters (write guest post or mention)
-- Health/privacy forums (participate authentically, mention HealthyPixel if relevant)
+- Health/privacy forums (participate authentically, mention PixieTrack if relevant)
 
 **Don't**:
 - Buy backlinks (blackhat, penalized)
@@ -391,17 +391,17 @@ Download vitals as JSON/CSV anytime.
 
 **Tweet examples**:
 ```
-"Just launched HealthyPixel—a health tracker that doesn't spy on you. 
+"Just launched PixieTrack—a health tracker that doesn't spy on you. 
 No backend, no data collection, works offline. Currently fully free. 
 {{DEPLOYED_BASE_URL}}/ [link]"
 
-"Fun fact: HealthyPixel has near-zero infrastructure costs because:
+"Fun fact: PixieTrack has near-zero infrastructure costs because:
 - No database
 - No servers
 - No backend
 All your data stays on your phone. Privacy + user control."
 
-"If you're tired of health apps tracking your every move, try HealthyPixel.
+"If you're tired of health apps tracking your every move, try PixieTrack.
 Completely offline, completely private, completely free. [link]"
 ```
 
@@ -466,11 +466,11 @@ Completely offline, completely private, completely free. [link]"
 ## Marketing Messaging
 
 ### For Privacy Advocates
-"Your health data is yours. HealthyPixel keeps it that way—stored 
+"Your health data is yours. PixieTrack keeps it that way—stored 
 only on your device, no backends, no data brokers."
 
 ### For Android Users
-"Install HealthyPixel like any app. Works offline. No Play Store. 
+"Install PixieTrack like any app. Works offline. No Play Store. 
 No account. Just open your home screen."
 
 ### For Developers

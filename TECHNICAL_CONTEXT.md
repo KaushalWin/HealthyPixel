@@ -1,4 +1,4 @@
-# HealthyPixel - Technical Context & Setup
+# PixieTrack - Technical Context & Setup
 
 See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for mandatory software engineering principles used by this project.
 
@@ -108,10 +108,10 @@ Alternative: Chart.js (simpler, but less React-native).
 
 ```bash
 # Create project
-npm create vite@latest healthy-pixel -- --template react-ts
+npm create vite@latest pixie-track -- --template react-ts
 
 # Navigate into project
-cd healthy-pixel
+cd pixie-track
 
 # Install dependencies
 npm install
@@ -189,7 +189,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const repositoryName = env.GITHUB_REPOSITORY?.split('/')[1]
   const base = normalizeBasePath(
-    env.HEALTHYPIXEL_BASE_PATH ??
+    env.PIXIETRACK_BASE_PATH ??
       (env.GITHUB_ACTIONS === 'true' && repositoryName ? `/${repositoryName}/` : undefined)
   )
 
@@ -200,8 +200,8 @@ export default defineConfig(({ mode }) => {
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'HealthyPixel',
-        short_name: 'HealthyPixel',
+        name: 'PixieTrack',
+        short_name: 'PixieTrack',
         description: 'Track health readings with minimal clicks. Private. Free. Offline.',
         theme_color: '#10b981',
         background_color: '#ffffff',
@@ -279,7 +279,7 @@ export default defineConfig(({ mode }) => {
 
 ### Base Path Rule
 
-- `HEALTHYPIXEL_BASE_PATH` is the single source of truth for the deployed asset base.
+- `PIXIETRACK_BASE_PATH` is the single source of truth for the deployed asset base.
 - On GitHub Pages project sites, set it to `/<repo-name>/`.
 - On root hosting, set it to `/`.
 - Always include both leading and trailing `/` when setting it manually.
@@ -287,7 +287,7 @@ export default defineConfig(({ mode }) => {
 
 ### GitHub Actions Deployment Note
 
-The GitHub Pages workflow should export `HEALTHYPIXEL_BASE_PATH` from the repository name so repo renames do not require source edits.
+The GitHub Pages workflow should export `PIXIETRACK_BASE_PATH` from the repository name so repo renames do not require source edits.
 
 ### Step 4: Setup Tailwind CSS
 
@@ -341,7 +341,7 @@ html, body {
 ```javascript
 import Dexie from 'dexie';
 
-export const db = new Dexie('HealthyPixelDB');
+export const db = new Dexie('PixieTrackDB');
 
 db.version(1).stores({
   readings: '++id, timestamp, type, date',
@@ -455,14 +455,14 @@ export const useReadingStore = create((set) => ({
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Title & Description -->
-    <title>HealthyPixel - Free Health Tracker PWA | Track Vitals Offline</title>
-    <meta name="description" content="HealthyPixel: Currently free health tracker PWA. Record blood pressure, weight, heart rate with minimal clicks. Works offline on Android/iOS. No backend, no data collection. Install on your home screen.">
+    <title>PixieTrack - Free Health Tracker PWA | Track Vitals Offline</title>
+    <meta name="description" content="PixieTrack: Currently free health tracker PWA. Record blood pressure, weight, heart rate with minimal clicks. Works offline on Android/iOS. No backend, no data collection. Install on your home screen.">
     <meta name="keywords" content="health tracker, vital signs, blood pressure tracker, heart rate monitor, weight tracker, health app, offline app, PWA, progressive web app, free health app">
     
     <!-- Open Graph (Social Media) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{DEPLOYED_BASE_URL}}/">
-    <meta property="og:title" content="HealthyPixel - Free Health Tracker">
+    <meta property="og:title" content="PixieTrack - Free Health Tracker">
     <meta property="og:description" content="Track health readings with minimal clicks. Free, offline, installable on Android.">
     <meta property="og:image" content="{{DEPLOYED_BASE_URL}}/og-image.png">
     
@@ -523,7 +523,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          cname: healthypixel.example.com # Optional: custom domain
+          cname: pixietrack.example.com # Optional: custom domain
 ```
 
 ### Step 10: Package.json Scripts
@@ -658,8 +658,8 @@ db.on('populate', (tx) => {
 ```bash
 # 1. Create GitHub repo (public)
 # 2. Clone locally
-git clone https://github.com/yourusername/healthy-pixel.git
-cd healthy-pixel
+git clone https://github.com/yourusername/pixie-track.git
+cd pixie-track
 
 # 3. Install dependencies
 npm install
@@ -669,7 +669,7 @@ npm run build
 
 # 5. Push to GitHub
 git add .
-git commit -m "Initial commit: HealthyPixel PWA setup"
+git commit -m "Initial commit: PixieTrack PWA setup"
 git push -u origin main
 
 # 6. GitHub Actions builds & deploys automatically (~2 minutes)

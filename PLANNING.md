@@ -1,4 +1,4 @@
-# HealthyPixel - Planning & Roadmap
+# PixieTrack - Planning & Roadmap
 
 ## Project Vision
 
@@ -34,7 +34,7 @@ See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for software engineering 
 
 ### Deliverables
 - GitHub repo (public, with LICENSE file).
-- Live site at `yourusername.github.io/healthy-pixel`.
+- Live site at `yourusername.github.io/pixie-track`.
 - Working PWA with offline support.
 - No mandatory telemetry in-app.
 
@@ -130,7 +130,7 @@ See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for software engineering 
 ## Governance & Legal Strategy
 
 ### Contribution Ownership
-HealthyPixel maintains full ownership of all contributions. This ensures the Creator retains control over the project's future direction, licensing, and monetization.
+PixieTrack maintains full ownership of all contributions. This ensures the Creator retains control over the project's future direction, licensing, and monetization.
 
 **Key Principles**:
 - All code contributions become the exclusive property of the Creator upon merge
@@ -171,7 +171,7 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 | **License** | Proprietary (All Rights Reserved) | Legal clarity, ability to monetize |
 | **Monetization** | Free + donations | Ko-fi, GitHub Sponsors, future Stripe |
 | **Privacy** | 100% local storage | No backend = max privacy |
-| **Name** | HealthyPixel | Witty, memorable, brand-friendly |
+| **Name** | PixieTrack | Witty, memorable, brand-friendly |
 | **Metrics (MVP)** | BP, Glucose, Weight, Height, Notes | Matches core launch scope |
 
 ---
@@ -242,7 +242,7 @@ The LICENSE file establishes the baseline legal framework. For scalability:
 
 ## Data Handling Rule
 
-- HealthyPixel does not use user health data for analytics, ads, profiling, or resale.
+- PixieTrack does not use user health data for analytics, ads, profiling, or resale.
 - User health data remains stored locally on the user's device.
 
 ## Technical Decision Rule

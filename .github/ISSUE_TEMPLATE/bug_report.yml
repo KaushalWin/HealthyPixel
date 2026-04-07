@@ -103,5 +103,5 @@ body:
       options:
         - label: "I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)"
           required: true
-        - label: "I agree that my contribution becomes the property of HealthyPixel creator"
+        - label: "I agree that my contribution becomes the property of PixieTrack creator"
           required: true

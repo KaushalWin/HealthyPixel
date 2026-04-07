@@ -1,16 +1,16 @@
-# HealthyPixel - Project Checklist & Action Items
+# PixieTrack - Project Checklist & Action Items
 
 ## Pre-Launch Checklist (Weeks 1-3)
 
 ### GitHub & Repository Setup
 - [ ] Create GitHub account (if not already done)
-- [ ] Create public repository named `healthy-pixel`
+- [ ] Create public repository named `pixie-track`
 - [ ] Add LICENSE file (proprietary: "All rights reserved")
 - [ ] Clone repo locally
 - [ ] Set up .gitignore (Node.js template)
 
 ### Project Initialization
-- [ ] Initialize Node.js project: `npm create vite@latest healthy-pixel -- --template react`
+- [ ] Initialize Node.js project: `npm create vite@latest pixie-track -- --template react`
 - [ ] Install dependencies: `npm install`
 - [ ] Install additional packages (Vite PWA, Zustand, Dexie, Recharts, Tailwind)
 - [ ] Configure vite.config.js with PWA plugin
@@ -97,7 +97,7 @@
 
 ### GitHub Pages & Deployment
 - [ ] Create .github/workflows/deploy.yml
-- [ ] Ensure `HEALTHYPIXEL_BASE_PATH` is set correctly for the deployment target
+- [ ] Ensure `PIXIETRACK_BASE_PATH` is set correctly for the deployment target
 - [ ] Test GitHub Actions (push to main, verify build)
 - [ ] Enable GitHub Pages in repo settings
 - [ ] Verify site live at the configured deployed URL for the current host/path
@@ -106,7 +106,7 @@
 
 ### Initial Commit
 - [ ] Add all files to git
-- [ ] Initial commit: `git commit -m "Initial commit: HealthyPixel MVP"`
+- [ ] Initial commit: `git commit -m "Initial commit: PixieTrack MVP"`
 - [ ] Push to GitHub: `git push -u origin main`
 - [ ] Verify GitHub Actions builds successfully
 
@@ -182,7 +182,7 @@
 - [ ] Verify in-app documentation matches latest features
 
 ### Release
-- [ ] Final commit: `git commit -m "Release: HealthyPixel v1.0 - MVP launch"`
+- [ ] Final commit: `git commit -m "Release: PixieTrack v1.0 - MVP launch"`
 - [ ] Create GitHub release/tag (v1.0)
 - [ ] Push all changes
 - [ ] Verify GitHub Pages site live and working
@@ -210,7 +210,7 @@
 - [ ] Ask for testimonials/screenshots
 
 ### Content Marketing
-- [ ] Write blog post: "Why I Built HealthyPixel"
+- [ ] Write blog post: "Why I Built PixieTrack"
 - [ ] Write blog post: "Privacy in Health Tracking"
 - [ ] Create FAQ page
 - [ ] Create user guide (how to use all features)
@@ -351,8 +351,8 @@
 
 ```bash
 # Setup
-npm create vite@latest healthy-pixel -- --template react
-cd healthy-pixel
+npm create vite@latest pixie-track -- --template react
+cd pixie-track
 npm install
 npm install -D vite-plugin-pwa
 npm install zustand dexie recharts
@@ -368,7 +368,7 @@ npm run preview
 
 # Deploy
 git add .
-git commit -m "Deploy: HealthyPixel"
+git commit -m "Deploy: PixieTrack"
 git push origin main
 ```
 
@@ -394,4 +394,4 @@ git push origin main
 - **Keep it simple.** Don't add bloat. Minimal, focused, useful.
 - **Remember the mission.** Privacy first. Users first. Money second (or never).
 
-🚀 **Ready to launch HealthyPixel!**
+🚀 **Ready to launch PixieTrack!**

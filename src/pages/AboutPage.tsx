@@ -1,16 +1,17 @@
 import { SiteShell } from '../components/SiteShell';
+import { APP_NAME } from '../lib/branding';
 
 export function AboutPage() {
   return (
     <SiteShell
-      title="About HealthyPixel"
+      title={`About ${APP_NAME}`}
       subtitle="Built for privacy, speed, and practical daily health tracking."
     >
-      <section className="about-layout" aria-label="About HealthyPixel">
+      <section className="about-layout" aria-label={`About ${APP_NAME}`}>
         <article className="doc-card">
           <h2>Our Mission</h2>
           <p>
-            HealthyPixel exists to help people track health signals without surveillance patterns,
+            {APP_NAME} exists to help people track health signals without surveillance patterns,
             without account lock-in, and without complicated setup.
           </p>
           <p>

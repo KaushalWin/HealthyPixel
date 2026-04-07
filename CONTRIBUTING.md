@@ -1,16 +1,16 @@
-# Contributing to HealthyPixels
+# Contributing to PixieTrack
 
-Thank you for your interest in contributing to HealthyPixels! We welcome bug reports, feature requests, documentation improvements, and code contributions.
+Thank you for your interest in contributing to PixieTrack! We welcome bug reports, feature requests, documentation improvements, and code contributions.
 
 ## Important: Ownership & License
 
 **Before contributing, please read this carefully.**
 
-By contributing to HealthyPixels (through pull requests, issues, comments, or any other means), you agree to the terms outlined in the [LICENSE](LICENSE) file, specifically:
+By contributing to PixieTrack (through pull requests, issues, comments, or any other means), you agree to the terms outlined in the [LICENSE](LICENSE) file, specifically:
 
 ### Key Points:
 
-1. **All contributions become the exclusive property of the HealthyPixels creator** upon acceptance and merger.
+1. **All contributions become the exclusive property of the PixieTrack creator** upon acceptance and merger.
 
 2. **The creator retains full ownership and rights** to all code, documentation, and ideas submitted, including the right to modify, redistribute, or relicense them.
 
@@ -160,6 +160,6 @@ However, **please note**: This is purely for recognition. It does not grant any 
 
 ## License Reminder
 
-By contributing, you agree to assign all rights to your contributions to the HealthyPixels creator. Read the [LICENSE](LICENSE) file for full terms.
+By contributing, you agree to assign all rights to your contributions to the PixieTrack creator. Read the [LICENSE](LICENSE) file for full terms.
 
 **Thank you for contributing!**

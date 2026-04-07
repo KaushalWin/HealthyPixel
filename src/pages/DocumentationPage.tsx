@@ -1,5 +1,6 @@
 import { SiteShell } from '../components/SiteShell';
 import type { ReactNode } from 'react';
+import { APP_NAME } from '../lib/branding';
 
 function DocBlock({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -19,7 +20,7 @@ export function DocumentationPage() {
       <div className="doc-grid">
         <DocBlock title="What This App Is">
           <ul>
-            <li>HealthyPixel is a privacy-first health tracker.</li>
+            <li>{APP_NAME} is a privacy-first health tracker.</li>
             <li>Core data stays on your device and is not used for profiling or ads.</li>
             <li>The app is designed for low friction and fast daily usage.</li>
             <li>Sugar readings, tags, settings, and chart preferences are stored locally only.</li>
@@ -29,7 +30,7 @@ export function DocumentationPage() {
         <DocBlock title="Install As PWA">
           <h3>Android (Chrome)</h3>
           <ol>
-            <li>Open HealthyPixel in Chrome.</li>
+            <li>{`Open ${APP_NAME} in Chrome.`}</li>
             <li>Tap the menu icon.</li>
             <li>Tap Install app.</li>
             <li>Confirm Install.</li>
@@ -44,7 +45,7 @@ export function DocumentationPage() {
           </p>
           <h3>iPhone (Safari)</h3>
           <ol>
-            <li>Open HealthyPixel in Safari.</li>
+            <li>{`Open ${APP_NAME} in Safari.`}</li>
             <li>Tap the Share icon.</li>
             <li>Tap Add to Home Screen.</li>
             <li>Tap Add.</li>
@@ -129,7 +130,7 @@ export function DocumentationPage() {
 
         <DocBlock title="Tests Page Workflow">
           <p>
-            HealthyPixel includes a dedicated <strong>Tests</strong> page for trying shared
+            {APP_NAME} includes a dedicated <strong>Tests</strong> page for trying shared
             components and small features before they are placed in production screens.
           </p>
           <ol>

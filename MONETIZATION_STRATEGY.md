@@ -1,8 +1,8 @@
-# HealthyPixel - Monetization Strategy
+# PixieTrack - Monetization Strategy
 
 ## Current Policy
 
-- HealthyPixel is fully free to use.
+- PixieTrack is fully free to use.
 - Donations are always allowed and always optional.
 - Core experience remains accessible without payment.
 
@@ -46,4 +46,4 @@ Not allowed:
 
 ## Summary
 
-HealthyPixel stays quality-first and privacy-first: fully free, donation-supported, and user-controlled.
+PixieTrack stays quality-first and privacy-first: fully free, donation-supported, and user-controlled.

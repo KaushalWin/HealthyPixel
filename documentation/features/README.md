@@ -1,4 +1,4 @@
-# HealthyPixel Feature Planning
+# PixieTrack Feature Planning
 
 This folder defines product and technical planning for upcoming features before implementation.
 

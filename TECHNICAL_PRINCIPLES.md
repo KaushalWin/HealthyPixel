@@ -1,8 +1,8 @@
-# HealthyPixel - Technical Principles of Software Development
+# PixieTrack - Technical Principles of Software Development
 
 ## Purpose
 
-This document defines engineering principles for HealthyPixel so decisions stay aligned with:
+This document defines engineering principles for PixieTrack so decisions stay aligned with:
 
 - low cost
 - low maintenance
@@ -166,13 +166,13 @@ Before accepting a feature, verify:
 - Prefer latest stable/LTS runtimes and toolchains when they are production-ready and compatible with project goals.
 - Pin CI and local development guidance to current LTS Node.js by default.
 - Upgrade dependencies regularly, but only after compatibility checks for performance, accessibility, and maintenance impact.
-- "Latest" is not automatic by itself; choose the best-suited stable option for HealthyPixel when trade-offs exist.
+- "Latest" is not automatic by itself; choose the best-suited stable option for PixieTrack when trade-offs exist.
 
 ---
 
 ## Summary
 
-HealthyPixel development prioritizes:
+PixieTrack development prioritizes:
 
 - low cost
 - low maintenance
