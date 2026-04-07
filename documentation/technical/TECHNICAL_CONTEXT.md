@@ -1,6 +1,6 @@
 # PixieTrack - Technical Context & Setup
 
-See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for mandatory software engineering principles used by this project.
+See [TECHNICAL_PRINCIPLES.md](./TECHNICAL_PRINCIPLES.md) for mandatory software engineering principles used by this project.
 
 ## Current Implementation Status
 

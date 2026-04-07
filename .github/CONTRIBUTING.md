@@ -6,7 +6,7 @@ Thank you for your interest in contributing to PixieTrack! We welcome bug report
 
 **Before contributing, please read this carefully.**
 
-By contributing to PixieTrack (through pull requests, issues, comments, or any other means), you agree to the terms outlined in the [LICENSE](LICENSE) file, specifically:
+By contributing to PixieTrack (through pull requests, issues, comments, or any other means), you agree to the terms outlined in the [LICENSE](../LICENSE) file, specifically:
 
 ### Key Points:
 
@@ -95,7 +95,7 @@ Be respectful, constructive, and follow these principles:
 
 ## Development Setup
 
-See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for full setup instructions.
+See [documentation/technical/TECHNICAL_CONTEXT.md](../documentation/technical/TECHNICAL_CONTEXT.md) for full setup instructions.
 
 **Quick Start:**
 ```bash
@@ -109,7 +109,7 @@ npm run dev
 
 ## Project Structure
 
-See [README.md](README.md) for folder structure.
+See [README.md](../README.md) for folder structure.
 
 Key directories:
 - `src/components/` - React components
@@ -153,7 +153,7 @@ However, **please note**: This is purely for recognition. It does not grant any 
 ## Questions?
 
 - **Project questions**: Open a GitHub issue.
-- **License/ownership questions**: Check the [LICENSE](LICENSE) file.
+- **License/ownership questions**: Check the [LICENSE](../LICENSE) file.
 - **Direct contact**: Reach out via GitHub issues.
 
 ---

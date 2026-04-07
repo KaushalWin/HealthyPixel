@@ -22,7 +22,7 @@
 ## Checklist
 
 ### Legal & Licensing
-- [ ] I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](../CONTRIBUTING.md)
+- [ ] I have read [LICENSE](../LICENSE) and [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [ ] I understand that ALL my contributions become the exclusive property of the PixieTrack creator upon merge
 - [ ] I understand I will waive all ownership and moral rights to my contributions
 - [ ] I confirm I have the legal right to assign these rights (no employer or third-party claims)

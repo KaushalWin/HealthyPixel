@@ -52,12 +52,6 @@ This stage is focused on reusable local-first architecture, fast daily entry flo
 pixie-track/
 ├── README.md
 ├── LICENSE
-├── PLANNING.md
-├── TECHNICAL_CONTEXT.md
-├── TECHNICAL_PRINCIPLES.md
-├── MONETIZATION_STRATEGY.md
-├── SEO_MARKETING.md
-├── PROJECT_CHECKLIST.md
 ├── package.json
 ├── vite.config.ts
 ├── tsconfig.json
@@ -85,15 +79,31 @@ pixie-track/
 │       ├── AboutPage.tsx
 │       ├── TestsPage.tsx
 │       └── settings/
+├── documentation/
+│   ├── technical/
+│   │   ├── TECHNICAL_CONTEXT.md
+│   │   └── TECHNICAL_PRINCIPLES.md
+│   ├── project/
+│   │   ├── PLANNING.md
+│   │   └── PROJECT_CHECKLIST.md
+│   ├── strategy/
+│   │   ├── MONETIZATION_STRATEGY.md
+│   │   └── SEO_MARKETING.md
+│   ├── governance/
+│   │   └── GOVERNANCE_VERIFICATION.md
+│   └── features/
 └── .github/
+    ├── CODE_OF_CONDUCT.md
+    ├── CONTRIBUTING.md
+    ├── CONTRIBUTORS.md
     └── workflows/
         └── deploy.yml
 ```
 
 ## Quick Start
 
-See [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for detailed setup instructions.
-See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for engineering principles and technical decision standards.
+See [documentation/technical/TECHNICAL_CONTEXT.md](documentation/technical/TECHNICAL_CONTEXT.md) for detailed setup instructions.
+See [documentation/technical/TECHNICAL_PRINCIPLES.md](documentation/technical/TECHNICAL_PRINCIPLES.md) for engineering principles and technical decision standards.
 
 The build base path is configurable through `PIXIETRACK_BASE_PATH`. For GitHub Pages, the workflow derives it automatically from the repository name. For root hosting or another subpath, set that variable before running `npm run build`.
 
@@ -187,11 +197,11 @@ PixieTrack is fully free. Donations are always allowed and optional. The future 
 - **GitHub Sponsors**: github.com/yourusername (recurring support)
 - **Ko-fi**: ko-fi.com/yourname (one-time contributions)
 
-See [MONETIZATION_STRATEGY.md](MONETIZATION_STRATEGY.md) for details.
+See [documentation/strategy/MONETIZATION_STRATEGY.md](documentation/strategy/MONETIZATION_STRATEGY.md) for details.
 
 ## Roadmap
 
-See [PLANNING.md](PLANNING.md) for full roadmap, phases, and timeline estimates.
+See [documentation/project/PLANNING.md](documentation/project/PLANNING.md) for full roadmap, phases, and timeline estimates.
 
 **Phase 1 (MVP - Weeks 1-3)**
 - Basic UI: Input form, readings list, simple chart
@@ -215,7 +225,7 @@ See [PLANNING.md](PLANNING.md) for full roadmap, phases, and timeline estimates.
 
 ## SEO & Traffic Strategy
 
-See [SEO_MARKETING.md](SEO_MARKETING.md) for detailed traffic plan.
+See [documentation/strategy/SEO_MARKETING.md](documentation/strategy/SEO_MARKETING.md) for detailed traffic plan.
 
 **Quick wins**:
 1. Reddit posts (r/privacy, r/androidapps, r/health)
@@ -227,7 +237,7 @@ Focus: consistent discoverability through privacy-first messaging and clear prod
 
 ## Getting Started / Development Roadmap
 
-See [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md) for action items and setup steps.
+See [documentation/project/PROJECT_CHECKLIST.md](documentation/project/PROJECT_CHECKLIST.md) for action items and setup steps.
 
 ## License
 
@@ -258,4 +268,4 @@ A: No backend = zero server costs, instant offline support, and your data never 
 
 ---
 
-**Next Steps**: See [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md) to begin dev work or [TECHNICAL_CONTEXT.md](TECHNICAL_CONTEXT.md) for architecture details.
+**Next Steps**: See [documentation/project/PROJECT_CHECKLIST.md](documentation/project/PROJECT_CHECKLIST.md) to begin dev work or [documentation/technical/TECHNICAL_CONTEXT.md](documentation/technical/TECHNICAL_CONTEXT.md) for architecture details.

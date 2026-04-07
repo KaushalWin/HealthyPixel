@@ -11,7 +11,7 @@
 - 🌐 **Community-Driven**: Community-friendly, trust-based, open to contributions.
 - 📱 **Mobile-First**: Native install on Android/iOS, works offline.
 
-See [TECHNICAL_PRINCIPLES.md](TECHNICAL_PRINCIPLES.md) for software engineering principles and technical decision gates.
+See [TECHNICAL_PRINCIPLES.md](../technical/TECHNICAL_PRINCIPLES.md) for software engineering principles and technical decision gates.
 
 ---
 

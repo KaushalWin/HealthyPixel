@@ -12,7 +12,7 @@ Thank you to everyone who has contributed to PixieTrack!
 
 Interested in contributing? See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-**Important**: By contributing, you agree that all contributions become the property of the PixieTrack creator. See [LICENSE](LICENSE) for full details.
+**Important**: By contributing, you agree that all contributions become the property of the PixieTrack creator. See [LICENSE](../LICENSE) for full details.
 
 ---
 

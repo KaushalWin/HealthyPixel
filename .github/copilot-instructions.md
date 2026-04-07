@@ -5,11 +5,11 @@ Use this file as the default repository guidance for all Copilot-assisted edits.
 ## Read First
 
 - [README.md](../README.md): Current stage and user-facing behavior.
-- [TECHNICAL_PRINCIPLES.md](../TECHNICAL_PRINCIPLES.md): Mandatory engineering principles.
-- [TECHNICAL_CONTEXT.md](../TECHNICAL_CONTEXT.md): Stack and setup context.
-- [PLANNING.md](../PLANNING.md): Roadmap and scope progression.
-- [PROJECT_CHECKLIST.md](../PROJECT_CHECKLIST.md): Release and quality checklist.
-- [MONETIZATION_STRATEGY.md](../MONETIZATION_STRATEGY.md): Donation and monetization rules.
+- [TECHNICAL_PRINCIPLES.md](../documentation/technical/TECHNICAL_PRINCIPLES.md): Mandatory engineering principles.
+- [TECHNICAL_CONTEXT.md](../documentation/technical/TECHNICAL_CONTEXT.md): Stack and setup context.
+- [PLANNING.md](../documentation/project/PLANNING.md): Roadmap and scope progression.
+- [PROJECT_CHECKLIST.md](../documentation/project/PROJECT_CHECKLIST.md): Release and quality checklist.
+- [MONETIZATION_STRATEGY.md](../documentation/strategy/MONETIZATION_STRATEGY.md): Donation and monetization rules.
 
 ## Non-Negotiable Rules
 

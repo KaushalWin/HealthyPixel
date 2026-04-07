@@ -26,7 +26,7 @@ Goal: Get 500-2,000/month organic traffic within 3 months via SEO, community eng
 
 **Timeline**: 15 minutes
 
-**File**: `vite.config.js` should include sitemap generation (see TECHNICAL_CONTEXT.md).
+**File**: `vite.config.js` should include sitemap generation (see `documentation/technical/TECHNICAL_CONTEXT.md`).
 
 **Steps**:
 1. Build your site: `npm run build`
