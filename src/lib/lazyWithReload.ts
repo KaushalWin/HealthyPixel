@@ -4,7 +4,7 @@ import {
   safeSessionStorageRemove,
   safeSessionStorageSet
 } from './platform';
-import { BRANDING_KEYS } from './branding';
+import { BRANDING_KEYS } from './branding'; 
 
 const LAZY_RETRY_KEY = BRANDING_KEYS.lazyRetry;
 
