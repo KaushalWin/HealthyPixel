@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { APP_NAME, BRANDING_KEYS, BRANDING_UI } from '../lib/branding';
+import { MonetizationPanel } from './MonetizationPanel';
 import { safeLocalStorageGet, safeLocalStorageSet } from '../lib/platform';
 
 type Theme = 'light' | 'dark';
@@ -189,6 +190,7 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
           <p>{subtitle}</p>
         </section>
         {children}
+        <MonetizationPanel />
       </main>
     </div>
   );
