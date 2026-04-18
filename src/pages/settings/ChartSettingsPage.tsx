@@ -8,7 +8,7 @@ export function ChartSettingsPage() {
   return (
     <SiteShell
       title="Chart Settings"
-      subtitle="Choose the default chart date preset and the inside, outside, and neutral chart colors."
+      subtitle="Choose the default chart date preset and per-module chart colors."
     >
       <section className="doc-card section-stack">
         <label className="date-time-picker__field">
@@ -30,38 +30,38 @@ export function ChartSettingsPage() {
       </section>
 
       <section className="doc-card section-stack">
-        <div className="section-header-inline">
-          <div>
-            <h2>Chart colors</h2>
-            <p>These colors are reused for chart points and range badges.</p>
-          </div>
-        </div>
-
+        <div className="section-header-inline"><div><h2>Sugar chart colors</h2><p>Colors for sugar chart points and range badges.</p></div></div>
         <div className="three-column-grid">
-          <label className="date-time-picker__field color-field">
-            <span>Inside range</span>
-            <input
-              type="color"
-              value={settings.chartColorInside}
-              onChange={(event) => updateSettings({ chartColorInside: event.target.value })}
-            />
-          </label>
-          <label className="date-time-picker__field color-field">
-            <span>Outside range</span>
-            <input
-              type="color"
-              value={settings.chartColorOutside}
-              onChange={(event) => updateSettings({ chartColorOutside: event.target.value })}
-            />
-          </label>
-          <label className="date-time-picker__field color-field">
-            <span>Neutral / no tag range</span>
-            <input
-              type="color"
-              value={settings.chartColorNeutral}
-              onChange={(event) => updateSettings({ chartColorNeutral: event.target.value })}
-            />
-          </label>
+          <label className="date-time-picker__field color-field"><span>Inside range</span><input type="color" value={settings.chartColorInside} onChange={(e) => updateSettings({ chartColorInside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Outside range</span><input type="color" value={settings.chartColorOutside} onChange={(e) => updateSettings({ chartColorOutside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.chartColorNeutral} onChange={(e) => updateSettings({ chartColorNeutral: e.target.value })} /></label>
+        </div>
+      </section>
+
+      <section className="doc-card section-stack">
+        <div className="section-header-inline"><div><h2>Weight chart colors</h2></div></div>
+        <div className="three-column-grid">
+          <label className="date-time-picker__field color-field"><span>Inside range</span><input type="color" value={settings.weightChartColorInside} onChange={(e) => updateSettings({ weightChartColorInside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Outside range</span><input type="color" value={settings.weightChartColorOutside} onChange={(e) => updateSettings({ weightChartColorOutside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.weightChartColorNeutral} onChange={(e) => updateSettings({ weightChartColorNeutral: e.target.value })} /></label>
+        </div>
+      </section>
+
+      <section className="doc-card section-stack">
+        <div className="section-header-inline"><div><h2>Height chart colors</h2></div></div>
+        <div className="three-column-grid">
+          <label className="date-time-picker__field color-field"><span>Inside range</span><input type="color" value={settings.heightChartColorInside} onChange={(e) => updateSettings({ heightChartColorInside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Outside range</span><input type="color" value={settings.heightChartColorOutside} onChange={(e) => updateSettings({ heightChartColorOutside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.heightChartColorNeutral} onChange={(e) => updateSettings({ heightChartColorNeutral: e.target.value })} /></label>
+        </div>
+      </section>
+
+      <section className="doc-card section-stack">
+        <div className="section-header-inline"><div><h2>Blood pressure chart colors</h2><p>Systolic and diastolic lines use separate colors.</p></div></div>
+        <div className="three-column-grid">
+          <label className="date-time-picker__field color-field"><span>Systolic line</span><input type="color" value={settings.bpChartColorSystolic} onChange={(e) => updateSettings({ bpChartColorSystolic: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Diastolic line</span><input type="color" value={settings.bpChartColorDiastolic} onChange={(e) => updateSettings({ bpChartColorDiastolic: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.bpChartColorNeutral} onChange={(e) => updateSettings({ bpChartColorNeutral: e.target.value })} /></label>
         </div>
       </section>
     </SiteShell>

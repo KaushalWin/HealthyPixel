@@ -2,71 +2,68 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DateTimePicker } from '../DateTimePicker';
 import { TagChipSelector } from '../TagChipSelector';
-import type { AppSettings, ReadingDraft, SugarReading, TagDefinition } from '../../lib/types';
+import type { AppSettings, ReadingDraft, TagDefinition, WeightReading } from '../../lib/types';
 
-type SugarReadingFormProps = {
+type WeightReadingFormProps = {
   title: string;
   submitLabel: string;
   initialValue: ReadingDraft;
   tags: TagDefinition[];
-  readings: SugarReading[];
+  readings: WeightReading[];
   settings: AppSettings;
   onSubmit: (draft: ReadingDraft) => void;
+  listPath: string;
 };
 
-export function SugarReadingForm({
+export function WeightReadingForm({
   title,
   submitLabel,
   initialValue,
   tags,
   readings,
   settings,
-  onSubmit
-}: SugarReadingFormProps) {
+  onSubmit,
+  listPath
+}: WeightReadingFormProps) {
   const [draft, setDraft] = useState<ReadingDraft>(initialValue);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = () => {
     if (Number.isNaN(draft.value)) {
-      setError('Reading value is required.');
+      setError('Weight value is required.');
       return;
     }
-
-    if (draft.value < 0 || draft.value > 10000) {
-      setError('Reading value must stay between 0 and 10000.');
+    if (draft.value < 0 || draft.value > 700) {
+      setError('Weight must stay between 0 and 700 kg.');
       return;
     }
-
     setError(null);
     onSubmit(draft);
   };
 
   return (
-    <section className="form-card" aria-labelledby="sugar-form-title">
+    <section className="form-card" aria-labelledby="weight-form-title">
       <div className="section-header-inline">
         <div>
-          <h2 id="sugar-form-title">{title}</h2>
-          <p>Start with the reading value, then save. Optional details are below.</p>
+          <h2 id="weight-form-title">{title}</h2>
+          <p>Enter weight in kg, then save.</p>
         </div>
       </div>
 
       <label className="date-time-picker__field">
-        <span>Reading value *</span>
+        <span>Weight (kg) *</span>
         <input
           type="number"
           step="0.1"
           min="0"
-          max="10000"
+          max="700"
           autoFocus
           value={Number.isNaN(draft.value) ? '' : draft.value}
           onChange={(event) => {
             const value = event.target.value;
-            setDraft((current) => ({
-              ...current,
-              value: value === '' ? Number.NaN : Number(value)
-            }));
+            setDraft((current) => ({ ...current, value: value === '' ? Number.NaN : Number(value) }));
           }}
-          placeholder="Enter reading"
+          placeholder="Enter weight"
         />
       </label>
 
@@ -86,14 +83,13 @@ export function SugarReadingForm({
         <button type="button" className="primary-button" onClick={handleSubmit}>
           {submitLabel}
         </button>
-        <Link to="/sugar/list" className="secondary-button">
-          Open Sugar List
+        <Link to={listPath} className="secondary-button">
+          Open Weight List
         </Link>
       </div>
 
       <details className="compact-details">
         <summary>More options (time, note)</summary>
-
         <DateTimePicker
           label="Reading date and time"
           description="Defaults to now. Use reset when needed."
@@ -102,7 +98,6 @@ export function SugarReadingForm({
           compact
           showSummary={false}
         />
-
         <label className="date-time-picker__field">
           <span>Note</span>
           <textarea

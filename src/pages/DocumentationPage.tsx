@@ -59,10 +59,12 @@ export function DocumentationPage() {
           </p>
           <ul>
             <li>Add Sugar</li>
+            <li>Add Weight</li>
+            <li>Add Height</li>
+            <li>Add BP</li>
           </ul>
           <p>
-            This build includes a direct <strong>Add Sugar</strong> shortcut that opens the sugar
-            reading entry page after install.
+            These shortcuts open the corresponding entry page after install.
           </p>
           <p>
             If launcher quick actions are not available on your device, use in-app shortcuts from
@@ -72,9 +74,9 @@ export function DocumentationPage() {
 
         <DocBlock title="Compact Navigation Model">
           <ul>
-            <li>The app now uses one main menu button in the header.</li>
-            <li>Sub-categories are grouped under that single collapsible menu.</li>
-            <li>A small + button opens a quick-action popup for Add Sugar.</li>
+            <li>The app uses one main menu button in the header.</li>
+            <li>Vitals are grouped under a single section with subsections: Sugar, Weight, Height, Blood Pressure.</li>
+            <li>A small + button opens a quick-action popup for Add Sugar, Add Weight, Add Height, Add BP.</li>
             <li>This keeps the first screen compact on mobile and reduces scrolling.</li>
           </ul>
         </DocBlock>
@@ -99,6 +101,37 @@ export function DocumentationPage() {
           </ul>
         </DocBlock>
 
+        <DocBlock title="Weight Tracking">
+          <ol>
+            <li>Open <strong>Add Weight</strong> from the menu or quick-action +.</li>
+            <li>Enter weight in kilograms (0–700 kg).</li>
+            <li>Select tags using the chip selector below the value input.</li>
+            <li>Optionally expand More options for time and note.</li>
+            <li>Save — the reading appears in the Weight List.</li>
+          </ol>
+          <p>The Weight Chart shows an area chart with inside/outside/neutral range coloring based on your tag ranges.</p>
+        </DocBlock>
+
+        <DocBlock title="Height Tracking">
+          <ol>
+            <li>Open <strong>Add Height</strong> from the menu or quick-action +.</li>
+            <li>Enter height in centimetres (0–300 cm).</li>
+            <li>Select tags and save.</li>
+          </ol>
+          <p>The Height Chart follows the same pattern as the Weight Chart.</p>
+        </DocBlock>
+
+        <DocBlock title="Blood Pressure Tracking">
+          <ol>
+            <li>Open <strong>Add BP</strong> from the menu or quick-action +.</li>
+            <li>Enter systolic (upper, 40–300 mmHg) and diastolic (lower, 20–200 mmHg).</li>
+            <li>Diastolic must be less than systolic.</li>
+            <li>Select tags — BP tags define healthy ranges for both systolic and diastolic.</li>
+            <li>Save to record.</li>
+          </ol>
+          <p>The BP Chart shows two lines: systolic (upper) and diastolic (lower) with a legend.</p>
+        </DocBlock>
+
         <DocBlock title="Chart and Insights">
           <ul>
             <li>The chart uses straight line segments with points and an area fill below the line.</li>
@@ -112,9 +145,10 @@ export function DocumentationPage() {
 
         <DocBlock title="Settings Overview">
           <ul>
-            <li>Settings includes tag management, chart defaults, and chart colors.</li>
-            <li>Tags can be added, edited, renamed, ranged, sorted, and removed locally.</li>
-            <li>Chart defaults include preset date range and inside/outside/neutral colors.</li>
+            <li>Settings includes per-module tag management, chart defaults, and chart colors.</li>
+            <li>Tag management uses module tabs (Sugar, Weight, Height, BP) to manage tags independently.</li>
+            <li>BP tags have 4 range fields (systolic min/max, diastolic min/max).</li>
+            <li>Chart settings include preset date range and per-module inside/outside/neutral colors.</li>
             <li>Delete all local data restores the app to default local bootstrap state.</li>
           </ul>
         </DocBlock>
@@ -157,7 +191,8 @@ export function DocumentationPage() {
           </p>
           <ul>
             <li>Sugar reading entry, editing, and filtered list</li>
-            <li>Tag management and local chart settings</li>
+            <li>Weight, height, and blood pressure tracking with charts</li>
+            <li>Per-module tag management and chart color settings</li>
             <li>Chart insights with range-aware coloring</li>
             <li>Expanded Tests page demos for shared components</li>
           </ul>

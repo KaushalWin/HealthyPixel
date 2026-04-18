@@ -3,7 +3,7 @@ import { SiteShell } from '../../components/SiteShell';
 import { useAppData } from '../../context/AppDataContext';
 
 export function SettingsPage() {
-  const { resetAllData, settings, tags } = useAppData();
+  const { resetAllData, settings, tags, readings, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
 
   return (
     <SiteShell
@@ -32,7 +32,10 @@ export function SettingsPage() {
         <article className="doc-card settings-card">
           <h2>Current local data</h2>
           <ul>
-            <li>{tags.length} tags stored locally</li>
+            <li><strong>Sugar:</strong> {readings.length} readings, {tags.length} tags</li>
+            <li><strong>Weight:</strong> {weightReadings.length} readings, {weightTags.length} tags</li>
+            <li><strong>Height:</strong> {heightReadings.length} readings, {heightTags.length} tags</li>
+            <li><strong>BP:</strong> {bpReadings.length} readings, {bpTags.length} tags</li>
             <li>{settings.popularWindowDays}-day popular tag window</li>
           </ul>
         </article>

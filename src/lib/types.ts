@@ -6,6 +6,8 @@ export type ChartPreset = 'today' | 'lastWeek' | 'lastMonth' | 'thisMonth' | 'th
 
 export type ReadingStatus = 'inside' | 'outside' | 'neutral';
 
+export type VitalModule = 'sugar' | 'weight' | 'height' | 'bp';
+
 export type TagDefinition = {
   id: string;
   label: string;
@@ -18,9 +20,56 @@ export type TagDefinition = {
   rangeMax: number | null;
 };
 
+export type BpTagDefinition = {
+  id: string;
+  label: string;
+  type: TagType;
+  createdAtIso: string;
+  updatedAtIso: string;
+  usageCount: number;
+  lastUsedAtIso: string | null;
+  rangeMin: number | null;
+  rangeMax: number | null;
+  systolicMin: number | null;
+  systolicMax: number | null;
+  diastolicMin: number | null;
+  diastolicMax: number | null;
+};
+
 export type SugarReading = {
   id: string;
   value: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+  createdAtIso: string;
+  updatedAtIso: string;
+};
+
+export type WeightReading = {
+  id: string;
+  value: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+  createdAtIso: string;
+  updatedAtIso: string;
+};
+
+export type HeightReading = {
+  id: string;
+  value: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+  createdAtIso: string;
+  updatedAtIso: string;
+};
+
+export type BpReading = {
+  id: string;
+  systolic: number;
+  diastolic: number;
   readingDateTimeIso: string;
   tagIds: string[];
   note: string | null;
@@ -35,10 +84,27 @@ export type AppSettings = {
   chartColorInside: string;
   chartColorOutside: string;
   chartColorNeutral: string;
+  weightChartColorInside: string;
+  weightChartColorOutside: string;
+  weightChartColorNeutral: string;
+  heightChartColorInside: string;
+  heightChartColorOutside: string;
+  heightChartColorNeutral: string;
+  bpChartColorSystolic: string;
+  bpChartColorDiastolic: string;
+  bpChartColorNeutral: string;
 };
 
 export type ReadingDraft = {
   value: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+};
+
+export type BpDraft = {
+  systolic: number;
+  diastolic: number;
   readingDateTimeIso: string;
   tagIds: string[];
   note: string | null;
@@ -53,5 +119,11 @@ export type ReadingFilters = {
 export type AppDataShape = {
   readings: SugarReading[];
   tags: TagDefinition[];
+  weightReadings: WeightReading[];
+  weightTags: TagDefinition[];
+  heightReadings: HeightReading[];
+  heightTags: TagDefinition[];
+  bpReadings: BpReading[];
+  bpTags: BpTagDefinition[];
   settings: AppSettings;
 };

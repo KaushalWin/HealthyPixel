@@ -5,9 +5,16 @@ import { DateRangePicker } from '../components/sugar/DateRangePicker';
 import { SugarReadingForm } from '../components/sugar/SugarReadingForm';
 import { SugarReadingList } from '../components/sugar/SugarReadingList';
 import { TagSelector } from '../components/sugar/TagSelector';
+import { TagChipSelector } from '../components/TagChipSelector';
+import { WeightReadingForm } from '../components/weight/WeightReadingForm';
+import { WeightReadingList } from '../components/weight/WeightReadingList';
+import { HeightReadingForm } from '../components/height/HeightReadingForm';
+import { HeightReadingList } from '../components/height/HeightReadingList';
+import { BpReadingForm } from '../components/bp/BpReadingForm';
+import { BpReadingList } from '../components/bp/BpReadingList';
 import { SiteShell } from '../components/SiteShell';
 import { useAppData } from '../context/AppDataContext';
-import { buildPresetDateRange, createReadingDraft, sortReadingsDescending } from '../lib/readingUtils';
+import { buildPresetDateRange, createReadingDraft, createWeightDraft, createHeightDraft, createBpDraft, sortReadingsDescending } from '../lib/readingUtils';
 import type { ReadingFilters } from '../lib/types';
 
 type TestEntry = {
@@ -24,13 +31,125 @@ const previewFormatter = new Intl.DateTimeFormat('en-GB', {
 });
 
 export function TestsPage() {
-  const { readings, settings, tags } = useAppData();
+  const { readings, settings, tags, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
   const [selectedDateTime, setSelectedDateTime] = useState(() => new Date());
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [chipTags, setChipTags] = useState<string[]>([]);
   const [dateFilters, setDateFilters] = useState<ReadingFilters>(() => buildPresetDateRange('lastWeek'));
   const tagsById = useMemo(() => new Map(tags.map((tag) => [tag.id, tag])), [tags]);
+  const weightTagsById = useMemo(() => new Map(weightTags.map((t) => [t.id, t])), [weightTags]);
+  const heightTagsById = useMemo(() => new Map(heightTags.map((t) => [t.id, t])), [heightTags]);
+  const bpTagsById = useMemo(() => new Map(bpTags.map((t) => [t.id, t])), [bpTags]);
 
   const testEntries: TestEntry[] = [
+    {
+      id: 'tag-chip-selector',
+      title: 'Tag Chip Selector',
+      summary: 'Shared chip-based multi-select tag component used across all vital modules.',
+      content: (
+        <TagChipSelector
+          tags={tags}
+          readings={readings}
+          settings={settings}
+          selectedTagIds={chipTags}
+          onChange={setChipTags}
+          manageLinkTo="/settings/tags"
+        />
+      )
+    },
+    {
+      id: 'bp-reading-form',
+      title: 'BP Reading Form',
+      summary: 'Dual-input form for systolic/diastolic blood pressure with validation.',
+      content: (
+        <BpReadingForm
+          title="BP form demo"
+          submitLabel="Demo save"
+          initialValue={createBpDraft()}
+          tags={bpTags}
+          readings={bpReadings}
+          settings={settings}
+          listPath="/bp"
+          onSubmit={() => undefined}
+        />
+      )
+    },
+    {
+      id: 'bp-reading-list',
+      title: 'BP Reading List',
+      summary: 'Reusable BP list with systolic/diastolic display and classification badges.',
+      content: (
+        <BpReadingList
+          title="Demo BP list"
+          readings={sortReadingsDescending(bpReadings).slice(0, 3)}
+          tagsById={bpTagsById}
+          settings={settings}
+          emptyMessage="Add a BP reading to see this demo."
+        />
+      )
+    },
+    {
+      id: 'weight-reading-form',
+      title: 'Weight Reading Form',
+      summary: 'Weight entry form with chip tags and collapsible options.',
+      content: (
+        <WeightReadingForm
+          title="Weight form demo"
+          submitLabel="Demo save"
+          initialValue={createWeightDraft()}
+          tags={weightTags}
+          readings={weightReadings}
+          settings={settings}
+          listPath="/weight"
+          onSubmit={() => undefined}
+        />
+      )
+    },
+    {
+      id: 'weight-reading-list',
+      title: 'Weight Reading List',
+      summary: 'Reusable weight reading list with status badges.',
+      content: (
+        <WeightReadingList
+          title="Demo weight list"
+          readings={sortReadingsDescending(weightReadings).slice(0, 3)}
+          tagsById={weightTagsById}
+          settings={settings}
+          emptyMessage="Add a weight reading to see this demo."
+        />
+      )
+    },
+    {
+      id: 'height-reading-form',
+      title: 'Height Reading Form',
+      summary: 'Height entry form in centimetres with chip tags.',
+      content: (
+        <HeightReadingForm
+          title="Height form demo"
+          submitLabel="Demo save"
+          initialValue={createHeightDraft()}
+          tags={heightTags}
+          readings={heightReadings}
+          settings={settings}
+          listPath="/height"
+          onSubmit={() => undefined}
+        />
+      )
+    },
+    {
+      id: 'height-reading-list',
+      title: 'Height Reading List',
+      summary: 'Reusable height reading list with status badges.',
+      content: (
+        <HeightReadingList
+          title="Demo height list"
+          readings={sortReadingsDescending(heightReadings).slice(0, 3)}
+          tagsById={heightTagsById}
+          settings={settings}
+          emptyMessage="Add a height reading to see this demo."
+        />
+      )
+    },
     {
       id: 'sugar-reading-list',
       title: 'Sugar Reading List',

@@ -1,5 +1,8 @@
 import type {
   AppSettings,
+  BpDraft,
+  BpReading,
+  BpTagDefinition,
   ChartPreset,
   ReadingDraft,
   ReadingFilters,
@@ -7,6 +10,8 @@ import type {
   SugarReading,
   TagDefinition
 } from './types';
+
+type BaseReading = { readingDateTimeIso: string; tagIds: string[] };
 
 export function formatDateInput(date: Date) {
   const localValue = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -25,7 +30,7 @@ export function parseStoredJson<T>(value: string | null, fallback: T): T {
   }
 }
 
-export function applyReadingFilters(readings: SugarReading[], filters: ReadingFilters) {
+export function applyReadingFilters<T extends BaseReading>(readings: T[], filters: ReadingFilters): T[] {
   const startBoundary = filters.startDate ? `${filters.startDate}T00:00:00` : null;
   const endBoundary = filters.endDate ? `${filters.endDate}T23:59:59.999` : null;
 
@@ -46,13 +51,13 @@ export function applyReadingFilters(readings: SugarReading[], filters: ReadingFi
   });
 }
 
-export function sortReadingsDescending(readings: SugarReading[]) {
+export function sortReadingsDescending<T extends BaseReading>(readings: T[]): T[] {
   return [...readings].sort((left, right) =>
     right.readingDateTimeIso.localeCompare(left.readingDateTimeIso)
   );
 }
 
-export function sortReadingsAscending(readings: SugarReading[]) {
+export function sortReadingsAscending<T extends BaseReading>(readings: T[]): T[] {
   return [...readings].sort((left, right) =>
     left.readingDateTimeIso.localeCompare(right.readingDateTimeIso)
   );
@@ -167,7 +172,9 @@ export function buildReadingMetrics(readings: SugarReading[], tagsById: Map<stri
   };
 }
 
-export function syncTagStats(readings: SugarReading[], tags: TagDefinition[]) {
+export function syncTagStats<T extends BaseReading>(readings: T[], tags: BpTagDefinition[]): BpTagDefinition[];
+export function syncTagStats<T extends BaseReading>(readings: T[], tags: TagDefinition[]): TagDefinition[];
+export function syncTagStats<T extends BaseReading>(readings: T[], tags: (TagDefinition | BpTagDefinition)[]): (TagDefinition | BpTagDefinition)[] {
   const usageMap = new Map<string, { count: number; lastUsedAtIso: string | null }>();
 
   for (const reading of readings) {
@@ -193,11 +200,11 @@ export function syncTagStats(readings: SugarReading[], tags: TagDefinition[]) {
   });
 }
 
-export function sortTags(
-  tags: TagDefinition[],
+export function sortTags<T extends TagDefinition | BpTagDefinition>(
+  tags: T[],
   settings: AppSettings,
-  readings: SugarReading[]
-) {
+  readings: BaseReading[]
+): T[] {
   const sorted = [...tags];
 
   switch (settings.tagSortMode) {
@@ -238,4 +245,130 @@ export function sortTags(
   }
 
   return sorted;
+}
+
+export function createWeightDraft(now = new Date()): ReadingDraft {
+  return {
+    value: Number.NaN,
+    readingDateTimeIso: now.toISOString(),
+    tagIds: [],
+    note: ''
+  };
+}
+
+export function createHeightDraft(now = new Date()): ReadingDraft {
+  return {
+    value: Number.NaN,
+    readingDateTimeIso: now.toISOString(),
+    tagIds: [],
+    note: ''
+  };
+}
+
+export function createBpDraft(now = new Date()): BpDraft {
+  return {
+    systolic: Number.NaN,
+    diastolic: Number.NaN,
+    readingDateTimeIso: now.toISOString(),
+    tagIds: [],
+    note: ''
+  };
+}
+
+export function resolveBpReadingRange(tags: BpTagDefinition[]) {
+  const validTags = tags.filter(
+    (tag) =>
+      tag.systolicMin !== null ||
+      tag.systolicMax !== null ||
+      tag.diastolicMin !== null ||
+      tag.diastolicMax !== null
+  );
+  if (validTags.length === 0) {
+    return null;
+  }
+
+  const systolicMin = Math.max(
+    ...validTags.map((tag) => tag.systolicMin ?? Number.NEGATIVE_INFINITY)
+  );
+  const systolicMax = Math.min(
+    ...validTags.map((tag) => tag.systolicMax ?? Number.POSITIVE_INFINITY)
+  );
+  const diastolicMin = Math.max(
+    ...validTags.map((tag) => tag.diastolicMin ?? Number.NEGATIVE_INFINITY)
+  );
+  const diastolicMax = Math.min(
+    ...validTags.map((tag) => tag.diastolicMax ?? Number.POSITIVE_INFINITY)
+  );
+
+  return {
+    systolicMin: Number.isFinite(systolicMin) ? systolicMin : null,
+    systolicMax: Number.isFinite(systolicMax) ? systolicMax : null,
+    diastolicMin: Number.isFinite(diastolicMin) ? diastolicMin : null,
+    diastolicMax: Number.isFinite(diastolicMax) ? diastolicMax : null
+  };
+}
+
+export function classifyBpReading(
+  reading: BpReading,
+  tags: BpTagDefinition[]
+): { status: ReadingStatus; range: ReturnType<typeof resolveBpReadingRange> } {
+  const range = resolveBpReadingRange(tags);
+  if (!range) {
+    return { status: 'neutral', range: null };
+  }
+
+  const sysOutside =
+    (range.systolicMin !== null && reading.systolic < range.systolicMin) ||
+    (range.systolicMax !== null && reading.systolic > range.systolicMax);
+  const diaOutside =
+    (range.diastolicMin !== null && reading.diastolic < range.diastolicMin) ||
+    (range.diastolicMax !== null && reading.diastolic > range.diastolicMax);
+
+  if (sysOutside || diaOutside) {
+    return { status: 'outside', range };
+  }
+
+  return { status: 'inside', range };
+}
+
+export function buildBpReadingMetrics(
+  readings: BpReading[],
+  tagsById: Map<string, BpTagDefinition>
+) {
+  let insideCount = 0;
+  let outsideCount = 0;
+  let neutralCount = 0;
+
+  for (const reading of readings) {
+    const tags = reading.tagIds
+      .map((tagId) => tagsById.get(tagId))
+      .filter(Boolean) as BpTagDefinition[];
+    const status = classifyBpReading(reading, tags).status;
+    if (status === 'inside') {
+      insideCount += 1;
+    } else if (status === 'outside') {
+      outsideCount += 1;
+    } else {
+      neutralCount += 1;
+    }
+  }
+
+  const evaluatedCount = insideCount + outsideCount;
+
+  return {
+    totalCount: readings.length,
+    insideCount,
+    outsideCount,
+    neutralCount,
+    insidePercent: evaluatedCount === 0 ? 0 : Math.round((insideCount / evaluatedCount) * 100),
+    outsidePercent: evaluatedCount === 0 ? 0 : Math.round((outsideCount / evaluatedCount) * 100),
+    highestSystolic:
+      readings.length === 0 ? null : Math.max(...readings.map((r) => r.systolic)),
+    lowestSystolic:
+      readings.length === 0 ? null : Math.min(...readings.map((r) => r.systolic)),
+    highestDiastolic:
+      readings.length === 0 ? null : Math.max(...readings.map((r) => r.diastolic)),
+    lowestDiastolic:
+      readings.length === 0 ? null : Math.min(...readings.map((r) => r.diastolic))
+  };
 }

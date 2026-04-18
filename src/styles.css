@@ -169,6 +169,9 @@ a {
   background: var(--card);
   box-shadow: var(--shadow-soft);
   min-width: 9.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .main-menu {
@@ -240,6 +243,8 @@ a {
   color: var(--ink-strong);
   font-weight: 600;
   font-size: 0.9rem;
+  text-align: center;
+  white-space: nowrap;
   transition: background-color 180ms ease, border-color 180ms ease;
 }
 
@@ -794,6 +799,142 @@ a {
 
 .three-column-grid.align-end {
   align-items: end;
+}
+
+/* ─── Tag Chip Selector ─── */
+
+.tag-chip-selector {
+  margin-top: 0.5rem;
+}
+
+.tag-chip-selector__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0.7rem;
+  border: 1.5px solid var(--brand);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 8%, var(--card) 92%);
+  color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  min-height: 36px;
+  user-select: none;
+}
+
+.chip-pill:hover {
+  background: color-mix(in srgb, var(--brand) 18%, var(--card) 82%);
+}
+
+.chip-pill.selected {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+.chip-pill.selected:hover {
+  background: color-mix(in srgb, var(--brand) 85%, #000 15%);
+}
+
+.chip-pill__hash {
+  font-weight: 800;
+}
+
+.chip-pill__heart {
+  font-size: 0.85rem;
+  margin-left: 0.15rem;
+}
+
+.chip-manage-link {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+}
+
+/* ─── BP Dual Value ─── */
+
+.bp-value-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.bp-value-separator {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  padding-bottom: 0.6rem;
+}
+
+/* ─── Four Column Grid (BP tag ranges) ─── */
+
+.four-column-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.four-column-grid.align-end {
+  align-items: end;
+}
+
+/* ─── Module Tabs ─── */
+
+.module-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.module-tab {
+  padding: 0.4rem 0.85rem;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.module-tab:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.module-tab.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+/* ─── Vitals Nav Sub-sections ─── */
+
+.main-menu__subsection {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--line);
+  margin-top: 0.35rem;
+}
+
+.main-menu__subsection-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: 0.15rem;
+  margin-top: 0.5rem;
 }
 
 .settings-list-item {

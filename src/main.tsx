@@ -36,6 +36,42 @@ const TagManagementPage = React.lazy(() =>
 const ChartSettingsPage = React.lazy(() =>
   import('./pages/settings/ChartSettingsPage').then((module) => ({ default: module.ChartSettingsPage }))
 );
+const AddWeightReadingPage = React.lazy(() =>
+  import('./pages/AddWeightReadingPage').then((module) => ({ default: module.AddWeightReadingPage }))
+);
+const EditWeightReadingPage = React.lazy(() =>
+  import('./pages/EditWeightReadingPage').then((module) => ({ default: module.EditWeightReadingPage }))
+);
+const WeightReadingsPage = React.lazy(() =>
+  import('./pages/WeightReadingsPage').then((module) => ({ default: module.WeightReadingsPage }))
+);
+const WeightChartPage = React.lazy(() =>
+  import('./pages/WeightChartPage').then((module) => ({ default: module.WeightChartPage }))
+);
+const AddHeightReadingPage = React.lazy(() =>
+  import('./pages/AddHeightReadingPage').then((module) => ({ default: module.AddHeightReadingPage }))
+);
+const EditHeightReadingPage = React.lazy(() =>
+  import('./pages/EditHeightReadingPage').then((module) => ({ default: module.EditHeightReadingPage }))
+);
+const HeightReadingsPage = React.lazy(() =>
+  import('./pages/HeightReadingsPage').then((module) => ({ default: module.HeightReadingsPage }))
+);
+const HeightChartPage = React.lazy(() =>
+  import('./pages/HeightChartPage').then((module) => ({ default: module.HeightChartPage }))
+);
+const AddBpReadingPage = React.lazy(() =>
+  import('./pages/AddBpReadingPage').then((module) => ({ default: module.AddBpReadingPage }))
+);
+const EditBpReadingPage = React.lazy(() =>
+  import('./pages/EditBpReadingPage').then((module) => ({ default: module.EditBpReadingPage }))
+);
+const BpReadingsPage = React.lazy(() =>
+  import('./pages/BpReadingsPage').then((module) => ({ default: module.BpReadingsPage }))
+);
+const BpChartPage = React.lazy(() =>
+  import('./pages/BpChartPage').then((module) => ({ default: module.BpChartPage }))
+);
 
 const currentHost = window.location.hostname;
 const isLocalHost = isLocalOrPrivateHost(currentHost);
@@ -76,6 +112,18 @@ function App() {
             <Route path="/sugar/list" element={<SugarReadingsPage />} />
             <Route path="/sugar/edit/:readingId" element={<EditSugarReadingPage />} />
             <Route path="/sugar/chart" element={<SugarChartPage />} />
+            <Route path="/weight/add" element={<AddWeightReadingPage />} />
+            <Route path="/weight/list" element={<WeightReadingsPage />} />
+            <Route path="/weight/edit/:readingId" element={<EditWeightReadingPage />} />
+            <Route path="/weight/chart" element={<WeightChartPage />} />
+            <Route path="/height/add" element={<AddHeightReadingPage />} />
+            <Route path="/height/list" element={<HeightReadingsPage />} />
+            <Route path="/height/edit/:readingId" element={<EditHeightReadingPage />} />
+            <Route path="/height/chart" element={<HeightChartPage />} />
+            <Route path="/bp/add" element={<AddBpReadingPage />} />
+            <Route path="/bp/list" element={<BpReadingsPage />} />
+            <Route path="/bp/edit/:readingId" element={<EditBpReadingPage />} />
+            <Route path="/bp/chart" element={<BpChartPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/settings/tags" element={<TagManagementPage />} />
             <Route path="/settings/chart" element={<ChartSettingsPage />} />

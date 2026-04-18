@@ -32,11 +32,40 @@ const NAV_SECTIONS = [
     ]
   },
   {
-    title: 'Sugar',
-    links: [
-      { to: '/sugar/add', label: 'Add Sugar' },
-      { to: '/sugar/list', label: 'Sugar List' },
-      { to: '/sugar/chart', label: 'Charts' }
+    title: 'Vitals',
+    subsections: [
+      {
+        subtitle: 'Sugar',
+        links: [
+          { to: '/sugar/add', label: 'Add Sugar' },
+          { to: '/sugar/list', label: 'Sugar List' },
+          { to: '/sugar/chart', label: 'Sugar Chart' }
+        ]
+      },
+      {
+        subtitle: 'Weight',
+        links: [
+          { to: '/weight/add', label: 'Add Weight' },
+          { to: '/weight/list', label: 'Weight List' },
+          { to: '/weight/chart', label: 'Weight Chart' }
+        ]
+      },
+      {
+        subtitle: 'Height',
+        links: [
+          { to: '/height/add', label: 'Add Height' },
+          { to: '/height/list', label: 'Height List' },
+          { to: '/height/chart', label: 'Height Chart' }
+        ]
+      },
+      {
+        subtitle: 'Blood Pressure',
+        links: [
+          { to: '/bp/add', label: 'Add BP' },
+          { to: '/bp/list', label: 'BP List' },
+          { to: '/bp/chart', label: 'BP Chart' }
+        ]
+      }
     ]
   },
   {
@@ -127,14 +156,10 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
             </button>
             {isQuickActionsOpen ? (
               <div className="quick-popover" role="menu" aria-label="Quick actions">
-                <Link
-                  to="/sugar/add"
-                  className="quick-action-link primary"
-                  role="menuitem"
-                  onClick={() => setIsQuickActionsOpen(false)}
-                >
-                  Add Sugar
-                </Link>
+                <Link to="/sugar/add" className="quick-action-link primary" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Sugar</Link>
+                <Link to="/weight/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Weight</Link>
+                <Link to="/height/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Height</Link>
+                <Link to="/bp/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add BP</Link>
               </div>
             ) : null}
           </div>
@@ -167,18 +192,38 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
           {NAV_SECTIONS.map((section) => (
             <section key={section.title} className="main-menu__section">
               <p className="main-menu__section-title">{section.title}</p>
-              <div className="main-menu__links">
-                {section.links.map((link) => (
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                    activeOn={'activeOn' in link ? [...link.activeOn] : undefined}
-                    onNavigate={() => setIsMenuOpen(false)}
-                  >
-                    {link.label}
-                  </NavLink>
-                ))}
-              </div>
+              {'links' in section ? (
+                <div className="main-menu__links">
+                  {section.links.map((link) => (
+                    <NavLink
+                      key={link.to}
+                      to={link.to}
+                      activeOn={'activeOn' in link ? [...link.activeOn] : undefined}
+                      onNavigate={() => setIsMenuOpen(false)}
+                    >
+                      {link.label}
+                    </NavLink>
+                  ))}
+                </div>
+              ) : null}
+              {'subsections' in section
+                ? section.subsections.map((sub) => (
+                    <div key={sub.subtitle} className="main-menu__subsection">
+                      <p className="main-menu__subsection-title">{sub.subtitle}</p>
+                      <div className="main-menu__links">
+                        {sub.links.map((link) => (
+                          <NavLink
+                            key={link.to}
+                            to={link.to}
+                            onNavigate={() => setIsMenuOpen(false)}
+                          >
+                            {link.label}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                : null}
             </section>
           ))}
         </nav>

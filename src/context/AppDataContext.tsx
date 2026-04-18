@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { createDefaultTags, DEFAULT_SETTINGS, STORAGE_KEYS } from '../lib/defaults';
+import { createDefaultBpTags, createDefaultHeightTags, createDefaultTags, createDefaultWeightTags, DEFAULT_SETTINGS, STORAGE_KEYS } from '../lib/defaults';
 import { createStableId, safeLocalStorageGet, safeLocalStorageSet } from '../lib/platform';
 import { parseStoredJson, syncTagStats } from '../lib/readingUtils';
-import type { AppDataShape, AppSettings, ReadingDraft, SugarReading, TagDefinition } from '../lib/types';
+import type { AppDataShape, AppSettings, BpDraft, BpReading, BpTagDefinition, HeightReading, ReadingDraft, SugarReading, TagDefinition, WeightReading } from '../lib/types';
 
 type AppDataContextValue = AppDataShape & {
   addReading: (draft: ReadingDraft) => SugarReading;
@@ -11,6 +11,25 @@ type AppDataContextValue = AppDataShape & {
   addTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
   updateTag: (tagId: string, updates: Partial<Omit<TagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
   removeTag: (tagId: string) => void;
+
+  addWeightReading: (draft: ReadingDraft) => WeightReading;
+  updateWeightReading: (readingId: string, draft: ReadingDraft) => WeightReading | null;
+  addWeightTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
+  updateWeightTag: (tagId: string, updates: Partial<Omit<TagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  removeWeightTag: (tagId: string) => void;
+
+  addHeightReading: (draft: ReadingDraft) => HeightReading;
+  updateHeightReading: (readingId: string, draft: ReadingDraft) => HeightReading | null;
+  addHeightTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
+  updateHeightTag: (tagId: string, updates: Partial<Omit<TagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  removeHeightTag: (tagId: string) => void;
+
+  addBpReading: (draft: BpDraft) => BpReading;
+  updateBpReading: (readingId: string, draft: BpDraft) => BpReading | null;
+  addBpTag: (label: string, systolicMin: number | null, systolicMax: number | null, diastolicMin: number | null, diastolicMax: number | null) => BpTagDefinition;
+  updateBpTag: (tagId: string, updates: Partial<Omit<BpTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  removeBpTag: (tagId: string) => void;
+
   updateSettings: (updates: Partial<AppSettings>) => void;
   resetAllData: () => void;
 };
@@ -24,6 +43,21 @@ function loadInitialAppData(): AppDataShape {
     safeLocalStorageGet(STORAGE_KEYS.tags),
     createDefaultTags(nowIso)
   );
+  const weightReadings = parseStoredJson<WeightReading[]>(safeLocalStorageGet(STORAGE_KEYS.weightReadings), []);
+  const weightTags = parseStoredJson<TagDefinition[]>(
+    safeLocalStorageGet(STORAGE_KEYS.weightTags),
+    createDefaultWeightTags(nowIso)
+  );
+  const heightReadings = parseStoredJson<HeightReading[]>(safeLocalStorageGet(STORAGE_KEYS.heightReadings), []);
+  const heightTags = parseStoredJson<TagDefinition[]>(
+    safeLocalStorageGet(STORAGE_KEYS.heightTags),
+    createDefaultHeightTags(nowIso)
+  );
+  const bpReadings = parseStoredJson<BpReading[]>(safeLocalStorageGet(STORAGE_KEYS.bpReadings), []);
+  const bpTags = parseStoredJson<BpTagDefinition[]>(
+    safeLocalStorageGet(STORAGE_KEYS.bpTags),
+    createDefaultBpTags(nowIso)
+  );
   const settings = parseStoredJson<AppSettings>(
     safeLocalStorageGet(STORAGE_KEYS.settings),
     DEFAULT_SETTINGS
@@ -32,6 +66,12 @@ function loadInitialAppData(): AppDataShape {
   return {
     readings,
     tags: syncTagStats(readings, tags),
+    weightReadings,
+    weightTags: syncTagStats(weightReadings, weightTags),
+    heightReadings,
+    heightTags: syncTagStats(heightReadings, heightTags),
+    bpReadings,
+    bpTags: syncTagStats(bpReadings, bpTags),
     settings: { ...DEFAULT_SETTINGS, ...settings }
   };
 }
@@ -46,6 +86,30 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     safeLocalStorageSet(STORAGE_KEYS.tags, JSON.stringify(state.tags));
   }, [state.tags]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.weightReadings, JSON.stringify(state.weightReadings));
+  }, [state.weightReadings]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.weightTags, JSON.stringify(state.weightTags));
+  }, [state.weightTags]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.heightReadings, JSON.stringify(state.heightReadings));
+  }, [state.heightReadings]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.heightTags, JSON.stringify(state.heightTags));
+  }, [state.heightTags]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.bpReadings, JSON.stringify(state.bpReadings));
+  }, [state.bpReadings]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.bpTags, JSON.stringify(state.bpTags));
+  }, [state.bpTags]);
 
   useEffect(() => {
     safeLocalStorageSet(STORAGE_KEYS.settings, JSON.stringify(state.settings));
@@ -189,6 +253,185 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         };
       });
     },
+
+    addWeightReading: (draft) => {
+      const nowIso = new Date().toISOString();
+      const reading: WeightReading = {
+        id: createStableId(),
+        value: draft.value,
+        readingDateTimeIso: draft.readingDateTimeIso,
+        tagIds: draft.tagIds,
+        note: draft.note?.trim() ? draft.note.trim() : null,
+        createdAtIso: nowIso,
+        updatedAtIso: nowIso
+      };
+      setState((current) => {
+        const nextReadings = [...current.weightReadings, reading];
+        return { ...current, weightReadings: nextReadings, weightTags: syncTagStats(nextReadings, current.weightTags) };
+      });
+      return reading;
+    },
+    updateWeightReading: (readingId, draft) => {
+      let updatedReading: WeightReading | null = null;
+      setState((current) => {
+        const nextReadings = current.weightReadings.map((r) => {
+          if (r.id !== readingId) return r;
+          updatedReading = { ...r, value: draft.value, readingDateTimeIso: draft.readingDateTimeIso, tagIds: draft.tagIds, note: draft.note?.trim() ? draft.note.trim() : null, updatedAtIso: new Date().toISOString() };
+          return updatedReading;
+        });
+        return { ...current, weightReadings: nextReadings, weightTags: syncTagStats(nextReadings, current.weightTags) };
+      });
+      return updatedReading;
+    },
+    addWeightTag: (label, rangeMin, rangeMax) => {
+      const nowIso = new Date().toISOString();
+      const tag: TagDefinition = { id: createStableId(), label: label.trim(), type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin, rangeMax };
+      setState((current) => ({ ...current, weightTags: [...current.weightTags, tag] }));
+      return tag;
+    },
+    updateWeightTag: (tagId, updates) => {
+      setState((current) => ({
+        ...current,
+        weightTags: current.weightTags.map((tag) => {
+          if (tag.id !== tagId) return tag;
+          const trimmedLabel = updates.label?.trim();
+          const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.weightTags.some((c) => c.id !== tagId && c.label.toLowerCase() === trimmedLabel.toLowerCase());
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          let resolvedMin = updates.rangeMin ?? tag.rangeMin;
+          let resolvedMax = updates.rangeMax ?? tag.rangeMax;
+          if (resolvedMin !== null && resolvedMax !== null && resolvedMin > resolvedMax) {
+            if (updates.rangeMin !== undefined && updates.rangeMax === undefined) resolvedMax = resolvedMin;
+            else if (updates.rangeMax !== undefined && updates.rangeMin === undefined) resolvedMin = resolvedMax;
+          }
+          return { ...tag, ...updates, label: resolvedLabel, rangeMin: resolvedMin, rangeMax: resolvedMax, updatedAtIso: new Date().toISOString() };
+        })
+      }));
+    },
+    removeWeightTag: (tagId) => {
+      setState((current) => {
+        const nextTags = current.weightTags.filter((t) => t.id !== tagId);
+        const nextReadings = current.weightReadings.map((r) => ({ ...r, tagIds: r.tagIds.filter((v) => v !== tagId) }));
+        return { ...current, weightTags: syncTagStats(nextReadings, nextTags), weightReadings: nextReadings };
+      });
+    },
+
+    addHeightReading: (draft) => {
+      const nowIso = new Date().toISOString();
+      const reading: HeightReading = {
+        id: createStableId(),
+        value: draft.value,
+        readingDateTimeIso: draft.readingDateTimeIso,
+        tagIds: draft.tagIds,
+        note: draft.note?.trim() ? draft.note.trim() : null,
+        createdAtIso: nowIso,
+        updatedAtIso: nowIso
+      };
+      setState((current) => {
+        const nextReadings = [...current.heightReadings, reading];
+        return { ...current, heightReadings: nextReadings, heightTags: syncTagStats(nextReadings, current.heightTags) };
+      });
+      return reading;
+    },
+    updateHeightReading: (readingId, draft) => {
+      let updatedReading: HeightReading | null = null;
+      setState((current) => {
+        const nextReadings = current.heightReadings.map((r) => {
+          if (r.id !== readingId) return r;
+          updatedReading = { ...r, value: draft.value, readingDateTimeIso: draft.readingDateTimeIso, tagIds: draft.tagIds, note: draft.note?.trim() ? draft.note.trim() : null, updatedAtIso: new Date().toISOString() };
+          return updatedReading;
+        });
+        return { ...current, heightReadings: nextReadings, heightTags: syncTagStats(nextReadings, current.heightTags) };
+      });
+      return updatedReading;
+    },
+    addHeightTag: (label, rangeMin, rangeMax) => {
+      const nowIso = new Date().toISOString();
+      const tag: TagDefinition = { id: createStableId(), label: label.trim(), type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin, rangeMax };
+      setState((current) => ({ ...current, heightTags: [...current.heightTags, tag] }));
+      return tag;
+    },
+    updateHeightTag: (tagId, updates) => {
+      setState((current) => ({
+        ...current,
+        heightTags: current.heightTags.map((tag) => {
+          if (tag.id !== tagId) return tag;
+          const trimmedLabel = updates.label?.trim();
+          const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.heightTags.some((c) => c.id !== tagId && c.label.toLowerCase() === trimmedLabel.toLowerCase());
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          let resolvedMin = updates.rangeMin ?? tag.rangeMin;
+          let resolvedMax = updates.rangeMax ?? tag.rangeMax;
+          if (resolvedMin !== null && resolvedMax !== null && resolvedMin > resolvedMax) {
+            if (updates.rangeMin !== undefined && updates.rangeMax === undefined) resolvedMax = resolvedMin;
+            else if (updates.rangeMax !== undefined && updates.rangeMin === undefined) resolvedMin = resolvedMax;
+          }
+          return { ...tag, ...updates, label: resolvedLabel, rangeMin: resolvedMin, rangeMax: resolvedMax, updatedAtIso: new Date().toISOString() };
+        })
+      }));
+    },
+    removeHeightTag: (tagId) => {
+      setState((current) => {
+        const nextTags = current.heightTags.filter((t) => t.id !== tagId);
+        const nextReadings = current.heightReadings.map((r) => ({ ...r, tagIds: r.tagIds.filter((v) => v !== tagId) }));
+        return { ...current, heightTags: syncTagStats(nextReadings, nextTags), heightReadings: nextReadings };
+      });
+    },
+
+    addBpReading: (draft) => {
+      const nowIso = new Date().toISOString();
+      const reading: BpReading = {
+        id: createStableId(),
+        systolic: draft.systolic,
+        diastolic: draft.diastolic,
+        readingDateTimeIso: draft.readingDateTimeIso,
+        tagIds: draft.tagIds,
+        note: draft.note?.trim() ? draft.note.trim() : null,
+        createdAtIso: nowIso,
+        updatedAtIso: nowIso
+      };
+      setState((current) => {
+        const nextReadings = [...current.bpReadings, reading];
+        return { ...current, bpReadings: nextReadings, bpTags: syncTagStats(nextReadings, current.bpTags) };
+      });
+      return reading;
+    },
+    updateBpReading: (readingId, draft) => {
+      let updatedReading: BpReading | null = null;
+      setState((current) => {
+        const nextReadings = current.bpReadings.map((r) => {
+          if (r.id !== readingId) return r;
+          updatedReading = { ...r, systolic: draft.systolic, diastolic: draft.diastolic, readingDateTimeIso: draft.readingDateTimeIso, tagIds: draft.tagIds, note: draft.note?.trim() ? draft.note.trim() : null, updatedAtIso: new Date().toISOString() };
+          return updatedReading;
+        });
+        return { ...current, bpReadings: nextReadings, bpTags: syncTagStats(nextReadings, current.bpTags) };
+      });
+      return updatedReading;
+    },
+    addBpTag: (label, systolicMin, systolicMax, diastolicMin, diastolicMax) => {
+      const nowIso = new Date().toISOString();
+      const tag: BpTagDefinition = { id: createStableId(), label: label.trim(), type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin: null, rangeMax: null, systolicMin, systolicMax, diastolicMin, diastolicMax };
+      setState((current) => ({ ...current, bpTags: [...current.bpTags, tag] }));
+      return tag;
+    },
+    updateBpTag: (tagId, updates) => {
+      setState((current) => ({
+        ...current,
+        bpTags: current.bpTags.map((tag) => {
+          if (tag.id !== tagId) return tag;
+          const trimmedLabel = updates.label?.trim();
+          const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.bpTags.some((c) => c.id !== tagId && c.label.toLowerCase() === trimmedLabel.toLowerCase());
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          return { ...tag, ...updates, label: resolvedLabel, updatedAtIso: new Date().toISOString() };
+        })
+      }));
+    },
+    removeBpTag: (tagId) => {
+      setState((current) => {
+        const nextTags = current.bpTags.filter((t) => t.id !== tagId);
+        const nextReadings = current.bpReadings.map((r) => ({ ...r, tagIds: r.tagIds.filter((v) => v !== tagId) }));
+        return { ...current, bpTags: syncTagStats(nextReadings, nextTags), bpReadings: nextReadings };
+      });
+    },
+
     updateSettings: (updates) => {
       setState((current) => ({
         ...current,
@@ -203,6 +446,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       setState({
         readings: [],
         tags: createDefaultTags(nowIso),
+        weightReadings: [],
+        weightTags: createDefaultWeightTags(nowIso),
+        heightReadings: [],
+        heightTags: createDefaultHeightTags(nowIso),
+        bpReadings: [],
+        bpTags: createDefaultBpTags(nowIso),
         settings: DEFAULT_SETTINGS
       });
     }

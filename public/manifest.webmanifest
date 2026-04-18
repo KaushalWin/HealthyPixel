@@ -29,13 +29,28 @@
       "short_name": "Add Sugar",
       "description": "Open the sugar reading entry page",
       "url": "./#/sugar/add",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Add Weight",
+      "short_name": "Add Weight",
+      "description": "Open the weight entry page",
+      "url": "./#/weight/add",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Add Height",
+      "short_name": "Add Height",
+      "description": "Open the height entry page",
+      "url": "./#/height/add",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Add BP",
+      "short_name": "Add BP",
+      "description": "Open the blood pressure entry page",
+      "url": "./#/bp/add",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
