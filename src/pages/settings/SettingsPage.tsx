@@ -1,9 +1,23 @@
 import { Link } from 'react-router-dom';
 import { SiteShell } from '../../components/SiteShell';
 import { useAppData } from '../../context/AppDataContext';
+import type { VitalModule } from '../../lib/types';
+
+const MODULE_LABELS: { key: VitalModule; label: string }[] = [
+  { key: 'sugar', label: 'Sugar' },
+  { key: 'weight', label: 'Weight' },
+  { key: 'height', label: 'Height' },
+  { key: 'bp', label: 'Blood Pressure' }
+];
 
 export function SettingsPage() {
-  const { resetAllData, settings, tags, readings, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
+  const { resetAllData, settings, updateSettings, tags, readings, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
+
+  const toggleModule = (mod: VitalModule) => {
+    const current = settings.dashboardModules;
+    const next = current.includes(mod) ? current.filter((m) => m !== mod) : [...current, mod];
+    updateSettings({ dashboardModules: next });
+  };
 
   return (
     <SiteShell
@@ -11,6 +25,23 @@ export function SettingsPage() {
       subtitle="Manage tags, chart defaults, colors, and local reset actions from one place."
     >
       <section className="doc-grid settings-grid">
+        <article className="doc-card settings-card">
+          <h2>Dashboard modules</h2>
+          <p>Choose which vitals appear on the Analysis page.</p>
+          <div className="dashboard-toggles">
+            {MODULE_LABELS.map(({ key, label }) => (
+              <label key={key} className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={settings.dashboardModules.includes(key)}
+                  onChange={() => toggleModule(key)}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+        </article>
+
         <article className="doc-card settings-card">
           <h2>Tag management</h2>
           <p>Manage built-in and custom tags, ranges, and selector ordering.</p>

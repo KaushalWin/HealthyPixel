@@ -72,6 +72,9 @@ const BpReadingsPage = React.lazy(() =>
 const BpChartPage = React.lazy(() =>
   import('./pages/BpChartPage').then((module) => ({ default: module.BpChartPage }))
 );
+const AnalysisPage = React.lazy(() =>
+  import('./pages/AnalysisPage').then((module) => ({ default: module.AnalysisPage }))
+);
 
 const currentHost = window.location.hostname;
 const isLocalHost = isLocalOrPrivateHost(currentHost);
@@ -108,6 +111,7 @@ function App() {
             <Route path="/help" element={<DocumentationPage />} />
             <Route path="/tests" element={<TestsPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/sugar/add" element={<AddSugarReadingPage />} />
             <Route path="/sugar/list" element={<SugarReadingsPage />} />
             <Route path="/sugar/edit/:readingId" element={<EditSugarReadingPage />} />

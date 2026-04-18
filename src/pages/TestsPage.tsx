@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { DateTimePicker } from '../components/DateTimePicker';
 import { DateRangePicker } from '../components/sugar/DateRangePicker';
 import { SugarReadingForm } from '../components/sugar/SugarReadingForm';
@@ -15,7 +16,7 @@ import { BpReadingList } from '../components/bp/BpReadingList';
 import { SiteShell } from '../components/SiteShell';
 import { useAppData } from '../context/AppDataContext';
 import { buildPresetDateRange, createReadingDraft, createWeightDraft, createHeightDraft, createBpDraft, sortReadingsDescending } from '../lib/readingUtils';
-import type { ReadingFilters } from '../lib/types';
+import type { ReadingFilters, VitalModule } from '../lib/types';
 
 type TestEntry = {
   id: string;
@@ -31,7 +32,7 @@ const previewFormatter = new Intl.DateTimeFormat('en-GB', {
 });
 
 export function TestsPage() {
-  const { readings, settings, tags, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
+  const { readings, settings, updateSettings, tags, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
   const [selectedDateTime, setSelectedDateTime] = useState(() => new Date());
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [chipTags, setChipTags] = useState<string[]>([]);
@@ -42,6 +43,46 @@ export function TestsPage() {
   const bpTagsById = useMemo(() => new Map(bpTags.map((t) => [t.id, t])), [bpTags]);
 
   const testEntries: TestEntry[] = [
+    {
+      id: 'analysis-dashboard',
+      title: 'Analysis Dashboard',
+      summary: 'Live dashboard module toggles and summary. Toggle modules here then visit the dashboard to verify.',
+      content: (
+        <div className="test-demo-stack">
+          <p style={{ fontSize: '0.85rem', color: 'var(--ink-soft)' }}>
+            <strong>Enabled modules:</strong> {settings.dashboardModules.length === 0 ? 'None' : settings.dashboardModules.join(', ')}
+          </p>
+          <div className="dashboard-toggles">
+            {(['sugar', 'weight', 'height', 'bp'] as VitalModule[]).map((mod) => (
+              <label key={mod} className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={settings.dashboardModules.includes(mod)}
+                  onChange={() => {
+                    const current = settings.dashboardModules;
+                    const next = current.includes(mod) ? current.filter((m) => m !== mod) : [...current, mod];
+                    updateSettings({ dashboardModules: next });
+                  }}
+                />
+                <span>{mod.charAt(0).toUpperCase() + mod.slice(1)}</span>
+              </label>
+            ))}
+          </div>
+          <p style={{ fontSize: '0.85rem', color: 'var(--ink-soft)', marginTop: '0.5rem' }}>
+            <strong>Preset:</strong> {settings.dashboardChartPreset}
+          </p>
+          <div className="test-result-card" aria-live="polite">
+            <p className="test-result-label">Data counts</p>
+            <p className="test-result-value">
+              Sugar: {readings.length} · Weight: {weightReadings.length} · Height: {heightReadings.length} · BP: {bpReadings.length}
+            </p>
+          </div>
+          <Link to="/analysis" className="primary-button inline-block" style={{ marginTop: '0.5rem' }}>
+            Open Analysis Dashboard →
+          </Link>
+        </div>
+      )
+    },
     {
       id: 'tag-chip-selector',
       title: 'Tag Chip Selector',

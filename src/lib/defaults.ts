@@ -43,7 +43,9 @@ export const DEFAULT_SETTINGS: AppSettings = {
   heightChartColorNeutral: '#e67e22',
   bpChartColorSystolic: '#d64045',
   bpChartColorDiastolic: '#2176d2',
-  bpChartColorNeutral: '#888888'
+  bpChartColorNeutral: '#888888',
+  dashboardModules: ['sugar', 'weight', 'height', 'bp'],
+  dashboardChartPreset: 'lastWeek'
 };
 
 const BUILT_IN_TAG_SEEDS: BuiltInTagSeed[] = [

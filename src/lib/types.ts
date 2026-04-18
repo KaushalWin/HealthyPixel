@@ -93,6 +93,8 @@ export type AppSettings = {
   bpChartColorSystolic: string;
   bpChartColorDiastolic: string;
   bpChartColorNeutral: string;
+  dashboardModules: VitalModule[];
+  dashboardChartPreset: ChartPreset;
 };
 
 export type ReadingDraft = {
