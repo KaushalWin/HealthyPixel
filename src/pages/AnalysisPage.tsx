@@ -18,7 +18,6 @@ import {
   buildBpReadingMetrics,
   buildPresetDateRange,
   buildReadingMetrics,
-  classifyBpReading,
   classifyReading,
   sortReadingsAscending,
   sortReadingsDescending
@@ -217,15 +216,13 @@ function BpModuleCard({
   tags,
   filters,
   colorSystolic,
-  colorDiastolic,
-  colorNeutral
+  colorDiastolic
 }: {
   readings: BpReading[];
   tags: BpTagDefinition[];
   filters: ReadingFilters;
   colorSystolic: string;
   colorDiastolic: string;
-  colorNeutral: string;
 }) {
   const meta = MODULE_META.bp;
   const filtered = useMemo(() => applyReadingFilters(readings, filters), [readings, filters]);
@@ -415,7 +412,6 @@ export function AnalysisPage() {
             filters={filters}
             colorSystolic={settings.bpChartColorSystolic}
             colorDiastolic={settings.bpChartColorDiastolic}
-            colorNeutral={settings.bpChartColorNeutral}
           />
         )}
       </section>

@@ -15,6 +15,9 @@ const AboutPage = React.lazy(() =>
 const TestsPage = React.lazy(() =>
   import('./pages/TestsPage').then((module) => ({ default: module.TestsPage }))
 );
+const AiHealthChatPage = React.lazy(() =>
+  import('./pages/AiHealthChatPage').then((module) => ({ default: module.AiHealthChatPage }))
+);
 const AddSugarReadingPage = React.lazy(() =>
   import('./pages/AddSugarReadingPage').then((module) => ({ default: module.AddSugarReadingPage }))
 );
@@ -110,6 +113,7 @@ function App() {
             <Route path="/" element={<DocumentationPage />} />
             <Route path="/help" element={<DocumentationPage />} />
             <Route path="/tests" element={<TestsPage />} />
+            <Route path="/ai-chat" element={<AiHealthChatPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/sugar/add" element={<AddSugarReadingPage />} />

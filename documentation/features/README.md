@@ -7,6 +7,10 @@ This folder defines product and technical planning for upcoming features before 
 1. [Feature 1 - Sugar Readings Entry and List](./feature-1-sugar-readings.md)
 2. [Feature 2 - Sugar Trends Chart and Insights](./feature-2-sugar-chart-and-insights.md)
 3. [Feature 3 - Settings and Sub Settings](./feature-3-settings-and-sub-settings.md)
+4. [Feature 4 - Weight Tracking](./feature-4-weight-tracking.md)
+5. [Feature 5 - Height Tracking](./feature-5-height-tracking.md)
+6. [Feature 6 - Blood Pressure Tracking](./feature-6-bp-tracking.md)
+7. [Feature 7 - AI Health Chat](./feature-7-ai-health-chat.md)
 
 ## Planning Goals
 

@@ -9,6 +9,7 @@
 PixieTrack is currently in **Foundation Stage**. The app now includes the first complete sugar-tracking workflow and supporting pages:
 
 - In-App Documentation page
+- AI Health Chat page
 - Add Sugar page
 - Sugar List page
 - Sugar Chart page
@@ -21,6 +22,7 @@ This stage is focused on reusable local-first architecture, fast daily entry flo
 ## Current Features (Stage 1)
 
 - 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
+- AI **AI Health Chat**: Client-side wellness brainstorming with your own OpenAI or DeepSeek API key, kept in memory only.
 - 🩸 **Sugar Entry**: Numeric readings, default-now date-time, multiple tags, and note support.
 - 📋 **Sugar List**: Descending reading history with date/tag filtering and editing.
 - 📈 **Sugar Chart**: Straight-line chart with points, area fill, tag-aware range coloring, and metrics.
@@ -134,6 +136,7 @@ git push origin main
 2. Open `https://kaushalwin.github.io/pixie-track/`.
 3. Verify the key routes load:
    - `/#/` Documentation page
+    - `/#/ai-chat` AI Health Chat page
     - `/#/sugar/add` Add Sugar page
     - `/#/sugar/list` Sugar List page
     - `/#/sugar/chart` Sugar Chart page
@@ -177,15 +180,16 @@ If the hosting path changes, update the build environment value instead of editi
 
 ## Stage Scope
 
-Current implementation scope includes the first sugar-reading workflow with local settings, charting, reusable tests, and in-app guidance. Broader health-metric expansion remains a next-stage concern.
+Current implementation scope includes reusable local-first tracking flows, in-app guidance, AI Health Chat with memory-only API keys, and the shared Tests page harness. Broader health-metric expansion remains a next-stage concern.
 
 ## Data Privacy
 
-✅ **Completely Local Storage**: All data stored in your browser using IndexedDB.  
+✅ **Local-First Tracking Data**: Readings, tags, settings, and chart preferences stay in your browser.  
 ✅ **No Backend**: No servers collect or store your data.  
 ✅ **No Account**: Use without login or registration.  
 ✅ **No Tracking**: No analytics, no ads, no data collection.  
 ✅ **No Data Usage by Us**: We do not use your health data for any internal or external purpose.  
+✅ **AI Chat Keys Stay In Memory**: API keys and chat transcripts are not persisted by PixieTrack. If you use AI Health Chat, the typed chat content is sent directly to the provider you selected.  
 ✅ **Data Export**: Download all your data anytime as JSON/CSV.  
 ✅ **Auditable**: Source-available repository; you can review exactly what happens.
 

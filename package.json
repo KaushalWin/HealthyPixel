@@ -12,6 +12,8 @@
     "start": "vite --host 0.0.0.0 --port 5173",
     "dev:lan": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "preview": "vite preview",
     "preview:lan": "vite preview --host 0.0.0.0 --port 4173"
   },
@@ -22,11 +24,17 @@
     "recharts": "^3.8.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "jsdom": "^27.0.0",
     "typescript": "^6.0.2",
-    "vite": "^8.0.3"
+    "vite": "^8.0.3",
+    "vitest": "^3.2.4"
   }
 }

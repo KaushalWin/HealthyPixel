@@ -7,6 +7,7 @@ See [TECHNICAL_PRINCIPLES.md](./TECHNICAL_PRINCIPLES.md) for mandatory software 
 Current repository implementation contains the first full sugar-reading workflow and supporting routes:
 
 - In-App Documentation page (`/#/`)
+- AI Health Chat page (`/#/ai-chat`)
 - Add Sugar page (`/#/sugar/add`)
 - Sugar List page (`/#/sugar/list`)
 - Sugar Chart page (`/#/sugar/chart`)
@@ -15,6 +16,8 @@ Current repository implementation contains the first full sugar-reading workflow
 - About Us page (`/#/about`)
 
 All data stays local to the browser. The app currently supports reusable sugar entry, editing, filtering, charting, tag management, and chart settings without any backend.
+
+AI Health Chat is client-side only and uses memory-only React state for provider selection, API keys, and chat history. PixieTrack does not persist those keys or transcripts, but the typed chat content is sent directly from the browser to the selected provider when the user sends a message.
 
 UI behavior for current stage:
 

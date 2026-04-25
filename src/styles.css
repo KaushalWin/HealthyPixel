@@ -1154,6 +1154,119 @@ a {
   font-weight: 700;
 }
 
+.ai-chat-disclaimer {
+  margin-top: 0.6rem;
+  border-color: color-mix(in srgb, var(--focus) 28%, var(--line) 72%);
+  background: color-mix(in srgb, var(--surface-2) 80%, #fff4e6 20%);
+}
+
+.ai-chat-disclaimer p:last-child {
+  margin: 0;
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.ai-chat-disclaimer--secondary {
+  background: var(--surface-2);
+}
+
+.ai-chat-config-card {
+  align-items: start;
+}
+
+.ai-chat-config-grid {
+  align-items: end;
+}
+
+.ai-chat-api-key-field input {
+  letter-spacing: 0.01em;
+}
+
+.ai-chat-shell {
+  align-items: start;
+}
+
+.ai-chat-transcript {
+  display: grid;
+  gap: 0.75rem;
+  max-height: 32rem;
+  overflow: auto;
+  padding-right: 0.15rem;
+}
+
+.ai-chat-empty-state {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ai-chat-empty-state strong,
+.ai-chat-empty-state p {
+  margin: 0;
+}
+
+.ai-chat-bubble {
+  display: grid;
+  gap: 0.35rem;
+  max-width: min(100%, 42rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+
+.ai-chat-bubble.user {
+  margin-left: auto;
+  background: var(--nav-active);
+  border-color: transparent;
+}
+
+.ai-chat-bubble.user .date-time-picker__eyebrow,
+.ai-chat-bubble.user .ai-chat-bubble__content {
+  color: var(--nav-active-text);
+}
+
+.ai-chat-bubble.assistant {
+  margin-right: auto;
+  background: var(--surface-2);
+}
+
+.ai-chat-bubble__content {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--ink-strong);
+}
+
+.ai-chat-bubble__content--loading {
+  font-style: italic;
+}
+
+.ai-chat-error {
+  margin-top: 0;
+}
+
+.ai-chat-composer {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ai-chat-textarea {
+  min-height: 8.5rem;
+  resize: vertical;
+}
+
+.ai-chat-runtime-note {
+  align-self: center;
+}
+
+.ai-chat-credit {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  margin-top: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
 .monetization-panel {
   margin-top: 0.75rem;
   border: 1px solid var(--line);

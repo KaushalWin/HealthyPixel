@@ -27,6 +27,7 @@ const NAV_SECTIONS = [
     title: 'Help',
     links: [
       { to: '/', label: 'Documentation', activeOn: ['/', '/help'] },
+      { to: '/ai-chat', label: 'AI Health Chat' },
       { to: '/about', label: 'About Us' },
       { to: '/tests', label: 'Tests' }
     ]

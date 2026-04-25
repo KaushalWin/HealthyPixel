@@ -24,6 +24,7 @@ export function DocumentationPage() {
             <li>Core data stays on your device and is not used for profiling or ads.</li>
             <li>The app is designed for low friction and fast daily usage.</li>
             <li>Sugar readings, tags, settings, and chart preferences are stored locally only.</li>
+            <li>AI Health Chat is optional and sends only the chat text you type directly to the provider you selected.</li>
           </ul>
         </DocBlock>
 
@@ -75,10 +76,23 @@ export function DocumentationPage() {
         <DocBlock title="Compact Navigation Model">
           <ul>
             <li>The app uses one main menu button in the header.</li>
+            <li>Help now includes Documentation, AI Health Chat, About Us, and Tests.</li>
             <li>Vitals are grouped under a single section with subsections: Sugar, Weight, Height, Blood Pressure.</li>
             <li>A small + button opens a quick-action popup for Add Sugar, Add Weight, Add Height, Add BP.</li>
             <li>This keeps the first screen compact on mobile and reduces scrolling.</li>
           </ul>
+        </DocBlock>
+
+        <DocBlock title="AI Health Chat">
+          <ol>
+            <li>Open <strong>AI Health Chat</strong> from the Help section in the main menu.</li>
+            <li>Choose a provider: DeepSeek or OpenAI (ChatGPT).</li>
+            <li>Choose the model you want to use for this session.</li>
+            <li>Paste the matching provider API key. The key stays in memory only and clears on reload.</li>
+            <li>Ask a wellness or tracking question. The app sends the chat directly from your browser to the selected provider.</li>
+          </ol>
+          <p>The page is for brainstorming and general guidance only. It is not medical advice and should not replace a qualified doctor.</p>
+          <p>Switching provider clears the key and chat history. Switching model resets the chat so replies stay tied to the current model.</p>
         </DocBlock>
 
         <DocBlock title="Sugar Reading Flow">
@@ -192,6 +206,7 @@ export function DocumentationPage() {
           <ul>
             <li>Sugar reading entry, editing, and filtered list</li>
             <li>Weight, height, and blood pressure tracking with charts</li>
+            <li>AI Health Chat with memory-only API keys for OpenAI and DeepSeek</li>
             <li>Per-module tag management and chart color settings</li>
             <li>Chart insights with range-aware coloring</li>
             <li>Expanded Tests page demos for shared components</li>

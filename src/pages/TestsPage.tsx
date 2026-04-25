@@ -13,9 +13,13 @@ import { HeightReadingForm } from '../components/height/HeightReadingForm';
 import { HeightReadingList } from '../components/height/HeightReadingList';
 import { BpReadingForm } from '../components/bp/BpReadingForm';
 import { BpReadingList } from '../components/bp/BpReadingList';
+import { ApiKeyInput } from '../components/ai/ApiKeyInput';
+import { ChatWindow, type ChatWindowMessage } from '../components/ai/ChatWindow';
+import { ModelSelector } from '../components/ai/ModelSelector';
 import { SiteShell } from '../components/SiteShell';
 import { useAppData } from '../context/AppDataContext';
 import { buildPresetDateRange, createReadingDraft, createWeightDraft, createHeightDraft, createBpDraft, sortReadingsDescending } from '../lib/readingUtils';
+import type { AiModel, AiProvider } from '../lib/aiChat';
 import type { ReadingFilters, VitalModule } from '../lib/types';
 
 type TestEntry = {
@@ -31,6 +35,67 @@ const previewFormatter = new Intl.DateTimeFormat('en-GB', {
   hour12: false
 });
 
+function AiHealthChatTestDemo() {
+  const [provider, setProvider] = useState<AiProvider | ''>('openai');
+  const [model, setModel] = useState<AiModel | ''>('gpt-4o-mini');
+  const [apiKey, setApiKey] = useState('demo-key');
+  const [draft, setDraft] = useState('');
+  const [messages, setMessages] = useState<ChatWindowMessage[]>([
+    { id: 'demo-1', role: 'assistant' as const, content: 'This demo uses static replies so you can inspect the shared chat UI safely.' }
+  ]);
+
+  return (
+    <div className="test-demo-stack">
+      <ModelSelector
+        provider={provider}
+        model={model}
+        onProviderChange={(nextProvider) => {
+          setProvider(nextProvider);
+          setModel('');
+          setApiKey('');
+          setMessages([]);
+        }}
+        onModelChange={(nextModel) => {
+          setModel(nextModel);
+          setMessages([]);
+        }}
+      />
+
+      {provider && model ? (
+        <ApiKeyInput provider={provider} value={apiKey} onChange={setApiKey} />
+      ) : null}
+
+      <ChatWindow
+        messages={messages}
+        draft={draft}
+        onDraftChange={setDraft}
+        onSend={() => {
+          const trimmedDraft = draft.trim();
+
+          if (!trimmedDraft) {
+            return;
+          }
+
+          setMessages((current) => [
+            ...current,
+            { id: `${current.length + 1}`, role: 'user', content: trimmedDraft },
+            { id: `${current.length + 2}`, role: 'assistant', content: `Demo reply for ${model}: keep the real network call on the AI Health Chat page.` }
+          ]);
+          setDraft('');
+        }}
+        onClearChat={() => {
+          setMessages([]);
+          setDraft('');
+        }}
+        isLoading={false}
+        errorMessage={null}
+        inputDisabled={!provider || !model || apiKey.trim().length === 0}
+        disabledReason="Choose a provider, model, and API key to enable the demo composer."
+      />
+    </div>
+  );
+}
+
 export function TestsPage() {
   const { readings, settings, updateSettings, tags, weightReadings, weightTags, heightReadings, heightTags, bpReadings, bpTags } = useAppData();
   const [selectedDateTime, setSelectedDateTime] = useState(() => new Date());
@@ -43,6 +108,12 @@ export function TestsPage() {
   const bpTagsById = useMemo(() => new Map(bpTags.map((t) => [t.id, t])), [bpTags]);
 
   const testEntries: TestEntry[] = [
+    {
+      id: 'ai-health-chat',
+      title: 'AI Health Chat',
+      summary: 'Provider/model selection, memory-only API key handling, and the shared chat window without live network calls.',
+      content: <AiHealthChatTestDemo />
+    },
     {
       id: 'analysis-dashboard',
       title: 'Analysis Dashboard',
