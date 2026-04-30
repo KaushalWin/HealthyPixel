@@ -26,13 +26,17 @@ This stage is focused on reusable local-first architecture, fast daily entry flo
 
 - 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
 - AI **AI Health Chat**: Client-side wellness brainstorming with your own OpenAI or DeepSeek API key, kept in memory by default with optional per-provider browser save.
-- 🩸 **Sugar Entry**: Numeric readings, default-now date-time, multiple tags, and note support.
+- 🩸 **Sugar Entry**: Numeric readings, default-now date-time, grouped tag categories, optional no-tag save, and note support.
+- ⚖️ **Weight Tracking**: Add, edit, list, and chart weight readings with grouped tag categories and category-aware filters.
+- ❤️ **Blood Pressure Tracking**: Add, edit, list, and chart systolic/diastolic readings with grouped tag categories and category-aware filters.
 - 🍽️ **Food Tracking**: Meal name, calories, four tag categories, flexible AND/OR filtering, and multi-chart insights.
-- 📋 **Sugar List**: Descending reading history with date/tag filtering and editing.
+- 📋 **Sugar List**: Descending reading history with date, tag, and category filtering plus editing.
 - 📋 **Food List**: Meal history with date, tag, and category filtering plus mix-and-match AND/OR logic.
-- 📈 **Sugar Chart**: Straight-line chart with points, area fill, tag-aware range coloring, and metrics.
+- 📈 **Sugar Chart**: Straight-line chart with points, area fill, tag-aware range coloring, category-aware filters, and top-tag breakdown insights.
+- 📈 **Weight Chart**: Straight-line chart with range-aware coloring plus category-aware filters.
+- 📈 **BP Chart**: Dual-line chart with category-aware filters and top-tag breakdown insights.
 - 📊 **Food Insights**: Calorie trend chart, top tag breakdown chart, and category summary cards.
-- ⚙️ **Settings**: Tag management, chart defaults, color settings, full-app JSON export/import, and local reset.
+- ⚙️ **Settings**: Category-aware tag management, chart defaults, color settings, full-app JSON export/import, and local reset.
 - 🧪 **Tests Page**: Safe place to trial shared components and new UI features before production use.
 - ℹ️ **About Us**: Mission, principles, and scope explanation.
 - ⚡ **Fast Static App**: Lightweight React + TypeScript + Vite foundation.
@@ -196,7 +200,7 @@ Current implementation scope includes reusable local-first tracking flows, JSON 
 ✅ **No Tracking**: No analytics, no ads, no data collection.  
 ✅ **No Data Usage by Us**: We do not use your health data for any internal or external purpose.  
 ✅ **AI Chat Keys Stay Local**: API keys stay in memory by default. If you explicitly save a key, it is stored only in your browser data on this device and never on PixieTrack servers. Chat transcripts are not persisted by PixieTrack.  
-✅ **Data Portability**: Export or restore the full app data as JSON from Settings. Saved AI provider keys are excluded from export files and are not changed by import.  
+✅ **Data Portability**: Export or restore the full app data as JSON from Settings. Saved AI provider keys are excluded from export files and are not changed by import. Legacy tag exports are normalized on import so older data gains the current category model without manual cleanup.  
 ✅ **Auditable**: Source-available repository; you can review exactly what happens.
 
 ## Monetization Strategy

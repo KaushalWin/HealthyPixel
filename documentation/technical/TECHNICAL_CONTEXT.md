@@ -18,7 +18,7 @@ Current repository implementation contains local-first workflows for sugar, weig
 - Tests page (`/#/tests`)
 - About Us page (`/#/about`)
 
-All data stays local to the browser. The app currently supports reusable entry, editing, filtering, charting, tag management, and chart settings without any backend.
+All data stays local to the browser. The app currently supports reusable entry, editing, filtering, charting, category-aware tag management, and chart settings without any backend.
 
 AI Health Chat is client-side only and uses memory-only React state by default for provider selection, API keys, and chat history. Users can explicitly save a provider key in browser localStorage on their device, but PixieTrack still does not persist those keys or transcripts on any server. Typed chat content is sent directly from the browser to the selected provider when the user sends a message.
 
@@ -32,7 +32,7 @@ The Tests page is the shared proving ground for reusable components. New demos s
 
 ## Tech Stack Deep Dive
 
-### Frontend Framework: React 18 + Vite
+### Frontend Framework: React 19 + Vite
 
 **Why React?**
 - Large ecosystem for UI components.
@@ -74,6 +74,17 @@ Avoid: Redux or heavier state tooling for the current feature scope.
 
 Future migration to IndexedDB can still happen later if data volume or query complexity outgrows the current approach.
 
+**Current tag-category model:**
+- Sugar, Weight, and Blood Pressure tags now store a category alongside the existing tag label and range metadata.
+- Food keeps its existing tag-category model.
+- Height remains flat-tag only for now.
+- Legacy saved tags and older export files are normalized on load/import so built-in tags recover their inferred category and old custom tags land in a visible `general` bucket.
+
+**Export/import compatibility:**
+- Browser localStorage keys remain on the existing `v1` names for tracker data.
+- App export payloads now emit version 2.
+- Import supports older payloads and upgrades missing category metadata during parsing.
+
 ### Charts: Recharts
 
 **Why Recharts?**
@@ -105,7 +116,7 @@ Alternative: Chart.js (simpler, but less React-native).
 ## Project Setup Instructions
 
 ### Prerequisites
-- Node.js 18+ (download from nodejs.org)
+- Node.js 24+ (download from nodejs.org)
 - Git (download from git-scm.com)
 - GitHub account (github.com)
 - VS Code (optional, but recommended)

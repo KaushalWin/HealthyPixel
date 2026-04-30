@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DateTimePicker } from '../DateTimePicker';
-import { TagChipSelector } from '../TagChipSelector';
-import type { AppSettings, ReadingDraft, TagDefinition, WeightReading } from '../../lib/types';
+import { WeightTagGroupSelector } from './WeightTagGroupSelector';
+import type { AppSettings, ReadingDraft, WeightReading, WeightTagDefinition } from '../../lib/types';
 
 type WeightReadingFormProps = {
   title: string;
   submitLabel: string;
   initialValue: ReadingDraft;
-  tags: TagDefinition[];
+  tags: WeightTagDefinition[];
   readings: WeightReading[];
   settings: AppSettings;
   onSubmit: (draft: ReadingDraft) => void;
@@ -67,12 +67,14 @@ export function WeightReadingForm({
         />
       </label>
 
-      <TagChipSelector
+      <WeightTagGroupSelector
         tags={tags}
         readings={readings}
         settings={settings}
         selectedTagIds={draft.tagIds}
         onChange={(tagIds) => setDraft((current) => ({ ...current, tagIds }))}
+        label="Tags"
+        helperText="Pick grouped tags when they add context. Leaving tags empty is allowed."
         manageLinkTo="/settings/tags"
         manageLinkLabel="Manage tags"
       />

@@ -92,7 +92,11 @@
 - [ ] Test data persistence (reload page, data still there)
 - [ ] Test export/import (export JSON, import, verify data)
 - [ ] Test all form inputs (no validation errors)
+- [ ] Test category-aware tag migration from legacy local data and legacy JSON export files
+- [ ] Test Sugar, Weight, and BP add flows with no tags selected and confirm saves still work as neutral/unclassified entries
+- [ ] Test tag and meal-name validation for blank/whitespace-only values and control-character rejection
 - [ ] Test chart rendering (data displays correctly)
+- [ ] Test Sugar and BP tag breakdown charts with matching and no-match filter states
 - [ ] Test food filters and food charts (tag/category AND/OR logic)
 - [ ] Performance test (PageSpeed Insights 90+)
 

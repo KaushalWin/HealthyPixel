@@ -49,6 +49,41 @@ describe('dataPortability', () => {
     expect(() => parseAppDataImportJson(serialized)).toThrow('data.weightReadings must be an array.');
   });
 
+  it('normalizes legacy export payloads that predate tag categories', () => {
+    const fixture = createFixtureAppData();
+    const serialized = JSON.stringify({
+      app: APP_DATA_EXPORT_APP,
+      version: 1,
+      exportedAtIso: fixedNowIso,
+      data: {
+        ...fixture,
+        tags: [
+          ...fixture.tags.map(({ category, ...tag }) => tag),
+          {
+            id: 'legacy-sugar-custom',
+            label: 'Night shift',
+            type: 'custom',
+            createdAtIso: fixedNowIso,
+            updatedAtIso: fixedNowIso,
+            usageCount: 0,
+            lastUsedAtIso: null,
+            rangeMin: null,
+            rangeMax: null
+          }
+        ],
+        weightTags: fixture.weightTags.map(({ category, ...tag }) => tag),
+        bpTags: fixture.bpTags.map(({ category, ...tag }) => tag)
+      }
+    });
+
+    const parsed = parseAppDataImportJson(serialized);
+
+    expect(parsed.tags.find((tag) => tag.id === 'fasting')?.category).toBe('timing');
+    expect(parsed.tags.find((tag) => tag.id === 'legacy-sugar-custom')?.category).toBe('general');
+    expect(parsed.weightTags.find((tag) => tag.id === 'w-pre-exercise')?.category).toBe('bodyState');
+    expect(parsed.bpTags.find((tag) => tag.id === 'bp-random')?.category).toBe('context');
+  });
+
   it('builds a json export filename', () => {
     expect(buildAppDataExportFileName(fixedNow)).toBe('pixie-track-export-2026-04-29T12-00-00-000Z.json');
   });

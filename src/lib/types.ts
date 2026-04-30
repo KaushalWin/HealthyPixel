@@ -8,6 +8,12 @@ export type ReadingStatus = 'inside' | 'outside' | 'neutral';
 
 export type VitalModule = 'sugar' | 'weight' | 'height' | 'bp' | 'food';
 
+export type SugarTagCategory = 'timing' | 'activity' | 'context' | 'general';
+
+export type WeightTagCategory = 'timing' | 'bodyState' | 'routine' | 'general';
+
+export type BpTagCategory = 'timing' | 'bodyState' | 'context' | 'general';
+
 export type FoodTagCategory = 'planned' | 'actual' | 'context' | 'behavior';
 
 export type LogicalMatchMode = 'and' | 'or';
@@ -24,6 +30,14 @@ export type TagDefinition = {
   rangeMax: number | null;
 };
 
+export type CategorizedTagDefinition<TCategory extends string> = TagDefinition & {
+  category: TCategory;
+};
+
+export type SugarTagDefinition = CategorizedTagDefinition<SugarTagCategory>;
+
+export type WeightTagDefinition = CategorizedTagDefinition<WeightTagCategory>;
+
 export type BpTagDefinition = {
   id: string;
   label: string;
@@ -38,6 +52,7 @@ export type BpTagDefinition = {
   systolicMax: number | null;
   diastolicMin: number | null;
   diastolicMax: number | null;
+  category: BpTagCategory;
 };
 
 export type FoodTagDefinition = {
@@ -157,6 +172,16 @@ export type ReadingFilters = {
   tagIds: string[];
 };
 
+export type CategorizedReadingFilters<TCategory extends string> = ReadingFilters & {
+  categories: TCategory[];
+};
+
+export type SugarReadingFilters = CategorizedReadingFilters<SugarTagCategory>;
+
+export type WeightReadingFilters = CategorizedReadingFilters<WeightTagCategory>;
+
+export type BpReadingFilters = CategorizedReadingFilters<BpTagCategory>;
+
 export type FoodReadingFilters = ReadingFilters & {
   categories: FoodTagCategory[];
   tagMatchMode: LogicalMatchMode;
@@ -166,9 +191,9 @@ export type FoodReadingFilters = ReadingFilters & {
 
 export type AppDataShape = {
   readings: SugarReading[];
-  tags: TagDefinition[];
+  tags: SugarTagDefinition[];
   weightReadings: WeightReading[];
-  weightTags: TagDefinition[];
+  weightTags: WeightTagDefinition[];
   heightReadings: HeightReading[];
   heightTags: TagDefinition[];
   bpReadings: BpReading[];

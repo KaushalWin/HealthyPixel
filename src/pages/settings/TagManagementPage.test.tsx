@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -52,5 +52,41 @@ describe('TagManagementPage', () => {
     });
 
     expect(screen.queryByText('Food tag labels must be unique within the selected category.')).not.toBeInTheDocument();
+  });
+
+  it('stores category metadata for new sugar tags', async () => {
+    const user = userEvent.setup();
+    renderTagManagementPage();
+
+    await user.type(screen.getByLabelText('Label'), 'After commute');
+    await user.selectOptions(screen.getByLabelText('Category'), 'context');
+    await user.click(screen.getByRole('button', { name: 'Add tag' }));
+
+    await waitFor(() => {
+      const sugarTags = JSON.parse(window.localStorage.getItem(STORAGE_KEYS.tags) ?? '[]') as Array<{ label: string; category: string }>;
+      expect(sugarTags.some((tag) => tag.label === 'After commute' && tag.category === 'context')).toBe(true);
+    });
+  });
+
+  it('rejects blank tag labels', async () => {
+    const user = userEvent.setup();
+    renderTagManagementPage();
+
+    await user.click(screen.getByRole('button', { name: 'Add tag' }));
+
+    expect(screen.getByText('Tag label is required.')).toBeInTheDocument();
+  });
+
+  it('rejects control characters in tag labels', async () => {
+    const user = userEvent.setup();
+    renderTagManagementPage();
+
+    fireEvent.change(screen.getByLabelText('Label'), { target: { value: 'Bad\u0007Tag' } });
+    await user.click(screen.getByRole('button', { name: 'Add tag' }));
+
+    expect(screen.getByText('Tag label cannot contain control characters.')).toBeInTheDocument();
+
+    const sugarTags = JSON.parse(window.localStorage.getItem(STORAGE_KEYS.tags) ?? '[]') as Array<{ label: string }>;
+    expect(sugarTags.some((tag) => tag.label === 'Bad\u0007Tag')).toBe(false);
   });
 });

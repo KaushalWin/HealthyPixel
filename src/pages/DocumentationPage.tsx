@@ -107,6 +107,7 @@ export function DocumentationPage() {
             <li>Import replaces the current local readings, tags, and settings on this device. It does not merge data.</li>
           </ol>
           <p>Saved AI provider keys are intentionally excluded from exported files and are not changed by import.</p>
+          <p>Older exports are upgraded during import so legacy Sugar, Weight, and BP tags gain the current category model automatically.</p>
         </DocBlock>
 
         <DocBlock title="Food Tracking">
@@ -124,8 +125,9 @@ export function DocumentationPage() {
           <ol>
             <li>Open <strong>Add Sugar</strong>.</li>
             <li>Enter the reading value (required).</li>
-            <li>Save directly for the fastest flow.</li>
-            <li>Open More options only when you need time, tags, or note changes.</li>
+            <li>Save directly for the fastest flow, or open More options for time, grouped tags, and note changes.</li>
+            <li>Sugar tags are grouped by timing, activity, context, and general so related choices stay together.</li>
+            <li>Leaving tags empty is allowed when you want to log a neutral reading quickly.</li>
             <li>Save to open the filtered Sugar List with the new row highlighted.</li>
           </ol>
         </DocBlock>
@@ -134,7 +136,7 @@ export function DocumentationPage() {
           <ul>
             <li>The Sugar List page is a direct route in the navigation.</li>
             <li>Readings are shown in descending date-time order.</li>
-            <li>Use date filters and tag filters to narrow the list.</li>
+            <li>Use date, category, and tag filters to narrow the list.</li>
             <li>Use the Add New Entry action at the top for repeated logging.</li>
             <li>Edit opens the reading in-place without leaving the local-first workflow.</li>
           </ul>
@@ -144,11 +146,11 @@ export function DocumentationPage() {
           <ol>
             <li>Open <strong>Add Weight</strong> from the menu or quick-action +.</li>
             <li>Enter weight in kilograms (0–700 kg).</li>
-            <li>Select tags using the chip selector below the value input.</li>
+            <li>Select grouped tags by timing, body state, routine, or general, or leave tags empty for a quick save.</li>
             <li>Optionally expand More options for time and note.</li>
             <li>Save — the reading appears in the Weight List.</li>
           </ol>
-          <p>The Weight Chart shows an area chart with inside/outside/neutral range coloring based on your tag ranges.</p>
+          <p>The Weight List and Weight Chart both support category-aware filtering, and the chart keeps the inside/outside/neutral range coloring based on your tag ranges.</p>
         </DocBlock>
 
         <DocBlock title="Height Tracking">
@@ -165,10 +167,11 @@ export function DocumentationPage() {
             <li>Open <strong>Add BP</strong> from the menu or quick-action +.</li>
             <li>Enter systolic (upper, 40–300 mmHg) and diastolic (lower, 20–200 mmHg).</li>
             <li>Diastolic must be less than systolic.</li>
-            <li>Select tags — BP tags define healthy ranges for both systolic and diastolic.</li>
+            <li>Select grouped tags by timing, body state, context, or general, or leave tags empty for a quick save.</li>
+            <li>BP tags define healthy ranges for both systolic and diastolic.</li>
             <li>Save to record.</li>
           </ol>
-          <p>The BP Chart shows two lines: systolic (upper) and diastolic (lower) with a legend.</p>
+          <p>The BP Chart shows two lines, supports category-aware filtering, and includes a top-tag breakdown chart for the filtered readings.</p>
         </DocBlock>
 
         <DocBlock title="Chart and Insights">
@@ -179,6 +182,7 @@ export function DocumentationPage() {
             <li>Filters and list remain aligned with chart results.</li>
             <li>Inside-range, outside-range, and neutral readings use different colors.</li>
             <li>Tag ranges come from Settings, and untagged readings stay neutral.</li>
+            <li>Sugar and BP charts include top-tag breakdown summaries for the currently filtered results.</li>
           </ul>
         </DocBlock>
 
@@ -187,8 +191,10 @@ export function DocumentationPage() {
             <li>Settings includes per-module tag management, chart defaults, and chart colors.</li>
             <li>Settings also includes full-app JSON export/import for manual backup and restore.</li>
             <li>Tag management uses module tabs (Sugar, Food, Weight, Height, BP) to manage tags independently.</li>
+            <li>Sugar, Weight, and BP custom tags include a category field so grouped selectors and filters stay organized.</li>
             <li>BP tags have 4 range fields (systolic min/max, diastolic min/max).</li>
             <li>Food tags include a category field, and duplicate food labels are only blocked inside the same category.</li>
+            <li>Blank labels and control characters are rejected before a tag or meal name can be saved.</li>
             <li>Chart settings include preset date range and per-module inside/outside/neutral colors.</li>
             <li>Delete all local data restores the app to default local bootstrap state.</li>
           </ul>
@@ -231,9 +237,11 @@ export function DocumentationPage() {
             understand new behavior quickly.
           </p>
           <ul>
-            <li>Sugar reading entry, editing, and filtered list</li>
+            <li>Sugar reading entry, editing, and category-aware filtered list</li>
             <li>Food tracking with calorie charts and grouped tag categories</li>
-            <li>Weight, height, and blood pressure tracking with charts</li>
+            <li>Weight and blood pressure tracking with grouped tags and category-aware chart filters</li>
+            <li>Sugar and blood pressure top-tag breakdown charts</li>
+            <li>Legacy tag imports upgraded into the current category model</li>
             <li>JSON export/import in Settings for manual full-app backup and restore</li>
             <li>AI Health Chat with memory-first API keys and optional browser-local save for OpenAI and DeepSeek</li>
             <li>Per-module tag management and chart color settings</li>

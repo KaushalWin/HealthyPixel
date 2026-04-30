@@ -8,16 +8,17 @@ Users can add, save, list, and edit sugar readings using local-only storage.
 
 1. User can add sugar reading as a numeric value.
 2. Date-time is preselected to now and can be changed with the shared DateTimePicker.
-3. User can attach one or multiple tags.
-4. Built-in tags are available out of the box.
-5. Custom tags are managed only from Settings, not from the entry form.
-6. Save stores the reading in localStorage.
-7. After save, user is redirected to sugar reading list.
-8. List shows readings sorted by selected reading date-time in descending order.
-9. User can edit an existing reading.
-10. Reading form includes an optional note field.
-11. Entry form should include a small note and button that redirects to Settings for tag management.
-12. The app should have a direct Sugar List page in navigation, not only a post-save redirect.
+3. User can attach one or multiple tags, or leave tags empty for a neutral/unclassified save.
+4. Sugar tags are grouped into `timing`, `activity`, `context`, and `general` categories.
+5. Built-in tags are available out of the box.
+6. Custom tags are managed only from Settings, not from the entry form.
+7. Save stores the reading in localStorage.
+8. After save, user is redirected to the sugar reading list.
+9. List shows readings sorted by selected reading date-time in descending order.
+10. User can edit an existing reading.
+11. Reading form includes an optional note field.
+12. Entry form should include a small note and button that redirects to Settings for tag management.
+13. The app should have a direct Sugar List page in navigation, not only a post-save redirect.
 
 ## Built-In Tags Requested
 
@@ -35,6 +36,13 @@ Users can add, save, list, and edit sugar readings using local-only storage.
 12. Fasting
 13. Weekend
 14. Cheat
+
+## Built-In Tag Categories
+
+1. `timing`: Pre breakfast, Post breakfast, Pre lunch, Post lunch, Pre dinner, Post dinner, Pre snack, Post snack, Fasting
+2. `activity`: Pre exercise, Post exercise
+3. `context`: Random, Weekend, Cheat
+4. `general`: Reserved for migrated legacy custom tags and new uncategorized custom tags
 
 ## Built-In Tag Defaults
 
@@ -61,6 +69,7 @@ Tag entity reference:
 1. id: string
 2. label: string
 3. type: builtin | custom
+4. category: timing | activity | context | general
 
 localStorage keys:
 
@@ -73,7 +82,7 @@ localStorage keys:
 1. Open Add Sugar Reading page.
 2. Enter reading number.
 3. Keep now or update date-time.
-4. Select one or multiple existing tags.
+4. Select one or multiple existing tags, or leave tags empty.
 5. Optionally add a note.
 6. If a needed tag is missing, use the Settings redirect action from this page.
 7. Click Save.
@@ -94,8 +103,8 @@ localStorage keys:
 
 1. Reuse DateTimePicker from shared components.
 2. Build SugarReadingForm with create and edit modes.
-3. Build TagSelector that consumes Settings-managed tags only.
-4. Build SugarReadingList component with date-time-desc sorting and reusable filtering controls.
+3. Use grouped sugar tag selectors that consume Settings-managed tags only.
+4. Build SugarReadingList component with date-time-desc sorting and reusable tag/category filtering controls.
 5. Add simple localStorage repository layer with parse/serialize guards.
 6. Add route-level pages:
    - Add Sugar Reading page
@@ -110,16 +119,18 @@ localStorage keys:
 9. Add note input to the form model and storage layer.
 10. Add inline Settings redirect notice for tag management.
 11. Ensure the list page can open directly from navigation without requiring a save-first flow.
+12. Normalize legacy sugar tags without categories during load/import.
 
 ## Edge Cases to Handle
 
 1. Empty or non-numeric reading input.
-2. Duplicate tag labels with case differences.
+2. Duplicate tag labels with case differences in Settings.
 3. Invalid date-time input value.
 4. Legacy or malformed localStorage payload.
 5. Edit for deleted or missing reading id.
 6. Multiple selected tags with different configured ranges.
 7. Very large but still allowed values near validation maximum.
+8. Save attempt with no tags selected should still succeed.
 
 ## Confirmed Decisions
 
@@ -129,3 +140,4 @@ localStorage keys:
 4. Custom tags are created only from Settings.
 5. Newly saved reading should be highlighted in the list.
 6. Filtering should be added to the list instead of fixed grouping by day.
+7. No-tag save remains a supported path.

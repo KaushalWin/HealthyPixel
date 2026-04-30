@@ -1,4 +1,5 @@
 import { DEFAULT_SETTINGS } from './defaults';
+import { normalizeBpTag, normalizeSugarTag, normalizeWeightTag } from './tagCategories';
 import type {
   AppDataShape,
   AppSettings,
@@ -9,16 +10,20 @@ import type {
   FoodTagCategory,
   FoodTagDefinition,
   SugarReading,
+  SugarTagDefinition,
   TagDefinition,
   TagSortMode,
   TagType,
   VitalModule,
+  WeightTagDefinition,
   WeightReading,
   HeightReading
 } from './types';
 
 export const APP_DATA_EXPORT_APP = 'pixie-track';
-export const APP_DATA_EXPORT_VERSION = 1;
+export const APP_DATA_EXPORT_VERSION = 2;
+
+const SUPPORTED_APP_DATA_EXPORT_VERSIONS = [1, APP_DATA_EXPORT_VERSION] as const;
 
 export type AppDataExportPayload = {
   app: typeof APP_DATA_EXPORT_APP;
@@ -195,25 +200,31 @@ function readHeightReadings(value: unknown): HeightReading[] {
   return value.map((entry, index) => readValueReading(entry, `data.heightReadings[${index}]`) as HeightReading);
 }
 
-function readTags(value: unknown): TagDefinition[] {
+function readTags(value: unknown): SugarTagDefinition[] {
   if (!Array.isArray(value)) {
     fail('data.tags must be an array.');
   }
 
   return value.map((entry, index) => {
     const record = readRecord(entry, `data.tags[${index}]`);
-    return readTagBase(record, `data.tags[${index}]`);
+    return normalizeSugarTag({
+      ...readTagBase(record, `data.tags[${index}]`),
+      category: typeof record.category === 'string' ? record.category : undefined
+    });
   });
 }
 
-function readWeightTags(value: unknown): TagDefinition[] {
+function readWeightTags(value: unknown): WeightTagDefinition[] {
   if (!Array.isArray(value)) {
     fail('data.weightTags must be an array.');
   }
 
   return value.map((entry, index) => {
     const record = readRecord(entry, `data.weightTags[${index}]`);
-    return readTagBase(record, `data.weightTags[${index}]`);
+    return normalizeWeightTag({
+      ...readTagBase(record, `data.weightTags[${index}]`),
+      category: typeof record.category === 'string' ? record.category : undefined
+    });
   });
 }
 
@@ -255,13 +266,14 @@ function readBpTags(value: unknown): BpTagDefinition[] {
 
   return value.map((entry, index) => {
     const record = readRecord(entry, `data.bpTags[${index}]`);
-    return {
+    return normalizeBpTag({
       ...readTagBase(record, `data.bpTags[${index}]`),
       systolicMin: readNullableNumber(record.systolicMin, `data.bpTags[${index}].systolicMin`),
       systolicMax: readNullableNumber(record.systolicMax, `data.bpTags[${index}].systolicMax`),
       diastolicMin: readNullableNumber(record.diastolicMin, `data.bpTags[${index}].diastolicMin`),
-      diastolicMax: readNullableNumber(record.diastolicMax, `data.bpTags[${index}].diastolicMax`)
-    };
+      diastolicMax: readNullableNumber(record.diastolicMax, `data.bpTags[${index}].diastolicMax`),
+      category: typeof record.category === 'string' ? record.category : undefined
+    });
   });
 }
 
@@ -405,7 +417,7 @@ export function parseAppDataImportJson(serializedPayload: string): AppDataShape 
 
   if ('version' in record) {
     const version = readFiniteNumber(record.version, 'payload.version');
-    if (version !== APP_DATA_EXPORT_VERSION) {
+    if (!SUPPORTED_APP_DATA_EXPORT_VERSIONS.includes(version as (typeof SUPPORTED_APP_DATA_EXPORT_VERSIONS)[number])) {
       fail('Import file version is not supported.');
     }
   }

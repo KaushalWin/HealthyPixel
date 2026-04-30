@@ -3,6 +3,7 @@ import type {
   BpDraft,
   BpReading,
   BpTagDefinition,
+  CategorizedReadingFilters,
   ChartPreset,
   FoodTagDefinition,
   ReadingDraft,
@@ -13,6 +14,28 @@ import type {
 } from './types';
 
 type BaseReading = { readingDateTimeIso: string; tagIds: string[] };
+
+type RangeTag = { rangeMin: number | null; rangeMax: number | null };
+
+type CategorizedTag<TCategory extends string> = { id: string; category: TCategory };
+
+export type ValueTagBreakdownDatum<TCategory extends string> = {
+  key: string;
+  label: string;
+  category: TCategory;
+  count: number;
+  totalValue: number;
+  averageValue: number;
+};
+
+export type BpTagBreakdownDatum<TCategory extends string> = {
+  key: string;
+  label: string;
+  category: TCategory;
+  count: number;
+  averageSystolic: number;
+  averageDiastolic: number;
+};
 
 export function formatDateInput(date: Date) {
   const localValue = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -49,6 +72,74 @@ export function applyReadingFilters<T extends BaseReading>(readings: T[], filter
     }
 
     return filters.tagIds.some((tagId) => reading.tagIds.includes(tagId));
+  });
+}
+
+export function createCategorizedReadingFilters<TCategory extends string>(
+  overrides: Partial<CategorizedReadingFilters<TCategory>> = {}
+): CategorizedReadingFilters<TCategory> {
+  return {
+    startDate: '',
+    endDate: '',
+    tagIds: [],
+    categories: [],
+    ...overrides
+  };
+}
+
+function getReadingCategories<TCategory extends string, TTag extends CategorizedTag<TCategory>>(
+  reading: BaseReading,
+  tagsById: Map<string, TTag>
+): TCategory[] {
+  const categories = new Set<TCategory>();
+
+  for (const tagId of reading.tagIds) {
+    const tag = tagsById.get(tagId);
+    if (tag) {
+      categories.add(tag.category);
+    }
+  }
+
+  return Array.from(categories);
+}
+
+export function applyCategorizedReadingFilters<
+  T extends BaseReading,
+  TCategory extends string,
+  TTag extends CategorizedTag<TCategory>
+>(
+  readings: T[],
+  filters: CategorizedReadingFilters<TCategory>,
+  tagsById: Map<string, TTag>
+): T[] {
+  if (
+    filters.startDate !== '' &&
+    filters.endDate !== '' &&
+    filters.startDate > filters.endDate
+  ) {
+    return [];
+  }
+
+  const startBoundary = filters.startDate ? `${filters.startDate}T00:00:00` : null;
+  const endBoundary = filters.endDate ? `${filters.endDate}T23:59:59.999` : null;
+
+  return readings.filter((reading) => {
+    if (startBoundary && reading.readingDateTimeIso < new Date(startBoundary).toISOString()) {
+      return false;
+    }
+
+    if (endBoundary && reading.readingDateTimeIso > new Date(endBoundary).toISOString()) {
+      return false;
+    }
+
+    const tagMatches =
+      filters.tagIds.length === 0 || filters.tagIds.some((tagId) => reading.tagIds.includes(tagId));
+
+    const categoryMatches =
+      filters.categories.length === 0 ||
+      filters.categories.some((category) => getReadingCategories(reading, tagsById).includes(category));
+
+    return tagMatches && categoryMatches;
   });
 }
 
@@ -107,7 +198,7 @@ export function buildPresetDateRange(preset: ChartPreset, now = new Date()): Rea
   };
 }
 
-export function resolveReadingRange(tags: TagDefinition[]) {
+export function resolveReadingRange<TTag extends RangeTag>(tags: TTag[]) {
   const validTags = tags.filter((tag) => tag.rangeMin !== null || tag.rangeMax !== null);
   if (validTags.length === 0) {
     return null;
@@ -123,8 +214,8 @@ export function resolveReadingRange(tags: TagDefinition[]) {
 }
 
 export function classifyReading(
-  reading: SugarReading,
-  tags: TagDefinition[]
+  reading: Pick<SugarReading, 'value'>,
+  tags: RangeTag[]
 ): { status: ReadingStatus; range: { min: number | null; max: number | null } | null } {
   const range = resolveReadingRange(tags);
   if (!range) {
@@ -142,13 +233,16 @@ export function classifyReading(
   return { status: 'inside', range };
 }
 
-export function buildReadingMetrics(readings: SugarReading[], tagsById: Map<string, TagDefinition>) {
+export function buildReadingMetrics<
+  TReading extends Pick<SugarReading, 'value' | 'tagIds'>,
+  TTag extends RangeTag
+>(readings: TReading[], tagsById: Map<string, TTag>) {
   let insideCount = 0;
   let outsideCount = 0;
   let neutralCount = 0;
 
   for (const reading of readings) {
-    const tags = reading.tagIds.map((tagId) => tagsById.get(tagId)).filter(Boolean) as TagDefinition[];
+    const tags = reading.tagIds.map((tagId) => tagsById.get(tagId)).filter(Boolean) as TTag[];
     const status = classifyReading(reading, tags).status;
     if (status === 'inside') {
       insideCount += 1;
@@ -171,6 +265,59 @@ export function buildReadingMetrics(readings: SugarReading[], tagsById: Map<stri
     highestValue: readings.length === 0 ? null : Math.max(...readings.map((reading) => reading.value)),
     lowestValue: readings.length === 0 ? null : Math.min(...readings.map((reading) => reading.value))
   };
+}
+
+export function buildValueTagBreakdown<
+  TCategory extends string,
+  TReading extends BaseReading & { value: number },
+  TTag extends CategorizedTag<TCategory> & { label: string }
+>(
+  readings: TReading[],
+  tagsById: Map<string, TTag>,
+  categories: TCategory[] = []
+) {
+  const totals = new Map<string, ValueTagBreakdownDatum<TCategory>>();
+
+  for (const reading of readings) {
+    for (const tagId of new Set(reading.tagIds)) {
+      const tag = tagsById.get(tagId);
+      if (!tag) {
+        continue;
+      }
+
+      if (categories.length > 0 && !categories.includes(tag.category)) {
+        continue;
+      }
+
+      const current = totals.get(tag.id) ?? {
+        key: tag.id,
+        label: tag.label,
+        category: tag.category,
+        count: 0,
+        totalValue: 0,
+        averageValue: 0
+      };
+
+      totals.set(tag.id, {
+        ...current,
+        count: current.count + 1,
+        totalValue: current.totalValue + reading.value,
+        averageValue: 0
+      });
+    }
+  }
+
+  return Array.from(totals.values())
+    .map((entry) => ({
+      ...entry,
+      averageValue: Math.round(entry.totalValue / entry.count)
+    }))
+    .sort(
+      (left, right) =>
+        right.count - left.count ||
+        right.averageValue - left.averageValue ||
+        left.label.localeCompare(right.label)
+    );
 }
 
 export function syncTagStats<
@@ -373,4 +520,60 @@ export function buildBpReadingMetrics(
     lowestDiastolic:
       readings.length === 0 ? null : Math.min(...readings.map((r) => r.diastolic))
   };
+}
+
+export function buildBpTagBreakdown<
+  TCategory extends string,
+  TTag extends CategorizedTag<TCategory> & { label: string }
+>(
+  readings: BpReading[],
+  tagsById: Map<string, TTag>,
+  categories: TCategory[] = []
+) {
+  const totals = new Map<string, { key: string; label: string; category: TCategory; count: number; totalSystolic: number; totalDiastolic: number }>();
+
+  for (const reading of readings) {
+    for (const tagId of new Set(reading.tagIds)) {
+      const tag = tagsById.get(tagId);
+      if (!tag) {
+        continue;
+      }
+
+      if (categories.length > 0 && !categories.includes(tag.category)) {
+        continue;
+      }
+
+      const current = totals.get(tag.id) ?? {
+        key: tag.id,
+        label: tag.label,
+        category: tag.category,
+        count: 0,
+        totalSystolic: 0,
+        totalDiastolic: 0
+      };
+
+      totals.set(tag.id, {
+        ...current,
+        count: current.count + 1,
+        totalSystolic: current.totalSystolic + reading.systolic,
+        totalDiastolic: current.totalDiastolic + reading.diastolic
+      });
+    }
+  }
+
+  return Array.from(totals.values())
+    .map<BpTagBreakdownDatum<TCategory>>((entry) => ({
+      key: entry.key,
+      label: entry.label,
+      category: entry.category,
+      count: entry.count,
+      averageSystolic: Math.round(entry.totalSystolic / entry.count),
+      averageDiastolic: Math.round(entry.totalDiastolic / entry.count)
+    }))
+    .sort(
+      (left, right) =>
+        right.count - left.count ||
+        right.averageSystolic - left.averageSystolic ||
+        left.label.localeCompare(right.label)
+    );
 }

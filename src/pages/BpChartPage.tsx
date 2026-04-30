@@ -1,17 +1,19 @@
 import {
-  CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis
+  Bar, BarChart, CartesianGrid, Cell, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis
 } from 'recharts';
 import { useMemo, useState } from 'react';
+import { CategoryChipFilter } from '../components/CategoryChipFilter';
 import { SiteShell } from '../components/SiteShell';
 import { DateRangePicker } from '../components/sugar/DateRangePicker';
 import { BpReadingList } from '../components/bp/BpReadingList';
-import { TagChipSelector } from '../components/TagChipSelector';
+import { BpTagGroupSelector } from '../components/bp/BpTagGroupSelector';
 import { useAppData } from '../context/AppDataContext';
 import {
-  applyReadingFilters, buildBpReadingMetrics, buildPresetDateRange, classifyBpReading,
+  applyCategorizedReadingFilters, buildBpReadingMetrics, buildBpTagBreakdown, buildPresetDateRange, classifyBpReading, createCategorizedReadingFilters,
   sortReadingsAscending, sortReadingsDescending
 } from '../lib/readingUtils';
-import type { BpTagDefinition, ChartPreset, ReadingFilters } from '../lib/types';
+import { BP_TAG_CATEGORY_CHART_COLORS, BP_TAG_CATEGORY_LABELS, BP_TAG_CATEGORY_ORDER } from '../lib/tagCategories';
+import type { BpReadingFilters, BpTagDefinition, ChartPreset } from '../lib/types';
 
 const chartDateFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 const tooltipFmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short', hour12: false });
@@ -28,11 +30,11 @@ type ChartDatum = {
 export function BpChartPage() {
   const { bpReadings, settings, bpTags } = useAppData();
   const [activePreset, setActivePreset] = useState<ChartPreset | 'custom'>(settings.defaultChartPreset);
-  const [filters, setFilters] = useState<ReadingFilters>(() => buildPresetDateRange(settings.defaultChartPreset));
+  const [filters, setFilters] = useState<BpReadingFilters>(() => createCategorizedReadingFilters(buildPresetDateRange(settings.defaultChartPreset)));
   const hasInvalidRange = filters.startDate !== '' && filters.endDate !== '' && filters.startDate > filters.endDate;
 
-  const filteredReadings = useMemo(() => hasInvalidRange ? [] : applyReadingFilters(bpReadings, filters), [filters, hasInvalidRange, bpReadings]);
-  const tagsById = useMemo(() => new Map(bpTags.map((t) => [t.id, t])), [bpTags]);
+  const tagsById = useMemo(() => new Map(bpTags.map((t) => [t.id, t] as const)), [bpTags]);
+  const filteredReadings = useMemo(() => hasInvalidRange ? [] : applyCategorizedReadingFilters(bpReadings, filters, tagsById), [bpReadings, filters, hasInvalidRange, tagsById]);
 
   const chartData = useMemo<ChartDatum[]>(() => {
     return sortReadingsAscending(filteredReadings).map((r) => {
@@ -50,6 +52,11 @@ export function BpChartPage() {
   }, [filteredReadings, tagsById]);
 
   const metrics = useMemo(() => buildBpReadingMetrics(filteredReadings, tagsById), [filteredReadings, tagsById]);
+
+  const tagBreakdown = useMemo(
+    () => buildBpTagBreakdown(filteredReadings, tagsById, filters.categories).slice(0, 8),
+    [filteredReadings, filters.categories, tagsById]
+  );
 
   return (
     <SiteShell title="BP Trends" subtitle="Dual-line chart for systolic and diastolic.">
@@ -134,25 +141,70 @@ export function BpChartPage() {
           </article>
         </div>
       </section>
+      <section className="doc-card chart-card" aria-label="Blood pressure tag breakdown chart">
+        <div className="section-header-inline">
+          <div>
+            <h2>Top matching tags</h2>
+            <p>The chart below shows which blood pressure tags appear most often after your current filters are applied.</p>
+          </div>
+        </div>
+        {tagBreakdown.length === 0 ? (
+          <div className="empty-state">
+            <p>No tag breakdown is available for the current filters yet.</p>
+          </div>
+        ) : (
+          <div className="chart-shell">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={tagBreakdown} layout="vertical" margin={{ left: 16 }}>
+                <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" stroke="var(--ink-soft)" allowDecimals={false} />
+                <YAxis type="category" dataKey="label" stroke="var(--ink-soft)" width={110} />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload || payload.length === 0) {
+                      return null;
+                    }
+
+                    const point = payload[0]?.payload as (typeof tagBreakdown)[number];
+                    return (
+                      <div className="chart-tooltip">
+                        <strong>{point.label}</strong>
+                        <p>{point.count} readings</p>
+                        <p>{point.averageSystolic}/{point.averageDiastolic} avg mmHg</p>
+                      </div>
+                    );
+                  }}
+                />
+                <Bar dataKey="count" radius={[0, 8, 8, 0]}>
+                  {tagBreakdown.map((entry) => (
+                    <Cell key={entry.key} fill={BP_TAG_CATEGORY_CHART_COLORS[entry.category]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </section>
       <section className="doc-card section-stack compact-controls">
         <details className="compact-details">
           <summary>Chart filters</summary>
           <DateRangePicker
             filters={filters}
-            onChange={(f) => { setActivePreset('custom'); setFilters(f); }}
+            onChange={(f) => { setActivePreset('custom'); setFilters((current) => ({ ...current, startDate: f.startDate, endDate: f.endDate })); }}
             activePreset={activePreset}
-            onPresetChange={(p) => { setActivePreset(p); setFilters({ ...buildPresetDateRange(p), tagIds: filters.tagIds }); }}
+            onPresetChange={(p) => { setActivePreset(p); setFilters((current) => ({ ...current, ...buildPresetDateRange(p) })); }}
             showPresets
             errorMessage={hasInvalidRange ? 'Start date cannot be after end date.' : null}
           />
-          <TagChipSelector
-            tags={bpTags}
-            readings={bpReadings}
-            settings={settings}
-            selectedTagIds={filters.tagIds}
-            onChange={(tagIds) => setFilters((c) => ({ ...c, tagIds }))}
-            manageLinkTo="/settings/tags"
+          <CategoryChipFilter
+            title="Categories"
+            helperText="Filter blood pressure chart data by grouped tag categories."
+            categories={BP_TAG_CATEGORY_ORDER}
+            categoryLabels={BP_TAG_CATEGORY_LABELS}
+            selectedCategories={filters.categories}
+            onChange={(categories) => setFilters((current) => ({ ...current, categories }))}
           />
+          <BpTagGroupSelector tags={bpTags} readings={bpReadings} settings={settings} selectedTagIds={filters.tagIds} onChange={(tagIds) => setFilters((c) => ({ ...c, tagIds }))} label="Specific tags" helperText="Filters apply to both the chart and list below." manageLinkTo="/settings/tags" />
         </details>
       </section>
       <BpReadingList

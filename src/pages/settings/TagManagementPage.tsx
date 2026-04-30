@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { SiteShell } from '../../components/SiteShell';
 import { useAppData } from '../../context/AppDataContext';
 import { sortTags } from '../../lib/readingUtils';
-import type { BpTagDefinition, FoodTagDefinition, TagDefinition, TagSortMode, VitalModule } from '../../lib/types';
+import {
+  BP_TAG_CATEGORY_LABELS,
+  SUGAR_TAG_CATEGORY_LABELS,
+  WEIGHT_TAG_CATEGORY_LABELS
+} from '../../lib/tagCategories';
+import { getInlineTextValidationError } from '../../lib/textValidation';
+import type { BpTagDefinition, FoodTagDefinition, SugarTagDefinition, TagDefinition, TagSortMode, VitalModule, WeightTagDefinition } from '../../lib/types';
 
 function parseNullableNumber(value: string) {
   if (value.trim() === '') return null;
@@ -24,6 +30,9 @@ export function TagManagementPage() {
   const ctx = useAppData();
   const [activeModule, setActiveModule] = useState<VitalModule>('sugar');
   const [newLabel, setNewLabel] = useState('');
+  const [sugarCategory, setSugarCategory] = useState<SugarTagDefinition['category']>('general');
+  const [weightCategory, setWeightCategory] = useState<WeightTagDefinition['category']>('general');
+  const [bpCategory, setBpCategory] = useState<BpTagDefinition['category']>('general');
   const [foodCategory, setFoodCategory] = useState<FoodTagDefinition['category']>('planned');
   const [rangeMin, setRangeMin] = useState('');
   const [rangeMax, setRangeMax] = useState('');
@@ -36,8 +45,11 @@ export function TagManagementPage() {
   const moduleTags = activeModule === 'sugar' ? ctx.tags : activeModule === 'weight' ? ctx.weightTags : activeModule === 'height' ? ctx.heightTags : activeModule === 'food' ? ctx.foodTags : ctx.bpTags;
   const moduleReadings = activeModule === 'sugar' ? ctx.readings : activeModule === 'weight' ? ctx.weightReadings : activeModule === 'height' ? ctx.heightReadings : activeModule === 'food' ? ctx.foodReadings : ctx.bpReadings;
   const orderedTags = sortTags(moduleTags, ctx.settings, moduleReadings);
+  const isSugar = activeModule === 'sugar';
+  const isWeight = activeModule === 'weight';
   const isBp = activeModule === 'bp';
   const isFood = activeModule === 'food';
+  const showsCategorySelector = isSugar || isWeight || isBp || isFood;
 
   const hasDuplicateTagLabel = (trimmedLabel: string) => {
     const normalizedLabel = trimmedLabel.toLowerCase();
@@ -52,8 +64,10 @@ export function TagManagementPage() {
   };
 
   const addModuleTag = () => {
+    const labelError = getInlineTextValidationError(newLabel, 'Tag label');
+    if (labelError) { setFormError(labelError); return; }
+
     const trimmedLabel = newLabel.trim();
-    if (!trimmedLabel) { setFormError('Tag label is required.'); return; }
     if (hasDuplicateTagLabel(trimmedLabel)) {
       setFormError(isFood ? 'Food tag labels must be unique within the selected category.' : 'Tag labels must be unique.');
       return;
@@ -64,23 +78,33 @@ export function TagManagementPage() {
       const sMax = parseNullableNumber(bpSysMax);
       const dMin = parseNullableNumber(bpDiaMin);
       const dMax = parseNullableNumber(bpDiaMax);
-      ctx.addBpTag(trimmedLabel, sMin, sMax, dMin, dMax);
+      const createdTag = ctx.addBpTag(trimmedLabel, sMin, sMax, dMin, dMax, bpCategory);
+      if (!createdTag) { setFormError('Unable to add tag. Check the label and try again.'); return; }
       setBpSysMin(''); setBpSysMax(''); setBpDiaMin(''); setBpDiaMax('');
     } else {
       const nextMin = parseNullableNumber(rangeMin);
       const nextMax = parseNullableNumber(rangeMax);
       if (nextMin !== null && nextMax !== null && nextMin > nextMax) { setFormError('Range min cannot exceed range max.'); return; }
-      if (activeModule === 'sugar') ctx.addTag(trimmedLabel, nextMin, nextMax);
-      else if (activeModule === 'weight') ctx.addWeightTag(trimmedLabel, nextMin, nextMax);
+      if (activeModule === 'sugar') {
+        const createdTag = ctx.addTag(trimmedLabel, nextMin, nextMax, sugarCategory);
+        if (!createdTag) { setFormError('Unable to add tag. Check the label and try again.'); return; }
+      }
+      else if (activeModule === 'weight') {
+        const createdTag = ctx.addWeightTag(trimmedLabel, nextMin, nextMax, weightCategory);
+        if (!createdTag) { setFormError('Unable to add tag. Check the label and try again.'); return; }
+      }
       else if (activeModule === 'height') ctx.addHeightTag(trimmedLabel, nextMin, nextMax);
-      else ctx.addFoodTag(trimmedLabel, foodCategory, nextMin, nextMax);
+      else {
+        const createdTag = ctx.addFoodTag(trimmedLabel, foodCategory, nextMin, nextMax);
+        if (!createdTag) { setFormError('Unable to add tag. Check the label and try again.'); return; }
+      }
       setRangeMin(''); setRangeMax('');
     }
     setFormError(null);
     setNewLabel('');
   };
 
-  const updateModuleTag = (tagId: string, updates: Partial<TagDefinition> | Partial<BpTagDefinition> | Partial<FoodTagDefinition>) => {
+  const updateModuleTag = (tagId: string, updates: Partial<TagDefinition> | Partial<SugarTagDefinition> | Partial<WeightTagDefinition> | Partial<BpTagDefinition> | Partial<FoodTagDefinition>) => {
     if (activeModule === 'sugar') ctx.updateTag(tagId, updates as any);
     else if (activeModule === 'weight') ctx.updateWeightTag(tagId, updates as any);
     else if (activeModule === 'height') ctx.updateHeightTag(tagId, updates as any);
@@ -131,7 +155,15 @@ export function TagManagementPage() {
         </div>
         {isBp ? (
           <>
-            <label className="date-time-picker__field"><span>Label</span><input value={newLabel} onChange={(e) => setNewLabel(e.target.value)} /></label>
+            <div className="two-column-grid">
+              <label className="date-time-picker__field"><span>Label</span><input value={newLabel} onChange={(e) => setNewLabel(e.target.value)} /></label>
+              <label className="date-time-picker__field">
+                <span>Category</span>
+                <select className="form-select" value={bpCategory} onChange={(e) => setBpCategory(e.target.value as BpTagDefinition['category'])}>
+                  {Object.entries(BP_TAG_CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                </select>
+              </label>
+            </div>
             <div className="four-column-grid">
               <label className="date-time-picker__field"><span>Systolic min</span><input type="number" value={bpSysMin} onChange={(e) => setBpSysMin(e.target.value)} /></label>
               <label className="date-time-picker__field"><span>Systolic max</span><input type="number" value={bpSysMax} onChange={(e) => setBpSysMax(e.target.value)} /></label>
@@ -149,6 +181,21 @@ export function TagManagementPage() {
                 <option value="actual">Actual</option>
                 <option value="context">Context</option>
                 <option value="behavior">Behavior</option>
+              </select>
+            </label>
+            <label className="date-time-picker__field"><span>Range min</span><input type="number" value={rangeMin} onChange={(e) => setRangeMin(e.target.value)} /></label>
+            <label className="date-time-picker__field"><span>Range max</span><input type="number" value={rangeMax} onChange={(e) => setRangeMax(e.target.value)} /></label>
+          </div>
+        ) : showsCategorySelector ? (
+          <div className="four-column-grid">
+            <label className="date-time-picker__field"><span>Label</span><input value={newLabel} onChange={(e) => setNewLabel(e.target.value)} /></label>
+            <label className="date-time-picker__field">
+              <span>Category</span>
+              <select className="form-select" value={isSugar ? sugarCategory : weightCategory} onChange={(e) => {
+                if (isSugar) setSugarCategory(e.target.value as SugarTagDefinition['category']);
+                else setWeightCategory(e.target.value as WeightTagDefinition['category']);
+              }}>
+                {(isSugar ? Object.entries(SUGAR_TAG_CATEGORY_LABELS) : Object.entries(WEIGHT_TAG_CATEGORY_LABELS)).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
             </label>
             <label className="date-time-picker__field"><span>Range min</span><input type="number" value={rangeMin} onChange={(e) => setRangeMin(e.target.value)} /></label>
@@ -174,11 +221,21 @@ export function TagManagementPage() {
             <article key={tag.id} className="settings-list-item">
               {isBp ? (
                 <>
-                  <div className="three-column-grid align-end">
+                  <div className="two-column-grid align-end">
                     {tag.type === 'custom' ? (
                       <label className="date-time-picker__field"><span>Label</span><input value={tag.label} onChange={(e) => updateModuleTag(tag.id, { label: e.target.value })} /></label>
                     ) : (
                       <div className="tag-static-field"><span>Built-in label</span><strong>{tag.label}</strong></div>
+                    )}
+                    {tag.type === 'custom' ? (
+                      <label className="date-time-picker__field">
+                        <span>Category</span>
+                        <select className="form-select" value={(tag as BpTagDefinition).category} onChange={(e) => updateModuleTag(tag.id, { category: e.target.value as BpTagDefinition['category'] })}>
+                          {Object.entries(BP_TAG_CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                        </select>
+                      </label>
+                    ) : (
+                      <div className="tag-static-field"><span>Category</span><strong>{BP_TAG_CATEGORY_LABELS[(tag as BpTagDefinition).category]}</strong></div>
                     )}
                   </div>
                   <div className="four-column-grid align-end">
@@ -219,12 +276,36 @@ export function TagManagementPage() {
                   <label className="date-time-picker__field"><span>Range max</span><input type="number" value={tag.rangeMax ?? ''} onChange={(e) => updateModuleTag(tag.id, { rangeMax: parseNullableNumber(e.target.value) })} /></label>
                 </div>
               ) : (
-                <div className="three-column-grid align-end">
+                <div className={activeModule === 'height' ? 'three-column-grid align-end' : 'four-column-grid align-end'}>
                   {tag.type === 'custom' ? (
                     <label className="date-time-picker__field"><span>Label</span><input value={tag.label} onChange={(e) => updateModuleTag(tag.id, { label: e.target.value })} /></label>
                   ) : (
                     <div className="tag-static-field"><span>Built-in label</span><strong>{tag.label}</strong></div>
                   )}
+                  {activeModule === 'sugar' ? (
+                    tag.type === 'custom' ? (
+                      <label className="date-time-picker__field">
+                        <span>Category</span>
+                        <select className="form-select" value={(tag as SugarTagDefinition).category} onChange={(e) => updateModuleTag(tag.id, { category: e.target.value as SugarTagDefinition['category'] })}>
+                          {Object.entries(SUGAR_TAG_CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                        </select>
+                      </label>
+                    ) : (
+                      <div className="tag-static-field"><span>Category</span><strong>{SUGAR_TAG_CATEGORY_LABELS[(tag as SugarTagDefinition).category]}</strong></div>
+                    )
+                  ) : null}
+                  {activeModule === 'weight' ? (
+                    tag.type === 'custom' ? (
+                      <label className="date-time-picker__field">
+                        <span>Category</span>
+                        <select className="form-select" value={(tag as WeightTagDefinition).category} onChange={(e) => updateModuleTag(tag.id, { category: e.target.value as WeightTagDefinition['category'] })}>
+                          {Object.entries(WEIGHT_TAG_CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                        </select>
+                      </label>
+                    ) : (
+                      <div className="tag-static-field"><span>Category</span><strong>{WEIGHT_TAG_CATEGORY_LABELS[(tag as WeightTagDefinition).category]}</strong></div>
+                    )
+                  ) : null}
                   <label className="date-time-picker__field">
                     <span>Range min</span>
                     <input type="number" value={tag.rangeMin ?? ''} onChange={(e) => {

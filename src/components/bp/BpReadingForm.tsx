@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DateTimePicker } from '../DateTimePicker';
-import { TagChipSelector } from '../TagChipSelector';
+import { BpTagGroupSelector } from './BpTagGroupSelector';
 import type { AppSettings, BpDraft, BpReading, BpTagDefinition } from '../../lib/types';
 
 type BpReadingFormProps = {
@@ -97,12 +97,14 @@ export function BpReadingForm({
         </label>
       </div>
 
-      <TagChipSelector
+      <BpTagGroupSelector
         tags={tags}
         readings={readings}
         settings={settings}
         selectedTagIds={draft.tagIds}
         onChange={(tagIds) => setDraft((current) => ({ ...current, tagIds }))}
+        label="Tags"
+        helperText="Pick grouped tags when they add context. Leaving tags empty is allowed."
         manageLinkTo="/settings/tags"
         manageLinkLabel="Manage tags"
       />

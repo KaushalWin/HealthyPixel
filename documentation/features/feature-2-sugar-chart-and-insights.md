@@ -2,7 +2,7 @@
 
 ## Product Scope
 
-Provide a sugar trends chart with date filtering, highlighted out-of-range points based on tag range, and summary metrics.
+Provide a sugar trends chart with date filtering, category-aware tag filtering, highlighted out-of-range points based on tag range, summary metrics, and a top-tag breakdown chart.
 
 ## Functional Summary
 
@@ -10,10 +10,12 @@ Provide a sugar trends chart with date filtering, highlighted out-of-range point
 2. Fill color under line area.
 3. Default date range comes from settings.
 4. User can change date range using date-only selector.
-5. User can also filter by one or multiple tags, and the same filters affect both chart and list below.
-5. Show list of readings used in the chart below the graph.
-6. Highlight out-of-range values based on tag-specific thresholds.
-7. Show key summary metrics below chart.
+5. User can filter by one or multiple tag categories.
+6. User can filter by one or multiple specific tags, and the same filters affect both chart and list below.
+7. Show a top-tag breakdown chart for the filtered reading set.
+8. Show list of readings used in the chart below the graph.
+9. Highlight out-of-range values based on tag-specific thresholds.
+10. Show key summary metrics below chart.
 
 ## Display Rules
 
@@ -45,16 +47,17 @@ Provide a sugar trends chart with date filtering, highlighted out-of-range point
 
 1. Build SugarTrendChart component using reusable chart primitives.
 2. Build DateRangePicker (date-only).
-3. Reuse SugarReadingList with shared date and tag filter mode.
+3. Reuse SugarReadingList with shared date, tag, and category filter state.
 4. Build RangeEvaluator utility:
    - resolve applicable threshold from tag
    - classify each reading as inside, outside, or neutral
    - if multiple tags exist, apply the shortest effective range
    - treat threshold equality as inside
 5. Build ChartSummaryMetrics component for percentages/counts.
-6. Respect default range from settings on initial load.
-7. Respect default chart colors from settings for inside, outside, and neutral points.
-8. Share the active filters with the reading list below the chart.
+6. Build a top-tag breakdown chart using the filtered reading set.
+7. Respect default range from settings on initial load.
+8. Respect default chart colors from settings for inside, outside, and neutral points.
+9. Share the active filters with the reading list below the chart.
 
 ## Data Handling Notes
 
@@ -63,7 +66,9 @@ Provide a sugar trends chart with date filtering, highlighted out-of-range point
 3. Sort for list remains descending by readingDateTimeIso.
 4. Chart x-axis label format should stay compact and readable on mobile.
 5. Tag filters should allow one or multiple selected tags.
-6. Untagged readings should remain visible unless tag filtering excludes them.
+6. Category filters should allow one or multiple selected categories.
+7. Tag and category filters should use AND semantics across dimensions.
+8. Untagged readings should remain visible unless filtering excludes them.
 
 ## Edge Cases to Handle
 
@@ -73,6 +78,7 @@ Provide a sugar trends chart with date filtering, highlighted out-of-range point
 4. Selected date range where start is after end should be blocked by validation.
 5. Very dense datasets causing unreadable x-axis labels.
 6. Untagged readings should render with neutral color rather than inside-range color.
+7. No breakdown data should render a clear empty state instead of an empty chart shell.
 
 ## Confirmed Decisions
 

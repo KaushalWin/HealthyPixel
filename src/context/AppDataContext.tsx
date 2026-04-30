@@ -3,7 +3,9 @@ import type { ReactNode } from 'react';
 import { createDefaultBpTags, createDefaultFoodReadings, createDefaultFoodTags, createDefaultHeightTags, createDefaultTags, createDefaultWeightTags, DEFAULT_SETTINGS, STORAGE_KEYS } from '../lib/defaults';
 import { createStableId, safeLocalStorageGet, safeLocalStorageSet } from '../lib/platform';
 import { parseStoredJson, syncTagStats } from '../lib/readingUtils';
-import type { AppDataShape, AppSettings, BpDraft, BpReading, BpTagDefinition, FoodReading, FoodReadingDraft, FoodTagDefinition, HeightReading, ReadingDraft, SugarReading, TagDefinition, WeightReading } from '../lib/types';
+import { normalizeBpTag, normalizeSugarTag, normalizeWeightTag } from '../lib/tagCategories';
+import { getInlineTextValidationError } from '../lib/textValidation';
+import type { AppDataShape, AppSettings, BpDraft, BpReading, BpTagCategory, BpTagDefinition, FoodReading, FoodReadingDraft, FoodTagDefinition, HeightReading, ReadingDraft, SugarReading, SugarTagCategory, SugarTagDefinition, TagDefinition, WeightReading, WeightTagCategory, WeightTagDefinition } from '../lib/types';
 
 type AppDataContextValue = AppDataShape & {
   exportAppData: () => AppDataShape;
@@ -11,14 +13,14 @@ type AppDataContextValue = AppDataShape & {
 
   addReading: (draft: ReadingDraft) => SugarReading;
   updateReading: (readingId: string, draft: ReadingDraft) => SugarReading | null;
-  addTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
-  updateTag: (tagId: string, updates: Partial<Omit<TagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  addTag: (label: string, rangeMin: number | null, rangeMax: number | null, category?: SugarTagCategory) => SugarTagDefinition | null;
+  updateTag: (tagId: string, updates: Partial<Omit<SugarTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
   removeTag: (tagId: string) => void;
 
   addWeightReading: (draft: ReadingDraft) => WeightReading;
   updateWeightReading: (readingId: string, draft: ReadingDraft) => WeightReading | null;
-  addWeightTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
-  updateWeightTag: (tagId: string, updates: Partial<Omit<TagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  addWeightTag: (label: string, rangeMin: number | null, rangeMax: number | null, category?: WeightTagCategory) => WeightTagDefinition | null;
+  updateWeightTag: (tagId: string, updates: Partial<Omit<WeightTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
   removeWeightTag: (tagId: string) => void;
 
   addHeightReading: (draft: ReadingDraft) => HeightReading;
@@ -29,7 +31,7 @@ type AppDataContextValue = AppDataShape & {
 
   addBpReading: (draft: BpDraft) => BpReading;
   updateBpReading: (readingId: string, draft: BpDraft) => BpReading | null;
-  addBpTag: (label: string, systolicMin: number | null, systolicMax: number | null, diastolicMin: number | null, diastolicMax: number | null) => BpTagDefinition;
+  addBpTag: (label: string, systolicMin: number | null, systolicMax: number | null, diastolicMin: number | null, diastolicMax: number | null, category?: BpTagCategory) => BpTagDefinition | null;
   updateBpTag: (tagId: string, updates: Partial<Omit<BpTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
   removeBpTag: (tagId: string) => void;
 
@@ -46,12 +48,16 @@ type AppDataContextValue = AppDataShape & {
 const AppDataContext = createContext<AppDataContextValue | null>(null);
 
 function normalizeAppData(data: AppDataShape): AppDataShape {
+  const normalizedSugarTags = data.tags.map(normalizeSugarTag);
+  const normalizedWeightTags = data.weightTags.map(normalizeWeightTag);
+  const normalizedBpTags = data.bpTags.map(normalizeBpTag);
+
   return {
     ...data,
-    tags: syncTagStats(data.readings, data.tags),
-    weightTags: syncTagStats(data.weightReadings, data.weightTags),
+    tags: syncTagStats(data.readings, normalizedSugarTags),
+    weightTags: syncTagStats(data.weightReadings, normalizedWeightTags),
     heightTags: syncTagStats(data.heightReadings, data.heightTags),
-    bpTags: syncTagStats(data.bpReadings, data.bpTags),
+    bpTags: syncTagStats(data.bpReadings, normalizedBpTags),
     foodTags: syncTagStats(data.foodReadings, data.foodTags),
     settings: { ...DEFAULT_SETTINGS, ...data.settings }
   };
@@ -60,12 +66,12 @@ function normalizeAppData(data: AppDataShape): AppDataShape {
 function loadInitialAppData(): AppDataShape {
   const nowIso = new Date().toISOString();
   const readings = parseStoredJson<SugarReading[]>(safeLocalStorageGet(STORAGE_KEYS.readings), []);
-  const tags = parseStoredJson<TagDefinition[]>(
+  const tags = parseStoredJson<SugarTagDefinition[]>(
     safeLocalStorageGet(STORAGE_KEYS.tags),
     createDefaultTags(nowIso)
   );
   const weightReadings = parseStoredJson<WeightReading[]>(safeLocalStorageGet(STORAGE_KEYS.weightReadings), []);
-  const weightTags = parseStoredJson<TagDefinition[]>(
+  const weightTags = parseStoredJson<WeightTagDefinition[]>(
     safeLocalStorageGet(STORAGE_KEYS.weightTags),
     createDefaultWeightTags(nowIso)
   );
@@ -211,26 +217,45 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
 
       return updatedReading;
     },
-    addTag: (label, rangeMin, rangeMax) => {
+    addTag: (label, rangeMin, rangeMax, category = 'general') => {
+      const validationError = getInlineTextValidationError(label, 'Tag label');
+      if (validationError) {
+        return null;
+      }
+
       const nowIso = new Date().toISOString();
-      const tag: TagDefinition = {
-        id: createStableId(),
-        label: label.trim(),
-        type: 'custom',
-        createdAtIso: nowIso,
-        updatedAtIso: nowIso,
-        usageCount: 0,
-        lastUsedAtIso: null,
-        rangeMin,
-        rangeMax
-      };
+      const trimmedLabel = label.trim();
+      let createdTag: SugarTagDefinition | null = null;
 
-      setState((current) => ({
-        ...current,
-        tags: [...current.tags, tag]
-      }));
+      setState((current) => {
+        const hasDuplicateLabel = current.tags.some(
+          (candidate) => candidate.label.toLowerCase() === trimmedLabel.toLowerCase()
+        );
 
-      return tag;
+        if (hasDuplicateLabel) {
+          return current;
+        }
+
+        createdTag = {
+          id: createStableId(),
+          label: trimmedLabel,
+          type: 'custom',
+          createdAtIso: nowIso,
+          updatedAtIso: nowIso,
+          usageCount: 0,
+          lastUsedAtIso: null,
+          rangeMin,
+          rangeMax,
+          category
+        };
+
+        return {
+          ...current,
+          tags: [...current.tags, createdTag]
+        };
+      });
+
+      return createdTag;
     },
     updateTag: (tagId, updates) => {
       setState((current) => ({
@@ -249,9 +274,15 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
                 candidate.id !== tagId &&
                 candidate.label.toLowerCase() === trimmedLabel.toLowerCase()
             );
+          const hasInvalidLabel =
+            typeof trimmedLabel === 'string' &&
+            getInlineTextValidationError(trimmedLabel, 'Tag label') !== null;
 
           const resolvedLabel =
-            typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDuplicateLabel
+            typeof trimmedLabel === 'string' &&
+            trimmedLabel.length > 0 &&
+            !hasDuplicateLabel &&
+            !hasInvalidLabel
               ? trimmedLabel
               : tag.label;
 
@@ -326,11 +357,30 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       });
       return updatedReading;
     },
-    addWeightTag: (label, rangeMin, rangeMax) => {
+    addWeightTag: (label, rangeMin, rangeMax, category = 'general') => {
+      const validationError = getInlineTextValidationError(label, 'Tag label');
+      if (validationError) {
+        return null;
+      }
+
       const nowIso = new Date().toISOString();
-      const tag: TagDefinition = { id: createStableId(), label: label.trim(), type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin, rangeMax };
-      setState((current) => ({ ...current, weightTags: [...current.weightTags, tag] }));
-      return tag;
+      const trimmedLabel = label.trim();
+      let createdTag: WeightTagDefinition | null = null;
+
+      setState((current) => {
+        const hasDuplicateLabel = current.weightTags.some(
+          (candidate) => candidate.label.toLowerCase() === trimmedLabel.toLowerCase()
+        );
+
+        if (hasDuplicateLabel) {
+          return current;
+        }
+
+        createdTag = { id: createStableId(), label: trimmedLabel, type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin, rangeMax, category };
+        return { ...current, weightTags: [...current.weightTags, createdTag] };
+      });
+
+      return createdTag;
     },
     updateWeightTag: (tagId, updates) => {
       setState((current) => ({
@@ -339,7 +389,8 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           if (tag.id !== tagId) return tag;
           const trimmedLabel = updates.label?.trim();
           const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.weightTags.some((c) => c.id !== tagId && c.label.toLowerCase() === trimmedLabel.toLowerCase());
-          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          const hasInvalidLabel = typeof trimmedLabel === 'string' && getInlineTextValidationError(trimmedLabel, 'Tag label') !== null;
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup && !hasInvalidLabel ? trimmedLabel : tag.label;
           let resolvedMin = updates.rangeMin ?? tag.rangeMin;
           let resolvedMax = updates.rangeMax ?? tag.rangeMax;
           if (resolvedMin !== null && resolvedMax !== null && resolvedMin > resolvedMax) {
@@ -449,11 +500,30 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       });
       return updatedReading;
     },
-    addBpTag: (label, systolicMin, systolicMax, diastolicMin, diastolicMax) => {
+    addBpTag: (label, systolicMin, systolicMax, diastolicMin, diastolicMax, category = 'general') => {
+      const validationError = getInlineTextValidationError(label, 'Tag label');
+      if (validationError) {
+        return null;
+      }
+
       const nowIso = new Date().toISOString();
-      const tag: BpTagDefinition = { id: createStableId(), label: label.trim(), type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin: null, rangeMax: null, systolicMin, systolicMax, diastolicMin, diastolicMax };
-      setState((current) => ({ ...current, bpTags: [...current.bpTags, tag] }));
-      return tag;
+      const trimmedLabel = label.trim();
+      let createdTag: BpTagDefinition | null = null;
+
+      setState((current) => {
+        const hasDuplicateLabel = current.bpTags.some(
+          (candidate) => candidate.label.toLowerCase() === trimmedLabel.toLowerCase()
+        );
+
+        if (hasDuplicateLabel) {
+          return current;
+        }
+
+        createdTag = { id: createStableId(), label: trimmedLabel, type: 'custom', createdAtIso: nowIso, updatedAtIso: nowIso, usageCount: 0, lastUsedAtIso: null, rangeMin: null, rangeMax: null, systolicMin, systolicMax, diastolicMin, diastolicMax, category };
+        return { ...current, bpTags: [...current.bpTags, createdTag] };
+      });
+
+      return createdTag;
     },
     updateBpTag: (tagId, updates) => {
       setState((current) => ({
@@ -462,7 +532,8 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           if (tag.id !== tagId) return tag;
           const trimmedLabel = updates.label?.trim();
           const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.bpTags.some((c) => c.id !== tagId && c.label.toLowerCase() === trimmedLabel.toLowerCase());
-          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          const hasInvalidLabel = typeof trimmedLabel === 'string' && getInlineTextValidationError(trimmedLabel, 'Tag label') !== null;
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup && !hasInvalidLabel ? trimmedLabel : tag.label;
           return { ...tag, ...updates, label: resolvedLabel, updatedAtIso: new Date().toISOString() };
         })
       }));
@@ -515,10 +586,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       return updatedReading;
     },
     addFoodTag: (label, category, rangeMin, rangeMax) => {
-      const trimmedLabel = label.trim();
-      if (!trimmedLabel) {
+      const validationError = getInlineTextValidationError(label, 'Tag label');
+      if (validationError) {
         return null;
       }
+
+      const trimmedLabel = label.trim();
 
       const nowIso = new Date().toISOString();
       let createdTag: FoodTagDefinition | null = null;
@@ -555,7 +628,8 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           if (tag.id !== tagId) return tag;
           const trimmedLabel = updates.label?.trim();
           const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.foodTags.some((candidate) => candidate.id !== tagId && candidate.category === (updates.category ?? tag.category) && candidate.label.toLowerCase() === trimmedLabel.toLowerCase());
-          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          const hasInvalidLabel = typeof trimmedLabel === 'string' && getInlineTextValidationError(trimmedLabel, 'Tag label') !== null;
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup && !hasInvalidLabel ? trimmedLabel : tag.label;
           let resolvedMin = updates.rangeMin ?? tag.rangeMin;
           let resolvedMax = updates.rangeMax ?? tag.rangeMax;
           if (resolvedMin !== null && resolvedMax !== null && resolvedMin > resolvedMax) {

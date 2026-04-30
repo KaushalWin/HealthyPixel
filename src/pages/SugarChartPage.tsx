@@ -1,6 +1,9 @@
 import {
   Area,
+  Bar,
+  BarChart,
   CartesianGrid,
+  Cell,
   ComposedChart,
   Line,
   ResponsiveContainer,
@@ -9,20 +12,28 @@ import {
   YAxis
 } from 'recharts';
 import { useMemo, useState } from 'react';
+import { CategoryChipFilter } from '../components/CategoryChipFilter';
 import { SiteShell } from '../components/SiteShell';
 import { DateRangePicker } from '../components/sugar/DateRangePicker';
 import { SugarReadingList } from '../components/sugar/SugarReadingList';
-import { TagSelector } from '../components/sugar/TagSelector';
+import { SugarTagGroupSelector } from '../components/sugar/SugarTagGroupSelector';
 import { useAppData } from '../context/AppDataContext';
 import {
-  applyReadingFilters,
+  applyCategorizedReadingFilters,
+  buildValueTagBreakdown,
   buildPresetDateRange,
+  createCategorizedReadingFilters,
   buildReadingMetrics,
   classifyReading,
   sortReadingsAscending,
   sortReadingsDescending
 } from '../lib/readingUtils';
-import type { ChartPreset, ReadingFilters, TagDefinition } from '../lib/types';
+import {
+  SUGAR_TAG_CATEGORY_CHART_COLORS,
+  SUGAR_TAG_CATEGORY_LABELS,
+  SUGAR_TAG_CATEGORY_ORDER
+} from '../lib/tagCategories';
+import type { ChartPreset, SugarReadingFilters, SugarTagDefinition } from '../lib/types';
 
 const chartDateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -49,28 +60,28 @@ export function SugarChartPage() {
   const [activePreset, setActivePreset] = useState<ChartPreset | 'custom'>(
     settings.defaultChartPreset
   );
-  const [filters, setFilters] = useState<ReadingFilters>(() =>
-    buildPresetDateRange(settings.defaultChartPreset)
+  const [filters, setFilters] = useState<SugarReadingFilters>(() =>
+    createCategorizedReadingFilters(buildPresetDateRange(settings.defaultChartPreset))
   );
 
   const hasInvalidRange =
     filters.startDate !== '' && filters.endDate !== '' && filters.startDate > filters.endDate;
+
+  const tagsById = useMemo(() => new Map(tags.map((tag) => [tag.id, tag] as const)), [tags]);
 
   const filteredReadings = useMemo(() => {
     if (hasInvalidRange) {
       return [];
     }
 
-    return applyReadingFilters(readings, filters);
-  }, [filters, hasInvalidRange, readings]);
-
-  const tagsById = useMemo(() => new Map(tags.map((tag) => [tag.id, tag])), [tags]);
+    return applyCategorizedReadingFilters(readings, filters, tagsById);
+  }, [filters, hasInvalidRange, readings, tagsById]);
 
   const chartData = useMemo<ChartDatum[]>(() => {
     return sortReadingsAscending(filteredReadings).map((reading) => {
       const readingTags = reading.tagIds
         .map((tagId) => tagsById.get(tagId))
-        .filter(Boolean) as TagDefinition[];
+        .filter(Boolean) as SugarTagDefinition[];
       const status = classifyReading(reading, readingTags).status;
       const color =
         status === 'inside'
@@ -91,6 +102,11 @@ export function SugarChartPage() {
   }, [filteredReadings, settings.chartColorInside, settings.chartColorNeutral, settings.chartColorOutside, tagsById]);
 
   const metrics = useMemo(() => buildReadingMetrics(filteredReadings, tagsById), [filteredReadings, tagsById]);
+
+  const tagBreakdown = useMemo(
+    () => buildValueTagBreakdown(filteredReadings, tagsById, filters.categories).slice(0, 8),
+    [filteredReadings, filters.categories, tagsById]
+  );
 
   return (
     <SiteShell
@@ -189,6 +205,52 @@ export function SugarChartPage() {
         </div>
       </section>
 
+      <section className="doc-card chart-card" aria-label="Sugar tag breakdown chart">
+        <div className="section-header-inline">
+          <div>
+            <h2>Top matching tags</h2>
+            <p>The chart below shows which sugar tags appear most often after your current filters are applied.</p>
+          </div>
+        </div>
+
+        {tagBreakdown.length === 0 ? (
+          <div className="empty-state">
+            <p>No tag breakdown is available for the current filters yet.</p>
+          </div>
+        ) : (
+          <div className="chart-shell">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={tagBreakdown} layout="vertical" margin={{ left: 16 }}>
+                <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" stroke="var(--ink-soft)" allowDecimals={false} />
+                <YAxis type="category" dataKey="label" stroke="var(--ink-soft)" width={110} />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload || payload.length === 0) {
+                      return null;
+                    }
+
+                    const point = payload[0]?.payload as (typeof tagBreakdown)[number];
+                    return (
+                      <div className="chart-tooltip">
+                        <strong>{point.label}</strong>
+                        <p>{point.count} readings</p>
+                        <p>{point.averageValue} avg</p>
+                      </div>
+                    );
+                  }}
+                />
+                <Bar dataKey="count" radius={[0, 8, 8, 0]}>
+                  {tagBreakdown.map((entry) => (
+                    <Cell key={entry.key} fill={SUGAR_TAG_CATEGORY_CHART_COLORS[entry.category]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </section>
+
       <section className="doc-card section-stack compact-controls">
         <details className="compact-details">
           <summary>Chart filters</summary>
@@ -197,26 +259,42 @@ export function SugarChartPage() {
             filters={filters}
             onChange={(nextFilters) => {
               setActivePreset('custom');
-              setFilters(nextFilters);
+              setFilters((current) => ({
+                ...current,
+                startDate: nextFilters.startDate,
+                endDate: nextFilters.endDate
+              }));
             }}
             activePreset={activePreset}
             onPresetChange={(preset) => {
               setActivePreset(preset);
-              setFilters({ ...buildPresetDateRange(preset), tagIds: filters.tagIds });
+              setFilters((current) => ({
+                ...current,
+                ...buildPresetDateRange(preset)
+              }));
             }}
             showPresets
             errorMessage={hasInvalidRange ? 'Start date cannot be after end date.' : null}
           />
 
-          <TagSelector
+          <CategoryChipFilter
+            title="Categories"
+            helperText="Filter sugar chart data by grouped tag categories."
+            categories={SUGAR_TAG_CATEGORY_ORDER}
+            categoryLabels={SUGAR_TAG_CATEGORY_LABELS}
+            selectedCategories={filters.categories}
+            onChange={(categories) => setFilters((current) => ({ ...current, categories }))}
+          />
+
+          <SugarTagGroupSelector
             tags={tags}
             readings={readings}
             settings={settings}
             selectedTagIds={filters.tagIds}
             onChange={(tagIds) => setFilters((current) => ({ ...current, tagIds }))}
+            label="Specific tags"
             helperText="Filters apply to both the chart and list below."
             manageLinkTo="/settings/tags"
-            mode="dropdown"
           />
         </details>
       </section>

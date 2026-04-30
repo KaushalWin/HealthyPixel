@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DateTimePicker } from '../DateTimePicker';
 import { FoodTagGroupSelector } from './FoodTagGroupSelector';
+import { getInlineTextValidationError } from '../../lib/textValidation';
 import type { AppSettings, FoodReading, FoodReadingDraft, FoodTagDefinition } from '../../lib/types';
 
 type FoodReadingFormProps = {
@@ -29,8 +30,9 @@ export function FoodReadingForm({
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = () => {
-    if (draft.mealName.trim().length === 0) {
-      setError('Meal name is required.');
+    const mealNameError = getInlineTextValidationError(draft.mealName, 'Meal name');
+    if (mealNameError) {
+      setError(mealNameError);
       return;
     }
 

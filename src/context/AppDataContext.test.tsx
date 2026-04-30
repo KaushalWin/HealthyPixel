@@ -56,4 +56,45 @@ describe('AppDataContext', () => {
     expect(exportedData.tags.find((tag) => tag.id === 'fasting')?.usageCount).toBe(1);
     expect(JSON.parse(window.localStorage.getItem(STORAGE_KEYS.readings) ?? '[]')).toEqual(importedData.readings);
   });
+
+  it('migrates legacy categorized tags during replaceAllAppData', async () => {
+    const user = userEvent.setup();
+    const importedData = createFixtureAppData();
+    const onExport = vi.fn();
+
+    const legacyData = {
+      ...importedData,
+      tags: [
+        ...importedData.tags.map(({ category, ...tag }) => tag),
+        {
+          id: 'sugar-custom-legacy',
+          label: 'Travel day',
+          type: 'custom' as const,
+          createdAtIso: importedData.tags[0].createdAtIso,
+          updatedAtIso: importedData.tags[0].updatedAtIso,
+          usageCount: 0,
+          lastUsedAtIso: null,
+          rangeMin: null,
+          rangeMax: null
+        }
+      ],
+      weightTags: importedData.weightTags.map(({ category, ...tag }) => tag),
+      bpTags: importedData.bpTags.map(({ category, ...tag }) => tag)
+    } as unknown as AppDataShape;
+
+    render(
+      <AppDataProvider>
+        <ContextHarness importedData={legacyData} onExport={onExport} />
+      </AppDataProvider>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Replace data' }));
+    await user.click(screen.getByRole('button', { name: 'Export data' }));
+
+    const exportedData = onExport.mock.calls[0]?.[0] as AppDataShape;
+    expect(exportedData.tags.find((tag) => tag.id === 'fasting')?.category).toBe('timing');
+    expect(exportedData.tags.find((tag) => tag.id === 'sugar-custom-legacy')?.category).toBe('general');
+    expect(exportedData.weightTags.find((tag) => tag.id === 'w-morning')?.category).toBe('timing');
+    expect(exportedData.bpTags.find((tag) => tag.id === 'bp-random')?.category).toBe('context');
+  });
 });

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DateTimePicker } from '../DateTimePicker';
-import { TagChipSelector } from '../TagChipSelector';
-import type { AppSettings, ReadingDraft, SugarReading, TagDefinition } from '../../lib/types';
+import { SugarTagGroupSelector } from './SugarTagGroupSelector';
+import type { AppSettings, ReadingDraft, SugarReading, SugarTagDefinition } from '../../lib/types';
 
 type SugarReadingFormProps = {
   title: string;
   submitLabel: string;
   initialValue: ReadingDraft;
-  tags: TagDefinition[];
+  tags: SugarTagDefinition[];
   readings: SugarReading[];
   settings: AppSettings;
   onSubmit: (draft: ReadingDraft) => void;
@@ -70,12 +70,14 @@ export function SugarReadingForm({
         />
       </label>
 
-      <TagChipSelector
+      <SugarTagGroupSelector
         tags={tags}
         readings={readings}
         settings={settings}
         selectedTagIds={draft.tagIds}
         onChange={(tagIds) => setDraft((current) => ({ ...current, tagIds }))}
+        label="Tags"
+        helperText="Pick grouped tags when they add context. Leaving tags empty is allowed."
         manageLinkTo="/settings/tags"
         manageLinkLabel="Manage tags"
       />

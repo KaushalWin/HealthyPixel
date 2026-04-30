@@ -1,6 +1,26 @@
-import type { AppSettings, BpTagDefinition, FoodReading, FoodTagCategory, FoodTagDefinition, TagDefinition } from './types';
+import type {
+  AppSettings,
+  BpTagCategory,
+  BpTagDefinition,
+  FoodReading,
+  FoodTagCategory,
+  FoodTagDefinition,
+  SugarTagCategory,
+  SugarTagDefinition,
+  TagDefinition,
+  WeightTagCategory,
+  WeightTagDefinition
+} from './types';
 
-type BuiltInTagSeed = {
+type BuiltInTagSeed<TCategory extends string> = {
+  id: string;
+  label: string;
+  category: TCategory;
+  rangeMin: number | null;
+  rangeMax: number | null;
+};
+
+type FlatBuiltInTagSeed = {
   id: string;
   label: string;
   rangeMin: number | null;
@@ -10,6 +30,7 @@ type BuiltInTagSeed = {
 type BpTagSeed = {
   id: string;
   label: string;
+  category: BpTagCategory;
   systolicMin: number | null;
   systolicMax: number | null;
   diastolicMin: number | null;
@@ -63,45 +84,45 @@ export const DEFAULT_SETTINGS: AppSettings = {
   dashboardChartPreset: 'lastWeek'
 };
 
-const BUILT_IN_TAG_SEEDS: BuiltInTagSeed[] = [
-  { id: 'pre-breakfast', label: 'Pre breakfast', rangeMin: 70, rangeMax: 100 },
-  { id: 'post-breakfast', label: 'Post breakfast', rangeMin: 70, rangeMax: 140 },
-  { id: 'pre-lunch', label: 'Pre lunch', rangeMin: 70, rangeMax: 100 },
-  { id: 'post-lunch', label: 'Post lunch', rangeMin: 70, rangeMax: 140 },
-  { id: 'pre-dinner', label: 'Pre dinner', rangeMin: 70, rangeMax: 100 },
-  { id: 'post-dinner', label: 'Post dinner', rangeMin: 70, rangeMax: 140 },
-  { id: 'pre-snack', label: 'Pre snack', rangeMin: 70, rangeMax: 100 },
-  { id: 'post-snack', label: 'Post snack', rangeMin: 70, rangeMax: 140 },
-  { id: 'pre-exercise', label: 'Pre exercise', rangeMin: 70, rangeMax: 140 },
-  { id: 'post-exercise', label: 'Post exercise', rangeMin: 70, rangeMax: 140 },
-  { id: 'random', label: 'Random', rangeMin: 70, rangeMax: 140 },
-  { id: 'fasting', label: 'Fasting', rangeMin: 70, rangeMax: 100 },
-  { id: 'weekend', label: 'Weekend', rangeMin: 70, rangeMax: 140 },
-  { id: 'cheat', label: 'Cheat', rangeMin: 70, rangeMax: 140 }
+const BUILT_IN_TAG_SEEDS: BuiltInTagSeed<SugarTagCategory>[] = [
+  { id: 'pre-breakfast', label: 'Pre breakfast', category: 'timing', rangeMin: 70, rangeMax: 100 },
+  { id: 'post-breakfast', label: 'Post breakfast', category: 'timing', rangeMin: 70, rangeMax: 140 },
+  { id: 'pre-lunch', label: 'Pre lunch', category: 'timing', rangeMin: 70, rangeMax: 100 },
+  { id: 'post-lunch', label: 'Post lunch', category: 'timing', rangeMin: 70, rangeMax: 140 },
+  { id: 'pre-dinner', label: 'Pre dinner', category: 'timing', rangeMin: 70, rangeMax: 100 },
+  { id: 'post-dinner', label: 'Post dinner', category: 'timing', rangeMin: 70, rangeMax: 140 },
+  { id: 'pre-snack', label: 'Pre snack', category: 'timing', rangeMin: 70, rangeMax: 100 },
+  { id: 'post-snack', label: 'Post snack', category: 'timing', rangeMin: 70, rangeMax: 140 },
+  { id: 'pre-exercise', label: 'Pre exercise', category: 'activity', rangeMin: 70, rangeMax: 140 },
+  { id: 'post-exercise', label: 'Post exercise', category: 'activity', rangeMin: 70, rangeMax: 140 },
+  { id: 'random', label: 'Random', category: 'context', rangeMin: 70, rangeMax: 140 },
+  { id: 'fasting', label: 'Fasting', category: 'timing', rangeMin: 70, rangeMax: 100 },
+  { id: 'weekend', label: 'Weekend', category: 'context', rangeMin: 70, rangeMax: 140 },
+  { id: 'cheat', label: 'Cheat', category: 'context', rangeMin: 70, rangeMax: 140 }
 ];
 
-const WEIGHT_TAG_SEEDS: BuiltInTagSeed[] = [
-  { id: 'w-morning', label: 'Morning', rangeMin: null, rangeMax: null },
-  { id: 'w-evening', label: 'Evening', rangeMin: null, rangeMax: null },
-  { id: 'w-pre-exercise', label: 'Pre exercise', rangeMin: null, rangeMax: null },
-  { id: 'w-post-exercise', label: 'Post exercise', rangeMin: null, rangeMax: null },
-  { id: 'w-fasting', label: 'Fasting', rangeMin: null, rangeMax: null },
-  { id: 'w-random', label: 'Random', rangeMin: null, rangeMax: null }
+const WEIGHT_TAG_SEEDS: BuiltInTagSeed<WeightTagCategory>[] = [
+  { id: 'w-morning', label: 'Morning', category: 'timing', rangeMin: null, rangeMax: null },
+  { id: 'w-evening', label: 'Evening', category: 'timing', rangeMin: null, rangeMax: null },
+  { id: 'w-pre-exercise', label: 'Pre exercise', category: 'bodyState', rangeMin: null, rangeMax: null },
+  { id: 'w-post-exercise', label: 'Post exercise', category: 'bodyState', rangeMin: null, rangeMax: null },
+  { id: 'w-fasting', label: 'Fasting', category: 'bodyState', rangeMin: null, rangeMax: null },
+  { id: 'w-random', label: 'Random', category: 'routine', rangeMin: null, rangeMax: null }
 ];
 
-const HEIGHT_TAG_SEEDS: BuiltInTagSeed[] = [
+const HEIGHT_TAG_SEEDS: FlatBuiltInTagSeed[] = [
   { id: 'h-standing', label: 'Standing', rangeMin: null, rangeMax: null },
   { id: 'h-morning', label: 'Morning', rangeMin: null, rangeMax: null },
   { id: 'h-random', label: 'Random', rangeMin: null, rangeMax: null }
 ];
 
 const BP_TAG_SEEDS: BpTagSeed[] = [
-  { id: 'bp-morning', label: 'Morning', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
-  { id: 'bp-evening', label: 'Evening', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
-  { id: 'bp-pre-exercise', label: 'Pre exercise', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
-  { id: 'bp-post-exercise', label: 'Post exercise', systolicMin: 90, systolicMax: 170, diastolicMin: 60, diastolicMax: 90 },
-  { id: 'bp-resting', label: 'Resting', systolicMin: 90, systolicMax: 120, diastolicMin: 60, diastolicMax: 80 },
-  { id: 'bp-random', label: 'Random', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 }
+  { id: 'bp-morning', label: 'Morning', category: 'timing', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
+  { id: 'bp-evening', label: 'Evening', category: 'timing', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
+  { id: 'bp-pre-exercise', label: 'Pre exercise', category: 'bodyState', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 },
+  { id: 'bp-post-exercise', label: 'Post exercise', category: 'bodyState', systolicMin: 90, systolicMax: 170, diastolicMin: 60, diastolicMax: 90 },
+  { id: 'bp-resting', label: 'Resting', category: 'bodyState', systolicMin: 90, systolicMax: 120, diastolicMin: 60, diastolicMax: 80 },
+  { id: 'bp-random', label: 'Random', category: 'context', systolicMin: 90, systolicMax: 140, diastolicMin: 60, diastolicMax: 90 }
 ];
 
 const FOOD_TAG_SEEDS: FoodTagSeed[] = [
@@ -125,7 +146,7 @@ const FOOD_TAG_SEEDS: FoodTagSeed[] = [
   { id: 'food-behavior-stress-eat', label: 'Stress eat', category: 'behavior', rangeMin: null, rangeMax: null }
 ];
 
-export function createDefaultTags(nowIso = new Date().toISOString()): TagDefinition[] {
+export function createDefaultTags(nowIso = new Date().toISOString()): SugarTagDefinition[] {
   return BUILT_IN_TAG_SEEDS.map((seed) => ({
     ...seed,
     type: 'builtin',
@@ -136,7 +157,7 @@ export function createDefaultTags(nowIso = new Date().toISOString()): TagDefinit
   }));
 }
 
-export function createDefaultWeightTags(nowIso = new Date().toISOString()): TagDefinition[] {
+export function createDefaultWeightTags(nowIso = new Date().toISOString()): WeightTagDefinition[] {
   return WEIGHT_TAG_SEEDS.map((seed) => ({
     ...seed,
     type: 'builtin',
