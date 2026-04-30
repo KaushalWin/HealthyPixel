@@ -1,0 +1,1 @@
+import{i as e}from"./branding-CWacZweT.js";import{c as t,l as n,u as r}from"./index-CadT17zQ.js";import{t as i}from"./GroupedTagSelector-BGE3Ylbq.js";var a=e();function o(e){return(0,a.jsx)(i,{...e,categoryOrder:r,categoryLabels:n,categoryDescriptions:t,getTagMeta:e=>e.rangeMin!==null||e.rangeMax!==null?`${e.rangeMin??`-`} to ${e.rangeMax??`-`}`:`No range`})}export{o as t};
