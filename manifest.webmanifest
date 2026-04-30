@@ -2,7 +2,7 @@
   "name": "PixieTrack",
   "short_name": "PixieTrack",
   "id": "./",
-  "description": "Privacy-first, local-only, lightweight health tracking foundation.",
+  "description": "Privacy-first, local-only health and food tracking with charts and quick entry shortcuts.",
   "start_url": "./#/",
   "scope": "./",
   "display": "standalone",
@@ -36,6 +36,13 @@
       "short_name": "Add Sugar",
       "description": "Open the sugar reading entry page",
       "url": "./#/sugar/add",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Add Food",
+      "short_name": "Add Food",
+      "description": "Open the food entry page",
+      "url": "./#/food/add",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
