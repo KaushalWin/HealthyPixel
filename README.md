@@ -6,13 +6,16 @@
 
 ## Overview
 
-PixieTrack is currently in **Foundation Stage**. The app now includes the first complete sugar-tracking workflow and supporting pages:
+PixieTrack is currently in **Foundation Stage**. The app now includes full local-first tracking workflows for sugar, weight, height, blood pressure, food, and supporting pages:
 
 - In-App Documentation page
 - AI Health Chat page
 - Add Sugar page
+- Add Food page
 - Sugar List page
+- Food List page
 - Sugar Chart page
+- Food Chart page
 - Settings pages
 - Tests page for reusable component and feature validation
 - About Us page
@@ -22,11 +25,14 @@ This stage is focused on reusable local-first architecture, fast daily entry flo
 ## Current Features (Stage 1)
 
 - 📘 **In-App Documentation**: Installation, quick actions, accessibility, and usage guidance.
-- AI **AI Health Chat**: Client-side wellness brainstorming with your own OpenAI or DeepSeek API key, kept in memory only.
+- AI **AI Health Chat**: Client-side wellness brainstorming with your own OpenAI or DeepSeek API key, kept in memory by default with optional per-provider browser save.
 - 🩸 **Sugar Entry**: Numeric readings, default-now date-time, multiple tags, and note support.
+- 🍽️ **Food Tracking**: Meal name, calories, four tag categories, flexible AND/OR filtering, and multi-chart insights.
 - 📋 **Sugar List**: Descending reading history with date/tag filtering and editing.
+- 📋 **Food List**: Meal history with date, tag, and category filtering plus mix-and-match AND/OR logic.
 - 📈 **Sugar Chart**: Straight-line chart with points, area fill, tag-aware range coloring, and metrics.
-- ⚙️ **Settings**: Tag management, chart defaults, color settings, and local reset.
+- 📊 **Food Insights**: Calorie trend chart, top tag breakdown chart, and category summary cards.
+- ⚙️ **Settings**: Tag management, chart defaults, color settings, full-app JSON export/import, and local reset.
 - 🧪 **Tests Page**: Safe place to trial shared components and new UI features before production use.
 - ℹ️ **About Us**: Mission, principles, and scope explanation.
 - ⚡ **Fast Static App**: Lightweight React + TypeScript + Vite foundation.
@@ -133,7 +139,7 @@ git push origin main
 ## Hosting and Test Plan (Current Stage)
 
 1. Push to `main` so [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) publishes to GitHub Pages.
-2. Open `https://kaushalwin.github.io/pixie-track/`.
+2. Open `https://kaushalwin.github.io/PixieTrack/`.
 3. Verify the key routes load:
    - `/#/` Documentation page
     - `/#/ai-chat` AI Health Chat page
@@ -180,7 +186,7 @@ If the hosting path changes, update the build environment value instead of editi
 
 ## Stage Scope
 
-Current implementation scope includes reusable local-first tracking flows, in-app guidance, AI Health Chat with memory-only API keys, and the shared Tests page harness. Broader health-metric expansion remains a next-stage concern.
+Current implementation scope includes reusable local-first tracking flows, JSON export/import from Settings, in-app guidance, AI Health Chat with memory-only-by-default API keys plus optional local browser save, and the shared Tests page harness.
 
 ## Data Privacy
 
@@ -189,8 +195,8 @@ Current implementation scope includes reusable local-first tracking flows, in-ap
 ✅ **No Account**: Use without login or registration.  
 ✅ **No Tracking**: No analytics, no ads, no data collection.  
 ✅ **No Data Usage by Us**: We do not use your health data for any internal or external purpose.  
-✅ **AI Chat Keys Stay In Memory**: API keys and chat transcripts are not persisted by PixieTrack. If you use AI Health Chat, the typed chat content is sent directly to the provider you selected.  
-✅ **Data Export**: Download all your data anytime as JSON/CSV.  
+✅ **AI Chat Keys Stay Local**: API keys stay in memory by default. If you explicitly save a key, it is stored only in your browser data on this device and never on PixieTrack servers. Chat transcripts are not persisted by PixieTrack.  
+✅ **Data Portability**: Export or restore the full app data as JSON from Settings. Saved AI provider keys are excluded from export files and are not changed by import.  
 ✅ **Auditable**: Source-available repository; you can review exactly what happens.
 
 ## Monetization Strategy
@@ -198,8 +204,7 @@ Current implementation scope includes reusable local-first tracking flows, in-ap
 PixieTrack is fully free. Donations are always allowed and optional. The future model is intentionally undecided and may evolve only if it helps sustainability without compromising privacy and user control.
 
 **Support Project Development** (optional):
-- **GitHub Sponsors**: github.com/yourusername (recurring support)
-- **Ko-fi**: ko-fi.com/yourname (one-time contributions)
+- **GitHub Sponsors**: github.com/KaushalWin (recurring support)
 
 See [documentation/strategy/MONETIZATION_STRATEGY.md](documentation/strategy/MONETIZATION_STRATEGY.md) for details.
 
@@ -207,25 +212,22 @@ See [documentation/strategy/MONETIZATION_STRATEGY.md](documentation/strategy/MON
 
 See [documentation/project/PLANNING.md](documentation/project/PLANNING.md) for full roadmap, phases, and timeline estimates.
 
-**Phase 1 (MVP - Weeks 1-3)**
-- Basic UI: Input form, readings list, simple chart
-- IndexedDB storage
-- Export/import functionality
-- PWA setup (manifest, service worker)
-- Deploy to GitHub Pages
+Current pre-launch focus:
 
-**Phase 2 (Polish - Weeks 4-6)**
-- Advanced charts (trends, analytics)
-- Mobile optimizations
-- Offline notifications
-- GitHub Sponsors setup
-- Marketing/Product Hunt launch
+- launch-critical regression coverage
+- PWA installability and offline validation
+- trust surfaces such as About, privacy messaging, and FAQ clarity
+- launch content that matches the deployed build exactly
 
-**Phase 3 (Growth - Months 2-3)**
-- Multiple health metrics
-- Data sync (optional via Dropbox/Google Drive)
-- Community feedback implementation
-- Re-evaluate sustainability options only if necessary
+Planned follow-up work still under consideration includes CSV export, optional user-controlled sync, and further UX improvements.
+
+## Launch Prep
+
+The launch-readiness artifacts live in:
+
+- [documentation/launch/LAUNCH_AUDIT.md](documentation/launch/LAUNCH_AUDIT.md)
+- [documentation/launch/TEST_PLAN.md](documentation/launch/TEST_PLAN.md)
+- [documentation/launch/CONTENT_PACK.md](documentation/launch/CONTENT_PACK.md)
 
 ## SEO & Traffic Strategy
 
@@ -250,7 +252,7 @@ Proprietary License. All rights reserved to the creator. See LICENSE file for fu
 ## Support & Contributions
 
 **Report Issues**: GitHub issues (for bugs/features)  
-**Donate**: [GitHub Sponsors](https://github.com/yourusername) or [Ko-fi](https://ko-fi.com/yourname)  
+**Donate**: [GitHub Sponsors](https://github.com/sponsors/KaushalWin)  
 **Feedback**: Use GitHub discussions
 
 ## FAQ
@@ -265,7 +267,7 @@ A: No, not for official medical use. This is a personal health tracker, not a me
 A: Yes! iOS supports PWAs. Add to home screen via Safari's "Add to Home Screen."
 
 **Q: What if I lose my phone?**  
-A: Export your data regularly (JSON/CSV download). Reinstall on new device, import data.
+A: Use Settings to export a JSON backup of your readings, tags, and settings. On a new device, open the app and import that JSON file to restore the local app data. Saved AI provider keys are intentionally not included.
 
 **Q: Why no backend?**  
 A: No backend = zero server costs, instant offline support, and your data never leaves your device. Win-win.

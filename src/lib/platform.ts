@@ -39,6 +39,15 @@ export function safeLocalStorageSet(key: string, value: string) {
   }
 }
 
+export function safeLocalStorageRemove(key: string) {
+  try {
+    window.localStorage.removeItem(key);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function safeSessionStorageGet(key: string) {
   try {
     return window.sessionStorage.getItem(key);

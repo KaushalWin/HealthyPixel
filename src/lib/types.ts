@@ -6,7 +6,11 @@ export type ChartPreset = 'today' | 'lastWeek' | 'lastMonth' | 'thisMonth' | 'th
 
 export type ReadingStatus = 'inside' | 'outside' | 'neutral';
 
-export type VitalModule = 'sugar' | 'weight' | 'height' | 'bp';
+export type VitalModule = 'sugar' | 'weight' | 'height' | 'bp' | 'food';
+
+export type FoodTagCategory = 'planned' | 'actual' | 'context' | 'behavior';
+
+export type LogicalMatchMode = 'and' | 'or';
 
 export type TagDefinition = {
   id: string;
@@ -34,6 +38,19 @@ export type BpTagDefinition = {
   systolicMax: number | null;
   diastolicMin: number | null;
   diastolicMax: number | null;
+};
+
+export type FoodTagDefinition = {
+  id: string;
+  label: string;
+  type: TagType;
+  createdAtIso: string;
+  updatedAtIso: string;
+  usageCount: number;
+  lastUsedAtIso: string | null;
+  rangeMin: number | null;
+  rangeMax: number | null;
+  category: FoodTagCategory;
 };
 
 export type SugarReading = {
@@ -77,6 +94,17 @@ export type BpReading = {
   updatedAtIso: string;
 };
 
+export type FoodReading = {
+  id: string;
+  mealName: string;
+  calories: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+  createdAtIso: string;
+  updatedAtIso: string;
+};
+
 export type AppSettings = {
   defaultChartPreset: ChartPreset;
   tagSortMode: TagSortMode;
@@ -93,6 +121,9 @@ export type AppSettings = {
   bpChartColorSystolic: string;
   bpChartColorDiastolic: string;
   bpChartColorNeutral: string;
+  foodChartColorInside: string;
+  foodChartColorOutside: string;
+  foodChartColorNeutral: string;
   dashboardModules: VitalModule[];
   dashboardChartPreset: ChartPreset;
 };
@@ -112,10 +143,25 @@ export type BpDraft = {
   note: string | null;
 };
 
+export type FoodReadingDraft = {
+  mealName: string;
+  calories: number;
+  readingDateTimeIso: string;
+  tagIds: string[];
+  note: string | null;
+};
+
 export type ReadingFilters = {
   startDate: string;
   endDate: string;
   tagIds: string[];
+};
+
+export type FoodReadingFilters = ReadingFilters & {
+  categories: FoodTagCategory[];
+  tagMatchMode: LogicalMatchMode;
+  categoryMatchMode: LogicalMatchMode;
+  combinedMode: LogicalMatchMode;
 };
 
 export type AppDataShape = {
@@ -127,5 +173,7 @@ export type AppDataShape = {
   heightTags: TagDefinition[];
   bpReadings: BpReading[];
   bpTags: BpTagDefinition[];
+  foodReadings: FoodReading[];
+  foodTags: FoodTagDefinition[];
   settings: AppSettings;
 };

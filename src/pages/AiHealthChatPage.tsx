@@ -10,7 +10,19 @@ import {
   type AiModel,
   type AiProvider
 } from '../lib/aiChat';
-import { createStableId } from '../lib/platform';
+import { STORAGE_KEYS } from '../lib/defaults';
+import { createStableId, safeLocalStorageGet, safeLocalStorageRemove, safeLocalStorageSet } from '../lib/platform';
+
+function getApiKeyStorageKey(provider: AiProvider) {
+  return provider === 'openai' ? STORAGE_KEYS.aiOpenAiApiKey : STORAGE_KEYS.aiDeepSeekApiKey;
+}
+
+function getSavedKeyPresence() {
+  return {
+    openai: Boolean(safeLocalStorageGet(STORAGE_KEYS.aiOpenAiApiKey)),
+    deepseek: Boolean(safeLocalStorageGet(STORAGE_KEYS.aiDeepSeekApiKey))
+  };
+}
 
 function getComposerDisabledReason(provider: AiProvider | '', model: AiModel | '', apiKey: string) {
   if (!provider) {
@@ -31,9 +43,9 @@ function getComposerDisabledReason(provider: AiProvider | '', model: AiModel | '
 export function AiHealthChatExperience() {
   const [provider, setProvider] = useState<AiProvider | ''>('');
   const [model, setModel] = useState<AiModel | ''>('');
-  // Frontend-only API keys are intentionally kept in memory only. This avoids persistence,
-  // but any browser-exposed key is still not production-secure for a production app.
   const [apiKey, setApiKey] = useState('');
+  const [savedKeyPresence, setSavedKeyPresence] = useState(getSavedKeyPresence);
+  const [apiKeyStatusMessage, setApiKeyStatusMessage] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatWindowMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -41,11 +53,17 @@ export function AiHealthChatExperience() {
 
   const inputDisabled = !provider || !model || apiKey.trim().length === 0 || isLoading;
   const disabledReason = getComposerDisabledReason(provider, model, apiKey);
+  const hasSavedKey = provider ? savedKeyPresence[provider] : false;
 
   const handleProviderChange = (nextProvider: AiProvider | '') => {
     setProvider(nextProvider);
     setModel('');
-    setApiKey('');
+    setApiKey(nextProvider ? safeLocalStorageGet(getApiKeyStorageKey(nextProvider)) ?? '' : '');
+    setApiKeyStatusMessage(
+      nextProvider && safeLocalStorageGet(getApiKeyStorageKey(nextProvider))
+        ? 'Saved key loaded from this browser for the selected provider.'
+        : null
+    );
     setMessages([]);
     setDraft('');
     setErrorMessage(null);
@@ -58,6 +76,38 @@ export function AiHealthChatExperience() {
     setDraft('');
     setErrorMessage(null);
     setIsLoading(false);
+  };
+
+  const handleSaveApiKey = () => {
+    if (!provider || apiKey.trim().length === 0) {
+      return;
+    }
+
+    const didSave = safeLocalStorageSet(getApiKeyStorageKey(provider), apiKey.trim());
+    if (!didSave) {
+      setApiKeyStatusMessage('Saving failed. Your browser may be blocking local storage.');
+      return;
+    }
+
+    setSavedKeyPresence((current) => ({ ...current, [provider]: true }));
+    setApiKey(apiKey.trim());
+    setApiKeyStatusMessage('Saved in this browser for future sessions on this provider.');
+  };
+
+  const handleClearSavedKey = () => {
+    if (!provider) {
+      return;
+    }
+
+    const didClear = safeLocalStorageRemove(getApiKeyStorageKey(provider));
+    if (!didClear) {
+      setApiKeyStatusMessage('Could not clear the saved key from local browser storage.');
+      return;
+    }
+
+    setSavedKeyPresence((current) => ({ ...current, [provider]: false }));
+    setApiKey('');
+    setApiKeyStatusMessage('Saved key removed from this browser for the selected provider.');
   };
 
   const handleClearChat = () => {
@@ -149,7 +199,18 @@ export function AiHealthChatExperience() {
       />
 
       {provider && model ? (
-        <ApiKeyInput provider={provider} value={apiKey} onChange={setApiKey} />
+        <ApiKeyInput
+          provider={provider}
+          value={apiKey}
+          onChange={(value) => {
+            setApiKey(value);
+            setApiKeyStatusMessage(null);
+          }}
+          onSaveLocally={handleSaveApiKey}
+          onClearSavedKey={handleClearSavedKey}
+          hasSavedKey={hasSavedKey}
+          statusMessage={apiKeyStatusMessage}
+        />
       ) : null}
 
       <ChatWindow

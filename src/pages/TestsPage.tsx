@@ -62,7 +62,15 @@ function AiHealthChatTestDemo() {
       />
 
       {provider && model ? (
-        <ApiKeyInput provider={provider} value={apiKey} onChange={setApiKey} />
+        <ApiKeyInput
+          provider={provider}
+          value={apiKey}
+          onChange={setApiKey}
+          onSaveLocally={() => undefined}
+          onClearSavedKey={() => undefined}
+          hasSavedKey={false}
+          statusMessage="Demo mode only. The full AI Health Chat page wires local save and clear behavior."
+        />
       ) : null}
 
       <ChatWindow
@@ -111,7 +119,7 @@ export function TestsPage() {
     {
       id: 'ai-health-chat',
       title: 'AI Health Chat',
-      summary: 'Provider/model selection, memory-only API key handling, and the shared chat window without live network calls.',
+      summary: 'Provider/model selection, optional local-save API key UI, and the shared chat window without live network calls.',
       content: <AiHealthChatTestDemo />
     },
     {
@@ -124,7 +132,7 @@ export function TestsPage() {
             <strong>Enabled modules:</strong> {settings.dashboardModules.length === 0 ? 'None' : settings.dashboardModules.join(', ')}
           </p>
           <div className="dashboard-toggles">
-            {(['sugar', 'weight', 'height', 'bp'] as VitalModule[]).map((mod) => (
+            {(['sugar', 'weight', 'height', 'bp', 'food'] as VitalModule[]).map((mod) => (
               <label key={mod} className="toggle-row">
                 <input
                   type="checkbox"

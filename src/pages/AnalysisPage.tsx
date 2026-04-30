@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SiteShell } from '../components/SiteShell';
 import { DateRangePicker } from '../components/sugar/DateRangePicker';
 import { useAppData } from '../context/AppDataContext';
+import { applyFoodReadingFilters, buildFoodMetrics, classifyFoodReading, createFoodReadingFilters } from '../lib/foodUtils';
 import {
   applyReadingFilters,
   buildBpReadingMetrics,
@@ -26,6 +27,8 @@ import type {
   BpReading,
   BpTagDefinition,
   ChartPreset,
+  FoodReading,
+  FoodTagDefinition,
   ReadingFilters,
   SugarReading,
   TagDefinition,
@@ -87,7 +90,8 @@ const MODULE_META: Record<VitalModule, { label: string; unit: string; chartRoute
   sugar: { label: 'Sugar', unit: 'mg/dL', chartRoute: '/sugar/chart', addRoute: '/sugar/add' },
   weight: { label: 'Weight', unit: 'kg', chartRoute: '/weight/chart', addRoute: '/weight/add' },
   height: { label: 'Height', unit: 'cm', chartRoute: '/height/chart', addRoute: '/height/add' },
-  bp: { label: 'Blood Pressure', unit: 'mmHg', chartRoute: '/bp/chart', addRoute: '/bp/add' }
+  bp: { label: 'Blood Pressure', unit: 'mmHg', chartRoute: '/bp/chart', addRoute: '/bp/add' },
+  food: { label: 'Food', unit: 'cal', chartRoute: '/food/chart', addRoute: '/food/add' }
 };
 
 /* ─── single-value mini card (Sugar / Weight / Height) ─── */
@@ -308,6 +312,121 @@ function BpModuleCard({
   );
 }
 
+function FoodModuleCard({
+  readings,
+  tags,
+  filters,
+  colorInside,
+  colorOutside,
+  colorNeutral
+}: {
+  readings: FoodReading[];
+  tags: FoodTagDefinition[];
+  filters: ReadingFilters;
+  colorInside: string;
+  colorOutside: string;
+  colorNeutral: string;
+}) {
+  const meta = MODULE_META.food;
+  const foodFilters = createFoodReadingFilters(filters);
+  const tagsById = useMemo(() => new Map(tags.map((tag) => [tag.id, tag])), [tags]);
+  const filtered = useMemo(() => applyFoodReadingFilters(readings, foodFilters, tagsById), [foodFilters, readings, tagsById]);
+  const ascending = useMemo(() => sortReadingsAscending(filtered), [filtered]);
+  const metrics = useMemo(() => buildFoodMetrics(filtered, tagsById), [filtered, tagsById]);
+  const chartData = useMemo(
+    () =>
+      ascending.map((reading) => {
+        const readingTags = reading.tagIds.map((id) => tagsById.get(id)).filter(Boolean) as FoodTagDefinition[];
+        const status = classifyFoodReading(reading, readingTags).status;
+        const color = status === 'inside' ? colorInside : status === 'outside' ? colorOutside : colorNeutral;
+
+        return {
+          label: chartDateFmt.format(new Date(reading.readingDateTimeIso)),
+          value: reading.calories,
+          color
+        };
+      }),
+    [ascending, colorInside, colorNeutral, colorOutside, tagsById]
+  );
+
+  const latest = readings.length > 0 ? sortReadingsDescending(readings)[0] : null;
+  const trend = computeTrend(ascending.map((reading) => ({ value: reading.calories })));
+  const isStale = latest ? Date.now() - new Date(latest.readingDateTimeIso).getTime() > 7 * 86_400_000 : false;
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('a')) return;
+    navigate(meta.chartRoute);
+  };
+
+  return (
+    <article className="doc-card dashboard-card" role="button" tabIndex={0} onClick={handleCardClick} onKeyDown={(e) => { if (e.key === 'Enter') navigate(meta.chartRoute); }}>
+      <div className="dashboard-card__header">
+        <h2>{meta.label}</h2>
+        <span className="dashboard-card__detail-hint">View details →</span>
+      </div>
+
+      {latest ? (
+        <div className="dashboard-card__summary">
+          <span className="dashboard-card__value">
+            {latest.calories} {meta.unit}
+          </span>
+          <span className={`dashboard-card__ago${isStale ? ' stale' : ''}`}>
+            {relativeTimeAgo(latest.readingDateTimeIso)}
+          </span>
+          {trend !== 'none' && (
+            <span className={`dashboard-card__trend trend-${trend}`}>
+              {getTrendArrow(trend)}
+            </span>
+          )}
+          <span className="dashboard-card__badge positive">{metrics.averageCalories} avg cal</span>
+          <span className="dashboard-card__detail-hint">{latest.mealName}</span>
+        </div>
+      ) : (
+        <div className="empty-state compact">
+          <p>No meals yet.</p>
+          <Link to={meta.addRoute} className="primary-button inline-block">
+            Add Food
+          </Link>
+        </div>
+      )}
+
+      {chartData.length > 1 && (
+        <div className="dashboard-card__chart">
+          <ResponsiveContainer width="100%" height={140}>
+            <ComposedChart data={chartData}>
+              <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--ink-soft)" tick={{ fontSize: 10 }} />
+              <YAxis stroke="var(--ink-soft)" tick={{ fontSize: 10 }} width={36} />
+              <Area type="linear" dataKey="value" fill={colorNeutral} fillOpacity={0.15} stroke="none" />
+              <Line
+                type="linear"
+                dataKey="value"
+                stroke={colorNeutral}
+                strokeWidth={2}
+                dot={(props) => {
+                  const payload = props.payload as { color: string };
+                  return <circle cx={props.cx} cy={props.cy} r={3} fill={payload.color} stroke="var(--card)" strokeWidth={1.5} />;
+                }}
+                activeDot={false}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {filtered.length > 0 && (
+        <div className="dashboard-metrics-row">
+          <span className="mini-metric positive">{metrics.insideCount} in</span>
+          <span className="mini-metric caution">{metrics.outsideCount} out</span>
+          <span className="mini-metric">Avg {metrics.averageCalories}</span>
+          <span className="mini-metric">Low {metrics.lowestCalories ?? '-'}</span>
+        </div>
+      )}
+    </article>
+  );
+}
+
 /* ─── main page ─── */
 
 export function AnalysisPage() {
@@ -320,6 +439,8 @@ export function AnalysisPage() {
     heightTags,
     bpReadings,
     bpTags,
+    foodReadings,
+    foodTags,
     settings
   } = useAppData();
 
@@ -328,8 +449,8 @@ export function AnalysisPage() {
 
   const enabledModules = settings.dashboardModules;
 
-  const totalReadings = readings.length + weightReadings.length + heightReadings.length + bpReadings.length;
-  const activeModuleCount = [readings, weightReadings, heightReadings, bpReadings].filter((arr) => arr.length > 0).length;
+  const totalReadings = readings.length + weightReadings.length + heightReadings.length + bpReadings.length + foodReadings.length;
+  const activeModuleCount = [readings, weightReadings, heightReadings, bpReadings, foodReadings].filter((arr) => arr.length > 0).length;
 
   if (enabledModules.length === 0) {
     return (
@@ -412,6 +533,16 @@ export function AnalysisPage() {
             filters={filters}
             colorSystolic={settings.bpChartColorSystolic}
             colorDiastolic={settings.bpChartColorDiastolic}
+          />
+        )}
+        {enabledModules.includes('food') && (
+          <FoodModuleCard
+            readings={foodReadings}
+            tags={foodTags}
+            filters={filters}
+            colorInside={settings.foodChartColorInside}
+            colorOutside={settings.foodChartColorOutside}
+            colorNeutral={settings.foodChartColorNeutral}
           />
         )}
       </section>

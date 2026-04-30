@@ -1,7 +1,6 @@
 export const DONATION_LINKS = {
   githubSponsorsProfile: 'https://github.com/sponsors/KaushalWin',
-  githubSponsorsCard: 'https://github.com/sponsors/KaushalWin/card',
-  razorpaySupport: 'https://rzp.io/rzp/07ETQoI'
+  githubSponsorsCard: 'https://github.com/sponsors/KaushalWin/card'
 } as const;
 
 export const DONATION_TEXT = {

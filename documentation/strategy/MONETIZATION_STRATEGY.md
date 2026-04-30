@@ -10,7 +10,6 @@
 
 - **GitHub Sponsors** (active in-app card + profile link)
 - **UPI QR Code** (Phase 1, India-first)
-- **Razorpay** (Phase 2, international)
 - Ko-fi (backup)
 
 See [DONATION_INTEGRATION_PLAN.md](DONATION_INTEGRATION_PLAN.md) for full evaluation of alternatives, setup timelines, and implementation roadmap.

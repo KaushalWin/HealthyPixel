@@ -4,20 +4,23 @@ See [TECHNICAL_PRINCIPLES.md](./TECHNICAL_PRINCIPLES.md) for mandatory software 
 
 ## Current Implementation Status
 
-Current repository implementation contains the first full sugar-reading workflow and supporting routes:
+Current repository implementation contains local-first workflows for sugar, weight, height, blood pressure, food, and supporting routes:
 
 - In-App Documentation page (`/#/`)
 - AI Health Chat page (`/#/ai-chat`)
 - Add Sugar page (`/#/sugar/add`)
+- Add Food page (`/#/food/add`)
 - Sugar List page (`/#/sugar/list`)
+- Food List page (`/#/food/list`)
 - Sugar Chart page (`/#/sugar/chart`)
+- Food Chart page (`/#/food/chart`)
 - Settings page (`/#/settings`)
 - Tests page (`/#/tests`)
 - About Us page (`/#/about`)
 
-All data stays local to the browser. The app currently supports reusable sugar entry, editing, filtering, charting, tag management, and chart settings without any backend.
+All data stays local to the browser. The app currently supports reusable entry, editing, filtering, charting, tag management, and chart settings without any backend.
 
-AI Health Chat is client-side only and uses memory-only React state for provider selection, API keys, and chat history. PixieTrack does not persist those keys or transcripts, but the typed chat content is sent directly from the browser to the selected provider when the user sends a message.
+AI Health Chat is client-side only and uses memory-only React state by default for provider selection, API keys, and chat history. Users can explicitly save a provider key in browser localStorage on their device, but PixieTrack still does not persist those keys or transcripts on any server. Typed chat content is sent directly from the browser to the selected provider when the user sends a message.
 
 UI behavior for current stage:
 
@@ -92,7 +95,7 @@ Alternative: Chart.js (simpler, but less React-native).
 ### PWA Setup: Manifest + Service Worker
 
 **What is currently implemented:**
-- `manifest.webmanifest` with install metadata and Add Sugar shortcut.
+- `manifest.webmanifest` with install metadata and shortcuts for Dashboard, Add Sugar, Add Weight, Add Height, Add BP, and Add Food.
 - Service worker for basic shell caching on production hosts (GitHub Pages).
 - Localhost and LAN hosts skip service-worker registration and unregister existing ones to avoid stale-cache issues during testing.
 - Hash-route compatibility for GitHub Pages hosting.

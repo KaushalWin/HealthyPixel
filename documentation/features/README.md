@@ -11,6 +11,7 @@ This folder defines product and technical planning for upcoming features before 
 5. [Feature 5 - Height Tracking](./feature-5-height-tracking.md)
 6. [Feature 6 - Blood Pressure Tracking](./feature-6-bp-tracking.md)
 7. [Feature 7 - AI Health Chat](./feature-7-ai-health-chat.md)
+8. [Feature 8 - Food Tracking](./feature-8-food-tracking.md)
 
 ## Planning Goals
 
@@ -27,7 +28,7 @@ This folder defines product and technical planning for upcoming features before 
 4. New screens should rely on reusable components validated first in the Tests page.
 5. Chart range defaults should come from settings and be overridable in the chart screen.
 6. Navigation should be categorized so the menu stays short and readable as pages grow.
-7. Quick Actions should stay minimal; initially only Add Sugar should appear there.
+7. Quick Actions should stay minimal and focused on repeat-entry flows such as Add Sugar and Add Food.
 
 ## Common Reusable Components to Build First
 

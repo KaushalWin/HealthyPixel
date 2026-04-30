@@ -2,12 +2,12 @@
 
 ## Executive Summary
 
-**Current Decision:** 
+**Current Decision:**
 - **Live now:** GitHub Sponsors card and profile link shown app-wide
 - **Phase 1 (Immediate):** UPI QR code for India-first users
-- **Phase 2 (Future):** Razorpay API integration for international support
+- **Phase 2 (Optional backup):** Ko-fi external link if another low-maintenance support channel is needed
 
-**Rationale:** Lowest friction entry point (QR code requires zero setup), with scalable international path.
+**Rationale:** keep support flows low-maintenance, privacy-friendly, and compatible with a static-hosted app without introducing payment-provider SDK complexity.
 
 ---
 
@@ -17,85 +17,52 @@
 | Aspect | Details |
 |---|---|
 | **Setup Time** | ~5-10 mins |
-| **Cost** | Platform takes small cut (Stripe payout) |
-| **International** | Yes, but... |
-| **India Support** | ❌ Stripe doesn't operate for Indian individuals |
-| **Pros** | Professional, appears on GitHub repo page automatically |
-| **Cons** | Won't work for creator's location; blocked by Stripe restrictions |
-| **Status** | ❌ Rejected for this project |
+| **Cost** | Platform takes a small cut via payout processors |
+| **International** | Yes |
+| **India Support** | Limited by payout availability |
+| **Pros** | Professional, appears on GitHub repo page automatically, already live in-app |
+| **Cons** | May not be the best primary channel for all creator locations |
+| **Status** | ✓ Active baseline |
 
 ### 2. Ko-fi
 | Aspect | Details |
 |---|---|
-| **Setup Time** | 5 mins, no coding |
+| **Setup Time** | ~5 mins |
 | **Cost** | 5-7% platform fee |
-| **International** | ✓ Yes, 100+ countries |
-| **India Support** | ✓ Yes, UPI + card |
-| **Pros** | Zero code needed, instant, professional appearance, privacy-friendly |
-| **Cons** | Higher fees (5-7%), adds external redirect |
-| **Status** | ⏸ Viable backup if Razorpay integration stalls |
+| **International** | ✓ Yes |
+| **India Support** | ✓ Yes |
+| **Pros** | Zero code needed, familiar donation flow, privacy-friendly external redirect |
+| **Cons** | Higher fees, redirects users away from the app |
+| **Status** | ⏸ Backup option |
 
-### 3. Razorpay (API Integration)
+### 3. Direct UPI QR Code
 | Aspect | Details |
 |---|---|
-| **Setup Time** | 30 mins + coding |
-| **Cost** | 2% UPI (India), 2-3% cards + international markup |
-| **International** | ✓ Yes, 100+ countries |
-| **India Support** | ✓ Yes, native UPI |
-| **Pros** | Lowest fees, most professional, stays in-app, works globally |
-| **Cons** | Requires API integration, maintenance |
-| **Status** | ✓ Selected for Phase 2 (international) |
-
-### 4. Instamojo
-| Aspect | Details |
-|---|---|
-| **Setup Time** | 30 mins + coding |
-| **Cost** | 1% UPI (India), higher internationally |
-| **International** | ⚠ Limited/unstable outside India |
-| **India Support** | ✓ Yes, cheapest UPI rate |
-| **Pros** | Lowest cost in India (1%) |
-| **Cons** | Not reliable for international users; complexity similar to Razorpay |
-| **Status** | ❌ Rejected — international reach more important than 1% savings |
-
-### 5. Direct UPI QR Code
-| Aspect | Details |
-|---|---|
-| **Setup Time** | 5 mins, no coding |
+| **Setup Time** | ~5 mins |
 | **Cost** | 0% (direct to bank account) |
 | **International** | ❌ India-only |
-| **India Support** | ✓ Yes, instant UPI transfers |
-| **Pros** | Zero fees, instant to bank, high trust (direct UPI) |
-| **Cons** | India-only, requires manual verification, less professional |
-| **Status** | ✓ Selected for Phase 1 (immediate) |
+| **India Support** | ✓ Yes |
+| **Pros** | Zero fees, instant to bank, low maintenance |
+| **Cons** | India-only, manual verification, less universal than external donation platforms |
+| **Status** | ✓ Planned immediate next support channel |
 
-### 6. Open Collective
+### 4. Open Collective
 | Aspect | Details |
 |---|---|
 | **Setup Time** | 10-15 mins |
-| **Cost** | 4% platform + 3-4% processor = ~7-8% |
+| **Cost** | ~7-8% total |
 | **International** | ✓ Yes |
 | **India Support** | ✓ Yes |
-| **Pros** | Transparent expense tracking, community-friendly |
-| **Cons** | Higher fees, overkill for simple donations |
-| **Status** | ⏸ Viable for future transparency goals |
-
-### 7. Direct Bank Transfer / NEFT
-| Aspect | Details |
-|---|---|
-| **Setup Time** | 5 mins |
-| **Cost** | 0% |
-| **International** | ❌ Complex/expensive wire fees |
-| **India Support** | ✓ Yes |
-| **Pros** | No fees, direct |
-| **Cons** | Poor UX, clunky, no automation |
-| **Status** | ❌ Rejected — QR code is better UX |
+| **Pros** | Transparent expense tracking |
+| **Cons** | Overkill for a lightweight donation flow |
+| **Status** | ⏸ Future option only if transparency tooling becomes a project need |
 
 ---
 
 ## Current Plan of Action
 
 ### Baseline: GitHub Sponsors (Live)
-**Goal:** Keep an immediate donation channel visible on all app pages.
+**Goal:** Keep one immediate support option visible without blocking core health tracking flows.
 
 **Implementation:**
 1. Reusable monetization component in [src/components/MonetizationPanel.tsx](../../src/components/MonetizationPanel.tsx)
@@ -105,83 +72,59 @@
 **Status:** ✓ Implemented
 
 ### Phase 1: UPI QR Code (Immediate)
-**Goal:** Fast, frictionless donation option for India-first user base.
+**Goal:** Provide a friction-light support path for India-first users without adding payment SDKs.
 
 **Implementation:**
 1. Generate UPI QR code from creator's UPI ID
-2. Add "Support" section to [AboutPage.tsx](../../src/pages/AboutPage.tsx)
-3. Display QR code image with brief "Support this project" copy
-4. Add footer link in [SiteShell.tsx](../../src/components/SiteShell.tsx) to About page
+2. Add a support section to [src/pages/AboutPage.tsx](../../src/pages/AboutPage.tsx)
+3. Display the QR image with short support copy
+4. Optionally add a subtle support link to About or documentation surfaces
 
-**Timeline:** ✓ Ready to implement once UPI ID provided
+**Timeline:** Ready once the UPI ID is available
 
-**User Flow:**
-- User taps QR code or "Support" link → Opens UPI app → Sends donation → Done
-
----
-
-### Phase 2: Razorpay Integration (Future)
-**Goal:** Enable international donations with professional in-app experience.
-
-**Implementation:**
-1. Sign up for Razorpay account
-2. Copy API key + merchant ID
-3. Create `src/components/DonationModal.tsx` (donate form + Razorpay SDK)
-4. Add "Donate" button to About page + footer
-5. Handle payment success/failure callbacks
-
-**Timeline:** TBD (when creator has Razorpay account ready)
-
-**User Flow:**
-- User taps "Donate" → Modal opens → Select amount → Pay via UPI/Card/International → Success callback
-
----
-
-### Phase 3 (Optional): Ko-fi Backup
-**Goal:** Secondary donation channel if both UPI + Razorpay are insufficient.
+### Phase 2: Ko-fi Backup (Optional)
+**Goal:** Add a second low-maintenance support link only if the current channels are not enough.
 
 **Implementation:**
 1. Create Ko-fi account
-2. Add Ko-fi link to footer
+2. Add a Ko-fi external link to the support surface
 
-**Timeline:** Only if needed after Phase 1 + 2 launch
+**Timeline:** Only if needed after GitHub Sponsors + UPI QR are in use
 
 ---
 
 ## Placement Rules (Per Monetization Policy)
 
-### ✓ Allowed Locations
-- About page (section header)
-- Footer link on every page (small, subtle)
-- Support section in documentation
+### Allowed Locations
+- About page support section
+- Footer or support panel links
+- Documentation support section
 
-### ❌ Not Allowed
+### Not Allowed
 - Blocking popups on app load
-- Forced banners in core workflows (sugar tracking, charts)
-- Dark patterns or aggressive CTAs
-- Tracking/analytics tied to donations
+- Forced banners in core workflows
+- Aggressive donation prompts
+- Tracking or analytics tied to donations
 
 ---
 
 ## Next Steps
 
-1. **Immediate:** Provide UPI ID → implement Phase 1 (QR code in About page)
-2. **Within 1-2 weeks:** Verify Phase 1 works in production
-3. **Later:** Create Razorpay account → implement Phase 2 when ready
+1. Provide a UPI ID and add the QR-based support section.
+2. Verify the current GitHub Sponsors panel and any new UPI support surface on mobile and desktop.
+3. Add Ko-fi only if a second lightweight support channel is still needed.
 
 ---
 
 ## Files to Modify / Create
 
 For Phase 1 (UPI QR):
-- [src/pages/AboutPage.tsx](../../src/pages/AboutPage.tsx) — add Support section + QR image
-- [src/components/SiteShell.tsx](../../src/components/SiteShell.tsx) — add footer "Support" link
-- `public/upi-qr-code.png` — generated QR image (to create)
+- [src/pages/AboutPage.tsx](../../src/pages/AboutPage.tsx) — add support section + QR image
+- `public/upi-qr-code.png` — generated QR image
 
-For Phase 2 (Razorpay):
-- `src/components/DonationModal.tsx` (new)
-- [src/pages/AboutPage.tsx](../../src/pages/AboutPage.tsx) — add Donate button
-- `src/lib/razorpay.ts` (new) — API helpers
+For Phase 2 (Ko-fi backup):
+- [src/lib/monetization.ts](../../src/lib/monetization.ts) — add Ko-fi link if activated
+- [src/components/MonetizationPanel.tsx](../../src/components/MonetizationPanel.tsx) — expose backup link if activated
 
 ---
 
@@ -189,8 +132,7 @@ For Phase 2 (Razorpay):
 
 | Method | Phase | Cost | Setup | Reach | Status |
 |---|---|---|---|---|---|
-| UPI QR | 1 | 0% | Ready | India | ✓ Immediate |
-| Razorpay | 2 | 2% | 30 min coding | Global | ✓ Planned |
-| Ko-fi | 3 | 5-7% | 5 min | Global | ⏸ Backup |
-| GitHub Sponsors | Never | — | — | — | ❌ Blocked |
-| Instamojo | — | 1% | 30 min | Limited | ❌ Inferior |
+| GitHub Sponsors | Baseline | Processor fees | Live | Global | ✓ Active |
+| UPI QR | 1 | 0% | Ready | India | ✓ Planned |
+| Ko-fi | 2 | 5-7% | 5 min | Global | ⏸ Backup |
+| Open Collective | Future | ~7-8% | 10-15 min | Global | ⏸ Optional |

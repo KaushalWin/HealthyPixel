@@ -50,6 +50,14 @@ const NAV_SECTIONS = [
         ]
       },
       {
+        subtitle: 'Food',
+        links: [
+          { to: '/food/add', label: 'Add Food' },
+          { to: '/food/list', label: 'Food List' },
+          { to: '/food/chart', label: 'Food Chart' }
+        ]
+      },
+      {
         subtitle: 'Weight',
         links: [
           { to: '/weight/add', label: 'Add Weight' },
@@ -165,6 +173,7 @@ export function SiteShell({ title, subtitle, children }: SiteShellProps) {
               <div className="quick-popover" role="menu" aria-label="Quick actions">
                 <Link to="/analysis" className="quick-action-link primary" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Dashboard</Link>
                 <Link to="/sugar/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Sugar</Link>
+                <Link to="/food/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Food</Link>
                 <Link to="/weight/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Weight</Link>
                 <Link to="/height/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add Height</Link>
                 <Link to="/bp/add" className="quick-action-link" role="menuitem" onClick={() => setIsQuickActionsOpen(false)}>Add BP</Link>

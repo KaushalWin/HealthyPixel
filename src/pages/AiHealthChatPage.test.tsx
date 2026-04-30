@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { STORAGE_KEYS } from '../lib/defaults';
 import { AiHealthChatExperience } from './AiHealthChatPage';
 
 function createJsonResponse(body: unknown, status = 200) {
@@ -21,6 +22,7 @@ async function configureChat(user: ReturnType<typeof userEvent.setup>, provider:
 
 describe('AiHealthChatExperience', () => {
   beforeEach(() => {
+    window.localStorage.clear();
     vi.stubGlobal('fetch', vi.fn());
   });
 
@@ -149,7 +151,7 @@ describe('AiHealthChatExperience', () => {
     expect(screen.getByText('No messages yet.')).toBeInTheDocument();
   });
 
-  it('does not persist configuration or messages to browser storage', async () => {
+  it('keeps the API key memory-only unless save is clicked', async () => {
     const user = userEvent.setup();
     const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
     vi.stubGlobal(
@@ -166,7 +168,39 @@ describe('AiHealthChatExperience', () => {
     await user.click(screen.getByRole('button', { name: 'Send' }));
     await screen.findByText('Log your hydration and urine color.');
 
-    expect(setItemSpy).not.toHaveBeenCalled();
+    expect(window.localStorage.getItem(STORAGE_KEYS.aiDeepSeekApiKey)).toBeNull();
+    expect(setItemSpy).not.toHaveBeenCalledWith(STORAGE_KEYS.aiDeepSeekApiKey, expect.any(String));
+  });
+
+  it('saves and reloads a provider key only after explicit save', async () => {
+    const user = userEvent.setup();
+    render(<AiHealthChatExperience />);
+
+    await configureChat(user, 'openai', 'gpt-4o', 'sk-openai');
+    await user.click(screen.getByRole('button', { name: 'Save in this browser' }));
+
+    expect(window.localStorage.getItem(STORAGE_KEYS.aiOpenAiApiKey)).toBe('sk-openai');
+
+    await user.selectOptions(screen.getAllByLabelText('Provider')[0], 'deepseek');
+    await user.selectOptions(screen.getAllByLabelText('Provider')[0], 'openai');
+    await user.selectOptions(screen.getByLabelText('Model'), 'gpt-4o-mini');
+
+    expect(screen.getByDisplayValue('sk-openai')).toBeInTheDocument();
+    expect(screen.getByText('Saved key loaded from this browser for the selected provider.')).toBeInTheDocument();
+  });
+
+  it('clears the saved provider key from local browser storage', async () => {
+    const user = userEvent.setup();
+    render(<AiHealthChatExperience />);
+
+    await configureChat(user, 'openai', 'gpt-4o', 'sk-openai');
+    await user.click(screen.getByRole('button', { name: 'Save in this browser' }));
+    expect(window.localStorage.getItem(STORAGE_KEYS.aiOpenAiApiKey)).toBe('sk-openai');
+
+    await user.click(screen.getByRole('button', { name: 'Clear saved key' }));
+
+    expect(window.localStorage.getItem(STORAGE_KEYS.aiOpenAiApiKey)).toBeNull();
+    expect(screen.getByLabelText('OpenAI API key')).toHaveValue('');
   });
 });
 

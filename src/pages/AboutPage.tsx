@@ -33,15 +33,19 @@ export function AboutPage() {
 
         <article className="doc-card">
           <h2>Current Scope</h2>
-          <p>This build now includes the first practical sugar-tracking workflow with local settings and testing infrastructure:</p>
+          <p>
+            This build includes local-first tracking across the main health modules, shared
+            settings, chart views, and optional AI assistance:
+          </p>
           <ol>
-            <li>In-App Documentation page</li>
-            <li>Add Sugar page</li>
-            <li>Sugar List page</li>
-            <li>Sugar Chart page</li>
-            <li>Settings pages</li>
+            <li>Dashboard and in-app documentation</li>
+            <li>Sugar tracking with list and chart views</li>
+            <li>Food tracking with planned, actual, context, and behavior tags</li>
+            <li>Blood pressure, weight, and height tracking</li>
+            <li>Settings for chart colors, module visibility, tag management, and JSON export/import</li>
+            <li>Optional AI Health Chat using a user-provided API key</li>
             <li>Tests page for shared component validation</li>
-            <li>About Us page</li>
+            <li>About and support surfaces</li>
           </ol>
           <p>
             New functionality is still built through reusable components, local storage, and the

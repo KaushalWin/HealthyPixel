@@ -11,6 +11,8 @@
 - 🌐 **Community-Driven**: Community-friendly, trust-based, open to contributions.
 - 📱 **Mobile-First**: Native install on Android/iOS, works offline.
 
+**Current implementation note:** The app already includes food tracking with calorie-aware charts and grouped meal tags, plus AI Health Chat keys that stay in memory by default and can optionally be saved in browser-local storage per provider.
+
 See [TECHNICAL_PRINCIPLES.md](../technical/TECHNICAL_PRINCIPLES.md) for software engineering principles and technical decision gates.
 
 ---

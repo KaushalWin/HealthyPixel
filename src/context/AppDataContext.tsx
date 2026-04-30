@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { createDefaultBpTags, createDefaultHeightTags, createDefaultTags, createDefaultWeightTags, DEFAULT_SETTINGS, STORAGE_KEYS } from '../lib/defaults';
+import { createDefaultBpTags, createDefaultFoodReadings, createDefaultFoodTags, createDefaultHeightTags, createDefaultTags, createDefaultWeightTags, DEFAULT_SETTINGS, STORAGE_KEYS } from '../lib/defaults';
 import { createStableId, safeLocalStorageGet, safeLocalStorageSet } from '../lib/platform';
 import { parseStoredJson, syncTagStats } from '../lib/readingUtils';
-import type { AppDataShape, AppSettings, BpDraft, BpReading, BpTagDefinition, HeightReading, ReadingDraft, SugarReading, TagDefinition, WeightReading } from '../lib/types';
+import type { AppDataShape, AppSettings, BpDraft, BpReading, BpTagDefinition, FoodReading, FoodReadingDraft, FoodTagDefinition, HeightReading, ReadingDraft, SugarReading, TagDefinition, WeightReading } from '../lib/types';
 
 type AppDataContextValue = AppDataShape & {
+  exportAppData: () => AppDataShape;
+  replaceAllAppData: (nextData: AppDataShape) => void;
+
   addReading: (draft: ReadingDraft) => SugarReading;
   updateReading: (readingId: string, draft: ReadingDraft) => SugarReading | null;
   addTag: (label: string, rangeMin: number | null, rangeMax: number | null) => TagDefinition;
@@ -30,11 +33,29 @@ type AppDataContextValue = AppDataShape & {
   updateBpTag: (tagId: string, updates: Partial<Omit<BpTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
   removeBpTag: (tagId: string) => void;
 
+  addFoodReading: (draft: FoodReadingDraft) => FoodReading;
+  updateFoodReading: (readingId: string, draft: FoodReadingDraft) => FoodReading | null;
+  addFoodTag: (label: string, category: FoodTagDefinition['category'], rangeMin: number | null, rangeMax: number | null) => FoodTagDefinition | null;
+  updateFoodTag: (tagId: string, updates: Partial<Omit<FoodTagDefinition, 'id' | 'type' | 'createdAtIso'>>) => void;
+  removeFoodTag: (tagId: string) => void;
+
   updateSettings: (updates: Partial<AppSettings>) => void;
   resetAllData: () => void;
 };
 
 const AppDataContext = createContext<AppDataContextValue | null>(null);
+
+function normalizeAppData(data: AppDataShape): AppDataShape {
+  return {
+    ...data,
+    tags: syncTagStats(data.readings, data.tags),
+    weightTags: syncTagStats(data.weightReadings, data.weightTags),
+    heightTags: syncTagStats(data.heightReadings, data.heightTags),
+    bpTags: syncTagStats(data.bpReadings, data.bpTags),
+    foodTags: syncTagStats(data.foodReadings, data.foodTags),
+    settings: { ...DEFAULT_SETTINGS, ...data.settings }
+  };
+}
 
 function loadInitialAppData(): AppDataShape {
   const nowIso = new Date().toISOString();
@@ -58,22 +79,32 @@ function loadInitialAppData(): AppDataShape {
     safeLocalStorageGet(STORAGE_KEYS.bpTags),
     createDefaultBpTags(nowIso)
   );
+  const foodReadings = parseStoredJson<FoodReading[]>(
+    safeLocalStorageGet(STORAGE_KEYS.foodReadings),
+    createDefaultFoodReadings(new Date(nowIso))
+  );
+  const foodTags = parseStoredJson<FoodTagDefinition[]>(
+    safeLocalStorageGet(STORAGE_KEYS.foodTags),
+    createDefaultFoodTags(nowIso)
+  );
   const settings = parseStoredJson<AppSettings>(
     safeLocalStorageGet(STORAGE_KEYS.settings),
     DEFAULT_SETTINGS
   );
 
-  return {
+  return normalizeAppData({
     readings,
-    tags: syncTagStats(readings, tags),
+    tags,
     weightReadings,
-    weightTags: syncTagStats(weightReadings, weightTags),
+    weightTags,
     heightReadings,
-    heightTags: syncTagStats(heightReadings, heightTags),
+    heightTags,
     bpReadings,
-    bpTags: syncTagStats(bpReadings, bpTags),
+    bpTags,
+    foodReadings,
+    foodTags,
     settings: { ...DEFAULT_SETTINGS, ...settings }
-  };
+  });
 }
 
 export function AppDataProvider({ children }: { children: ReactNode }) {
@@ -112,11 +143,23 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   }, [state.bpTags]);
 
   useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.foodReadings, JSON.stringify(state.foodReadings));
+  }, [state.foodReadings]);
+
+  useEffect(() => {
+    safeLocalStorageSet(STORAGE_KEYS.foodTags, JSON.stringify(state.foodTags));
+  }, [state.foodTags]);
+
+  useEffect(() => {
     safeLocalStorageSet(STORAGE_KEYS.settings, JSON.stringify(state.settings));
   }, [state.settings]);
 
   const value = useMemo<AppDataContextValue>(() => ({
     ...state,
+    exportAppData: () => state,
+    replaceAllAppData: (nextData) => {
+      setState(normalizeAppData(nextData));
+    },
     addReading: (draft) => {
       const nowIso = new Date().toISOString();
       const reading: SugarReading = {
@@ -432,6 +475,105 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       });
     },
 
+    addFoodReading: (draft) => {
+      const nowIso = new Date().toISOString();
+      const reading: FoodReading = {
+        id: createStableId(),
+        mealName: draft.mealName.trim(),
+        calories: draft.calories,
+        readingDateTimeIso: draft.readingDateTimeIso,
+        tagIds: draft.tagIds,
+        note: draft.note?.trim() ? draft.note.trim() : null,
+        createdAtIso: nowIso,
+        updatedAtIso: nowIso
+      };
+      setState((current) => {
+        const nextReadings = [...current.foodReadings, reading];
+        return { ...current, foodReadings: nextReadings, foodTags: syncTagStats(nextReadings, current.foodTags) };
+      });
+      return reading;
+    },
+    updateFoodReading: (readingId, draft) => {
+      let updatedReading: FoodReading | null = null;
+      setState((current) => {
+        const nextReadings = current.foodReadings.map((reading) => {
+          if (reading.id !== readingId) return reading;
+
+          updatedReading = {
+            ...reading,
+            mealName: draft.mealName.trim(),
+            calories: draft.calories,
+            readingDateTimeIso: draft.readingDateTimeIso,
+            tagIds: draft.tagIds,
+            note: draft.note?.trim() ? draft.note.trim() : null,
+            updatedAtIso: new Date().toISOString()
+          };
+          return updatedReading;
+        });
+        return { ...current, foodReadings: nextReadings, foodTags: syncTagStats(nextReadings, current.foodTags) };
+      });
+      return updatedReading;
+    },
+    addFoodTag: (label, category, rangeMin, rangeMax) => {
+      const trimmedLabel = label.trim();
+      if (!trimmedLabel) {
+        return null;
+      }
+
+      const nowIso = new Date().toISOString();
+      let createdTag: FoodTagDefinition | null = null;
+      setState((current) => {
+        const hasDup = current.foodTags.some(
+          (candidate) =>
+            candidate.category === category && candidate.label.toLowerCase() === trimmedLabel.toLowerCase()
+        );
+        if (hasDup) {
+          return current;
+        }
+
+        createdTag = {
+          id: createStableId(),
+          label: trimmedLabel,
+          category,
+          type: 'custom',
+          createdAtIso: nowIso,
+          updatedAtIso: nowIso,
+          usageCount: 0,
+          lastUsedAtIso: null,
+          rangeMin,
+          rangeMax
+        };
+
+        return { ...current, foodTags: [...current.foodTags, createdTag] };
+      });
+      return createdTag;
+    },
+    updateFoodTag: (tagId, updates) => {
+      setState((current) => ({
+        ...current,
+        foodTags: current.foodTags.map((tag) => {
+          if (tag.id !== tagId) return tag;
+          const trimmedLabel = updates.label?.trim();
+          const hasDup = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && current.foodTags.some((candidate) => candidate.id !== tagId && candidate.category === (updates.category ?? tag.category) && candidate.label.toLowerCase() === trimmedLabel.toLowerCase());
+          const resolvedLabel = typeof trimmedLabel === 'string' && trimmedLabel.length > 0 && !hasDup ? trimmedLabel : tag.label;
+          let resolvedMin = updates.rangeMin ?? tag.rangeMin;
+          let resolvedMax = updates.rangeMax ?? tag.rangeMax;
+          if (resolvedMin !== null && resolvedMax !== null && resolvedMin > resolvedMax) {
+            if (updates.rangeMin !== undefined && updates.rangeMax === undefined) resolvedMax = resolvedMin;
+            else if (updates.rangeMax !== undefined && updates.rangeMin === undefined) resolvedMin = resolvedMax;
+          }
+          return { ...tag, ...updates, label: resolvedLabel, rangeMin: resolvedMin, rangeMax: resolvedMax, updatedAtIso: new Date().toISOString() };
+        })
+      }));
+    },
+    removeFoodTag: (tagId) => {
+      setState((current) => {
+        const nextTags = current.foodTags.filter((tag) => tag.id !== tagId);
+        const nextReadings = current.foodReadings.map((reading) => ({ ...reading, tagIds: reading.tagIds.filter((value) => value !== tagId) }));
+        return { ...current, foodTags: syncTagStats(nextReadings, nextTags), foodReadings: nextReadings };
+      });
+    },
+
     updateSettings: (updates) => {
       setState((current) => ({
         ...current,
@@ -452,6 +594,8 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         heightTags: createDefaultHeightTags(nowIso),
         bpReadings: [],
         bpTags: createDefaultBpTags(nowIso),
+        foodReadings: createDefaultFoodReadings(new Date(nowIso)),
+        foodTags: createDefaultFoodTags(nowIso),
         settings: DEFAULT_SETTINGS
       });
     }

@@ -4,6 +4,7 @@ import type {
   BpReading,
   BpTagDefinition,
   ChartPreset,
+  FoodTagDefinition,
   ReadingDraft,
   ReadingFilters,
   ReadingStatus,
@@ -172,9 +173,10 @@ export function buildReadingMetrics(readings: SugarReading[], tagsById: Map<stri
   };
 }
 
-export function syncTagStats<T extends BaseReading>(readings: T[], tags: BpTagDefinition[]): BpTagDefinition[];
-export function syncTagStats<T extends BaseReading>(readings: T[], tags: TagDefinition[]): TagDefinition[];
-export function syncTagStats<T extends BaseReading>(readings: T[], tags: (TagDefinition | BpTagDefinition)[]): (TagDefinition | BpTagDefinition)[] {
+export function syncTagStats<
+  T extends BaseReading,
+  TTag extends TagDefinition | BpTagDefinition | FoodTagDefinition
+>(readings: T[], tags: TTag[]): TTag[] {
   const usageMap = new Map<string, { count: number; lastUsedAtIso: string | null }>();
 
   for (const reading of readings) {
@@ -200,7 +202,7 @@ export function syncTagStats<T extends BaseReading>(readings: T[], tags: (TagDef
   });
 }
 
-export function sortTags<T extends TagDefinition | BpTagDefinition>(
+export function sortTags<T extends TagDefinition | BpTagDefinition | FoodTagDefinition>(
   tags: T[],
   settings: AppSettings,
   readings: BaseReading[]

@@ -15,18 +15,6 @@ export function MonetizationPanel() {
           >
             Sponsor on GitHub
           </a>
-          <a
-            className="secondary-button"
-            href={DONATION_LINKS.razorpaySupport}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Support via Razorpay
-          </a>
-          <span className="monetization-panel__note">
-            Razorpay may request phone and email for payment compliance. PixieTrack does not
-            collect or store this data.
-          </span>
         </div>
       </div>
 

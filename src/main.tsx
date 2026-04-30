@@ -75,6 +75,18 @@ const BpReadingsPage = React.lazy(() =>
 const BpChartPage = React.lazy(() =>
   import('./pages/BpChartPage').then((module) => ({ default: module.BpChartPage }))
 );
+const AddFoodReadingPage = React.lazy(() =>
+  import('./pages/AddFoodReadingPage').then((module) => ({ default: module.AddFoodReadingPage }))
+);
+const EditFoodReadingPage = React.lazy(() =>
+  import('./pages/EditFoodReadingPage').then((module) => ({ default: module.EditFoodReadingPage }))
+);
+const FoodReadingsPage = React.lazy(() =>
+  import('./pages/FoodReadingsPage').then((module) => ({ default: module.FoodReadingsPage }))
+);
+const FoodChartPage = React.lazy(() =>
+  import('./pages/FoodChartPage').then((module) => ({ default: module.FoodChartPage }))
+);
 const AnalysisPage = React.lazy(() =>
   import('./pages/AnalysisPage').then((module) => ({ default: module.AnalysisPage }))
 );
@@ -132,6 +144,10 @@ function App() {
             <Route path="/bp/list" element={<BpReadingsPage />} />
             <Route path="/bp/edit/:readingId" element={<EditBpReadingPage />} />
             <Route path="/bp/chart" element={<BpChartPage />} />
+            <Route path="/food/add" element={<AddFoodReadingPage />} />
+            <Route path="/food/list" element={<FoodReadingsPage />} />
+            <Route path="/food/edit/:readingId" element={<EditFoodReadingPage />} />
+            <Route path="/food/chart" element={<FoodChartPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/settings/tags" element={<TagManagementPage />} />
             <Route path="/settings/chart" element={<ChartSettingsPage />} />

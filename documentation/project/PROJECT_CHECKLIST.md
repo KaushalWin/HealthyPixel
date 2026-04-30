@@ -47,7 +47,7 @@
 - [ ] Test offline mode (DevTools → Network → Offline)
 - [ ] Test on real Android device
 - [ ] Verify home screen installable prompt
-- [ ] Test app shortcut (Add Sugar)
+- [ ] Test app shortcuts (Add Sugar, Add Food)
 - [ ] Verify long-press icon quick actions on supported launchers
 - [ ] Add in-app quick-action fallback for unsupported devices
 
@@ -93,6 +93,7 @@
 - [ ] Test export/import (export JSON, import, verify data)
 - [ ] Test all form inputs (no validation errors)
 - [ ] Test chart rendering (data displays correctly)
+- [ ] Test food filters and food charts (tag/category AND/OR logic)
 - [ ] Performance test (PageSpeed Insights 90+)
 
 ### GitHub Pages & Deployment

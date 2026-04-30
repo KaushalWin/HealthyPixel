@@ -64,6 +64,15 @@ export function ChartSettingsPage() {
           <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.bpChartColorNeutral} onChange={(e) => updateSettings({ bpChartColorNeutral: e.target.value })} /></label>
         </div>
       </section>
+
+      <section className="doc-card section-stack">
+        <div className="section-header-inline"><div><h2>Food chart colors</h2><p>Used for calorie trend points and food list range badges.</p></div></div>
+        <div className="three-column-grid">
+          <label className="date-time-picker__field color-field"><span>Inside range</span><input type="color" value={settings.foodChartColorInside} onChange={(e) => updateSettings({ foodChartColorInside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Outside range</span><input type="color" value={settings.foodChartColorOutside} onChange={(e) => updateSettings({ foodChartColorOutside: e.target.value })} /></label>
+          <label className="date-time-picker__field color-field"><span>Neutral</span><input type="color" value={settings.foodChartColorNeutral} onChange={(e) => updateSettings({ foodChartColorNeutral: e.target.value })} /></label>
+        </div>
+      </section>
     </SiteShell>
   );
 }

@@ -23,7 +23,8 @@ export function DocumentationPage() {
             <li>{APP_NAME} is a privacy-first health tracker.</li>
             <li>Core data stays on your device and is not used for profiling or ads.</li>
             <li>The app is designed for low friction and fast daily usage.</li>
-            <li>Sugar readings, tags, settings, and chart preferences are stored locally only.</li>
+            <li>Sugar, weight, height, blood pressure, food entries, tags, settings, and chart preferences are stored locally only.</li>
+            <li>Settings includes full-app JSON export/import so you can make a manual backup or restore local app data on another device.</li>
             <li>AI Health Chat is optional and sends only the chat text you type directly to the provider you selected.</li>
           </ul>
         </DocBlock>
@@ -60,6 +61,7 @@ export function DocumentationPage() {
           </p>
           <ul>
             <li>Add Sugar</li>
+            <li>Add Food</li>
             <li>Add Weight</li>
             <li>Add Height</li>
             <li>Add BP</li>
@@ -77,8 +79,8 @@ export function DocumentationPage() {
           <ul>
             <li>The app uses one main menu button in the header.</li>
             <li>Help now includes Documentation, AI Health Chat, About Us, and Tests.</li>
-            <li>Vitals are grouped under a single section with subsections: Sugar, Weight, Height, Blood Pressure.</li>
-            <li>A small + button opens a quick-action popup for Add Sugar, Add Weight, Add Height, Add BP.</li>
+            <li>Vitals are grouped under a single section with subsections: Sugar, Food, Weight, Height, Blood Pressure.</li>
+            <li>A small + button opens a quick-action popup for Add Sugar, Add Food, Add Weight, Add Height, Add BP.</li>
             <li>This keeps the first screen compact on mobile and reduces scrolling.</li>
           </ul>
         </DocBlock>
@@ -88,11 +90,34 @@ export function DocumentationPage() {
             <li>Open <strong>AI Health Chat</strong> from the Help section in the main menu.</li>
             <li>Choose a provider: DeepSeek or OpenAI (ChatGPT).</li>
             <li>Choose the model you want to use for this session.</li>
-            <li>Paste the matching provider API key. The key stays in memory only and clears on reload.</li>
+            <li>Paste the matching provider API key. The key stays in memory unless you explicitly save it in this browser.</li>
             <li>Ask a wellness or tracking question. The app sends the chat directly from your browser to the selected provider.</li>
           </ol>
+          <p>If you click Save in this browser, the key is stored only in local browser data on this device. PixieTrack does not store or sync it on any server.</p>
           <p>The page is for brainstorming and general guidance only. It is not medical advice and should not replace a qualified doctor.</p>
           <p>Switching provider clears the key and chat history. Switching model resets the chat so replies stay tied to the current model.</p>
+        </DocBlock>
+
+        <DocBlock title="Data Backup and Restore">
+          <ol>
+            <li>Open <strong>Settings</strong>.</li>
+            <li>Use <strong>Export JSON</strong> to download a full backup of your readings, tags, and settings.</li>
+            <li>Store that file somewhere safe if you want a manual backup before changing devices or clearing browser data.</li>
+            <li>Use <strong>Import JSON</strong> to restore from a previous PixieTrack export.</li>
+            <li>Import replaces the current local readings, tags, and settings on this device. It does not merge data.</li>
+          </ol>
+          <p>Saved AI provider keys are intentionally excluded from exported files and are not changed by import.</p>
+        </DocBlock>
+
+        <DocBlock title="Food Tracking">
+          <ol>
+            <li>Open <strong>Add Food</strong> from the menu or the quick-action + button.</li>
+            <li>Enter the meal name and calories.</li>
+            <li>Tag the meal in four groups: planned, actual, context, and behavior.</li>
+            <li>Use More options only when you need to adjust date/time or add a note.</li>
+            <li>Save to open the Food List and review the meal in charts later.</li>
+          </ol>
+          <p>The Food Chart includes a calorie trend view plus a top-tag breakdown chart. Filters can combine selected categories and selected tags with AND or OR logic.</p>
         </DocBlock>
 
         <DocBlock title="Sugar Reading Flow">
@@ -160,8 +185,10 @@ export function DocumentationPage() {
         <DocBlock title="Settings Overview">
           <ul>
             <li>Settings includes per-module tag management, chart defaults, and chart colors.</li>
-            <li>Tag management uses module tabs (Sugar, Weight, Height, BP) to manage tags independently.</li>
+            <li>Settings also includes full-app JSON export/import for manual backup and restore.</li>
+            <li>Tag management uses module tabs (Sugar, Food, Weight, Height, BP) to manage tags independently.</li>
             <li>BP tags have 4 range fields (systolic min/max, diastolic min/max).</li>
+            <li>Food tags include a category field, and duplicate food labels are only blocked inside the same category.</li>
             <li>Chart settings include preset date range and per-module inside/outside/neutral colors.</li>
             <li>Delete all local data restores the app to default local bootstrap state.</li>
           </ul>
@@ -205,8 +232,10 @@ export function DocumentationPage() {
           </p>
           <ul>
             <li>Sugar reading entry, editing, and filtered list</li>
+            <li>Food tracking with calorie charts and grouped tag categories</li>
             <li>Weight, height, and blood pressure tracking with charts</li>
-            <li>AI Health Chat with memory-only API keys for OpenAI and DeepSeek</li>
+            <li>JSON export/import in Settings for manual full-app backup and restore</li>
+            <li>AI Health Chat with memory-first API keys and optional browser-local save for OpenAI and DeepSeek</li>
             <li>Per-module tag management and chart color settings</li>
             <li>Chart insights with range-aware coloring</li>
             <li>Expanded Tests page demos for shared components</li>
