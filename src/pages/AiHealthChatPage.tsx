@@ -5,11 +5,12 @@ import { ModelSelector } from '../components/ai/ModelSelector';
 import { SiteShell } from '../components/SiteShell';
 import {
   buildChatCompletionRequest,
-  getApiErrorMessage,
   parseChatCompletionResponse,
   type AiModel,
   type AiProvider
 } from '../lib/aiChat';
+// 🛡️ SAFETY: All API calls go through quota wrapper to prevent runaway billing
+import { callAiApi } from '../lib/aiChat-quota-wrapper';
 import { STORAGE_KEYS } from '../lib/defaults';
 import { createStableId, safeLocalStorageGet, safeLocalStorageRemove, safeLocalStorageSet } from '../lib/platform';
 
@@ -134,25 +135,24 @@ export function AiHealthChatExperience() {
     setIsLoading(true);
 
     try {
+      // 🛡️ SAFETY: Use quota wrapper — enforces daily limit, per-minute throttle,
+      //             caching, kill switch and loop detection before any real fetch.
       const { url, init } = buildChatCompletionRequest({
         apiKey: apiKey.trim(),
         provider,
         model,
         messages: nextMessages.map(({ role, content }) => ({ role, content }))
       });
-      const response = await fetch(url, init);
 
-      let payload: unknown = null;
+      // Extract the JSON body from the pre-built init object
+      const requestPayload = JSON.parse(init.body as string);
 
-      try {
-        payload = await response.json();
-      } catch {
-        payload = null;
-      }
-
-      if (!response.ok) {
-        throw new Error(getApiErrorMessage(response.status, payload));
-      }
+      const payload = await callAiApi(
+        provider,
+        url,
+        requestPayload,
+        { apiKey: apiKey.trim(), project: 'healthypixel' }
+      );
 
       const assistantMessage = parseChatCompletionResponse(payload);
 
